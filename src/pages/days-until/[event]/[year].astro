@@ -1,0 +1,126 @@
+---
+// src/pages/days-until/[event]/[year].astro — Programmatic days-until pages
+import BaseLayout from '../../../components/BaseLayout.astro';
+import AnswerHero from '../../../components/AnswerHero.astro';
+import DateContext from '../../../components/DateContext.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import RelatedQueries from '../../../components/RelatedQueries.astro';
+import { today, getEventDate, signedDaysBetween, getWeekday } from '../../../lib/dates';
+import { daysUntilMeta } from '../../../lib/meta';
+import { resultPageSchema } from '../../../lib/schema';
+import { formatDateLong } from '../../../lib/formatters';
+import { events, eventYears } from '../../../lib/data/events';
+
+import type { GetStaticPaths } from 'astro';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const CATEGORY_URL = `${SITE_URL}/days-until/`;
+
+export const getStaticPaths: GetStaticPaths = () => {
+  const paths: { params: { event: string; year: string } }[] = [];
+  for (const event of events) {
+    for (const year of eventYears) {
+      // Skip non-leap-year Feb 29
+      if (event.slug === 'leap-day' && year !== 2028) continue;
+      paths.push({ params: { event: event.slug, year: String(year) } });
+    }
+  }
+  return paths;
+};
+
+const { event, year } = Astro.params as { event: string; year: string };
+const eventYear = parseInt(year);
+
+const eventData = events.find(e => e.slug === event);
+if (!eventData) {
+  // This shouldn't happen in static build, but handle gracefully
+  Astro.response.status = 404;
+}
+
+const eventDate = getEventDate(eventData!, eventYear);
+const todayStr = today();
+const days = signedDaysBetween(todayStr, eventDate);
+const absDays = Math.abs(days);
+const weekday = getWeekday(eventDate);
+
+const isFuture = days >= 0;
+const verb = isFuture ? 'until' : 'since';
+const daysText = isFuture ? `${absDays} day${absDays === 1 ? '' : 's'} until` : `${absDays} day${absDays === 1 ? '' : 's'} since`;
+
+const meta = daysUntilMeta(eventData!.name, eventYear, absDays, eventDate);
+const pageUrl = `${SITE_URL}/days-until/${event}/${year}/`;
+
+// Next year link
+const nextYear = eventYear + 1;
+const hasNextYear = eventYears.includes(nextYear);
+
+const weeks = Math.floor(absDays / 7);
+const remDays = absDays % 7;
+
+const subtitle = isFuture
+  ? `That's ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''} from now`
+  : `That was ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''} ago`;
+
+const relatedLinks = [
+  { href: `/days-between/${todayStr}/${eventDate}/`, label: `Days between today and ${eventData!.name} ${eventYear}` },
+  ...(hasNextYear ? [{ href: `/days-until/${event}/${nextYear}/`, label: `Days until ${eventData!.name} ${nextYear} →` }] : []),
+  { href: '/days-until/', label: 'More days until events →' },
+  { href: '/days-from-today/', label: 'Days from today calculator →' },
+];
+
+const faqs = [
+  {
+    question: `How many days ${verb} ${eventData!.name} ${eventYear}?`,
+    answer: `There ${isFuture ? 'are' : 'were'} ${absDays} day${absDays === 1 ? '' : 's'} ${verb} ${eventData!.name} ${eventYear}. ${eventData!.name} ${isFuture ? 'falls' : 'fell'} on ${formatDateLong(eventDate)} (${weekday}).`,
+  },
+  {
+    question: `What day of the week is ${eventData!.name} ${eventYear}?`,
+    answer: `${eventData!.name} ${eventYear} is on a ${weekday} (${formatDateLong(eventDate)}).`,
+  },
+];
+
+const schemas = [
+  resultPageSchema({ title: meta.title, description: meta.description, url: pageUrl, faqs }),
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={pageUrl} schema={schemas}>
+  <Breadcrumb items={[
+    { name: 'Home', url: SITE_URL },
+    { name: 'Days Until', url: CATEGORY_URL },
+    { name: `${eventData!.name} ${eventYear}`, url: pageUrl },
+  ]} />
+
+  <AnswerHero value={absDays} unit={`days ${verb}`} subtitle={subtitle} />
+
+  <DateContext date1={isFuture ? todayStr : eventDate} date2={isFuture ? eventDate : todayStr} days={absDays} />
+
+  <p class="explanation">
+    {isFuture ? (
+      <>There are <strong>{absDays} day{absDays === 1 ? '' : 's'}</strong> until{' '}
+        <strong>{eventData!.name} {eventYear}</strong>, which falls on{' '}
+        {formatDateLong(eventDate)} ({weekday}).
+        That's {weeks} week{weeks === 1 ? '' : 's'}
+        {remDays > 0 && <span> and {remDays} day{remDays === 1 ? '' : 's'}</span>} from today
+        ({formatDateLong(todayStr)}).</>
+    ) : (
+      <>{eventData!.name} {eventYear} was <strong>{absDays} day{absDays === 1 ? '' : 's'} ago</strong> — it fell on{' '}
+        {formatDateLong(eventDate)} ({weekday}).
+        That was {weeks} week{weeks === 1 ? '' : 's'}
+        {remDays > 0 && <span> and {remDays} day{remDays === 1 ? '' : 's'}</span>} before today.</>
+    )}
+  </p>
+
+  <RelatedQueries links={relatedLinks} />
+</BaseLayout>
+
+<style>
+  .explanation {
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    line-height: 1.7;
+  }
+</style>

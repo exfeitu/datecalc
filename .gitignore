@@ -1,0 +1,37 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+.astro/
+.vercel/
+
+# env
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# logs
+*.log
+npm-debug.log*
+
+# test
+coverage/
+
+# misc
+*.tgz
+.cache/
+*.tsbuildinfo

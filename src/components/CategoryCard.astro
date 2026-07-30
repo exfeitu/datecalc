@@ -1,0 +1,46 @@
+---
+// CategoryCard.astro — home page category card linking to a hub page
+export interface Props {
+  title: string;
+  description: string;
+  href: string;
+}
+
+const { title, description, href } = Astro.props;
+---
+<a href={href} class="category-card">
+  <h3>{title}</h3>
+  <p>{description}</p>
+</a>
+
+<style>
+  .category-card {
+    display: block;
+    padding: 1.25rem;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .category-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+    text-decoration: none;
+  }
+
+  .category-card h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-bottom: 0.375rem;
+  }
+
+  .category-card p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+</style>

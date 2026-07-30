@@ -1,0 +1,88 @@
+---
+// src/pages/age-in-days/[year].astro — Programmatic age-in-days pages
+import BaseLayout from '../../components/BaseLayout.astro';
+import AnswerHero from '../../components/AnswerHero.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import RelatedQueries from '../../components/RelatedQueries.astro';
+import { ageInDays } from '../../lib/dates';
+import { ageInDaysMeta } from '../../lib/meta';
+import { resultPageSchema } from '../../lib/schema';
+import { formatNumber } from '../../lib/formatters';
+import { birthYears } from '../../lib/data/birth-years';
+
+import type { GetStaticPaths } from 'astro';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const CATEGORY_URL = `${SITE_URL}/age-in-days/`;
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return birthYears.map((y) => ({
+    params: { year: String(y) },
+  }));
+};
+
+const { year } = Astro.params as { year: string };
+const birthYear = parseInt(year);
+const totalDays = ageInDays(birthYear);
+const years = Math.floor(totalDays / 365);
+const weeks = Math.floor(totalDays / 7);
+
+const meta = ageInDaysMeta(birthYear, totalDays);
+const pageUrl = `${SITE_URL}/age-in-days/${year}/`;
+
+const subtitle = `That's about ${years} years, or ${formatNumber(weeks)} weeks`;
+
+const relatedLinks = [
+  ...birthYears.filter(y => y !== birthYear).slice(0, 5).map(y => ({
+    href: `/age-in-days/${y}/`,
+    label: `Age in days for someone born in ${y}`,
+  })),
+  { href: '/age-in-days/', label: 'More birth years →' },
+  { href: '/days-left-in/2026/', label: 'Days left in 2026 →' },
+];
+
+const faqs = [
+  {
+    question: `How many days old is someone born in ${birthYear}?`,
+    answer: `A person born on January 1, ${birthYear} is approximately ${formatNumber(totalDays)} days old as of the last page build. That's about ${years} years, or ${formatNumber(weeks)} weeks.`,
+  },
+  {
+    question: `How is age in days calculated for ${birthYear}?`,
+    answer: `The calculation counts every calendar day from January 1, ${birthYear} to the current date. DateCalc uses UTC noon times for consistent, accurate results that account for all leap years in between.`,
+  },
+];
+
+const schemas = [
+  resultPageSchema({ title: meta.title, description: meta.description, url: pageUrl, faqs }),
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={pageUrl} schema={schemas}>
+  <Breadcrumb items={[
+    { name: 'Home', url: SITE_URL },
+    { name: 'Age in Days', url: CATEGORY_URL },
+    { name: `Born in ${birthYear}`, url: pageUrl },
+  ]} />
+
+  <AnswerHero value={totalDays} unit="days old" subtitle={subtitle} />
+
+  <p class="explanation">
+    Someone born on <strong>January 1, {birthYear}</strong> is approximately{' '}
+    <strong>{formatNumber(totalDays)} days old</strong>.
+    That's roughly {years} years (at 365 days per year), or {formatNumber(weeks)} weeks.
+    This calculation accounts for all leap years between {birthYear} and today.
+  </p>
+
+  <RelatedQueries links={relatedLinks} />
+</BaseLayout>
+
+<style>
+  .explanation {
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    line-height: 1.7;
+  }
+</style>

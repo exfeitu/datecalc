@@ -1,0 +1,158 @@
+---
+// src/pages/days-in/[slug].astro — Programmatic days-in pages (months + years)
+import BaseLayout from '../../components/BaseLayout.astro';
+import AnswerHero from '../../components/AnswerHero.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import RelatedQueries from '../../components/RelatedQueries.astro';
+import { isLeapYear, daysInMonth } from '../../lib/dates';
+import { daysInMonthMeta, daysInYearMeta } from '../../lib/meta';
+import { resultPageSchema } from '../../lib/schema';
+import { months } from '../../lib/data/months';
+import { yearRange } from '../../lib/data/months';
+
+import type { GetStaticPaths } from 'astro';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const CATEGORY_URL = `${SITE_URL}/days-in/`;
+const baseYear = 2026;
+
+export const getStaticPaths: GetStaticPaths = () => {
+  const paths: { params: { slug: string } }[] = [];
+  // Month slugs
+  for (const m of months) {
+    paths.push({ params: { slug: m.slug } });
+  }
+  // Year numbers
+  for (const y of yearRange) {
+    paths.push({ params: { slug: String(y) } });
+  }
+  return paths;
+};
+
+const { slug } = Astro.params as { slug: string };
+
+// Determine if it's a month or year
+const monthData = months.find(m => m.slug === slug);
+const yearNum = parseInt(slug);
+const isYear = !isNaN(yearNum) && String(yearNum) === slug && yearNum >= 1900 && yearNum <= 2100;
+
+let days: number;
+let title: string;
+let description: string;
+let unit: string;
+let subtitle: string;
+let explanation: string;
+let faqs: { question: string; answer: string }[];
+let relatedLinks: { href: string; label: string }[];
+let contextLabel: string; // for breadcrumb
+
+if (isYear) {
+  const isLeap = isLeapYear(yearNum);
+  days = isLeap ? 366 : 365;
+  const meta = daysInYearMeta(yearNum, days, isLeap);
+  title = meta.title;
+  description = meta.description;
+  unit = `days in ${yearNum}`;
+  subtitle = `${yearNum} is ${isLeap ? 'a leap year' : 'not a leap year'}`;
+  explanation = `<strong>${yearNum}</strong> has <strong>${days} days</strong>. ${yearNum} is ${isLeap ? 'a leap year (divisible by 4, and not a century year unless divisible by 400)' : 'not a leap year'}. A standard year has 365 days; leap years add February 29 for a total of 366 days.`;
+  contextLabel = `Days in ${yearNum}`;
+  faqs = [
+    {
+      question: `How many days in ${yearNum}?`,
+      answer: `${yearNum} has ${days} days. It is ${isLeap ? 'a leap year' : 'not a leap year'}.${isLeap ? ' Leap years have 366 days with February 29.' : ' Non-leap years have 365 days.'}`,
+    },
+    {
+      question: `Is ${yearNum} a leap year?`,
+      answer: isLeap ? `Yes, ${yearNum} is a leap year. It has 366 days with February 29.` : `No, ${yearNum} is not a leap year. It has 365 days.`,
+    },
+  ];
+  relatedLinks = [
+    ...yearRange.filter(y => y !== yearNum).slice(0, 5).map(y => ({
+      href: `/days-in/${y}/`,
+      label: `Days in ${y}`,
+    })),
+    { href: '/days-in/', label: 'Days in months →' },
+  ];
+} else if (monthData) {
+  days = daysInMonth(baseYear, monthData.index);
+  const isFeb = monthData.index === 2;
+  const isCurrentLeap = isLeapYear(baseYear);
+  const meta = daysInMonthMeta(monthData.name, days, baseYear);
+  title = meta.title;
+  description = meta.description;
+  unit = `days in ${monthData.name}`;
+  subtitle = isFeb
+    ? `${baseYear} is ${isCurrentLeap ? 'a leap year' : 'not a leap year'}, so February has ${days} days`
+    : `${monthData.name} always has ${days} days`;
+  explanation = `<strong>${monthData.name} ${baseYear}</strong> has <strong>${days} day${days === 1 ? '' : 's'}</strong>.${isFeb ? ` ${baseYear} is ${isCurrentLeap ? 'a leap year (February has 29 days)' : 'not a leap year (February has 28 days)'}.` : ` ${monthData.name} has ${days} days every year — it's always consistent.`}`;
+  contextLabel = `Days in ${monthData.name}`;
+  faqs = [
+    {
+      question: `How many days in ${monthData.name} ${baseYear}?`,
+      answer: `${monthData.name} ${baseYear} has ${days} day${days === 1 ? '' : 's'}.${isFeb ? ` ${baseYear} is ${isCurrentLeap ? 'a leap year' : 'not a leap year'}, so February has ${days} days.` : ` ${monthData.name} always has ${days} days.`}`,
+    },
+    {
+      question: `Is ${monthData.name} a 30 or 31 day month?`,
+      answer: days === 31 ? `${monthData.name} has 31 days.` : days === 30 ? `${monthData.name} has 30 days.` : `February has ${days} days in ${baseYear} (${isCurrentLeap ? 'leap year' : 'non-leap year'}).`,
+    },
+  ];
+  relatedLinks = [
+    ...months.filter(m => m.index !== monthData.index).slice(0, 5).map(m => ({
+      href: `/days-in/${m.slug}/`,
+      label: `Days in ${m.name} ${baseYear}`,
+    })),
+    { href: `/days-in/${baseYear}/`, label: `Days in ${baseYear} (full year)` },
+    { href: '/days-in/', label: 'All months →' },
+  ];
+} else {
+  // 404 fallback
+  Astro.response.status = 404;
+  days = 0;
+  title = 'Not Found';
+  description = '';
+  unit = '';
+  subtitle = '';
+  explanation = '';
+  contextLabel = '';
+  faqs = [];
+  relatedLinks = [];
+}
+
+const pageUrl = `${SITE_URL}/days-in/${slug}/`;
+
+const schemas = [
+  resultPageSchema({ title, description, url: pageUrl, faqs }),
+];
+---
+
+{isYear || monthData ? (
+  <BaseLayout title={title} description={description} canonical={pageUrl} schema={schemas}>
+    <Breadcrumb items={[
+      { name: 'Home', url: SITE_URL },
+      { name: 'Days In', url: CATEGORY_URL },
+      { name: contextLabel, url: pageUrl },
+    ]} />
+
+    <AnswerHero value={days} unit={unit} subtitle={subtitle} />
+
+    <p class="explanation" set:html={explanation} />
+
+    <RelatedQueries links={relatedLinks} />
+  </BaseLayout>
+) : (
+  <BaseLayout title="Not Found" description="" canonical={pageUrl} schema={[]}>
+    <h1>Page Not Found</h1>
+    <p>This page does not exist. <a href="/days-in/">Browse all days in months</a>.</p>
+  </BaseLayout>
+)}
+
+<style>
+  .explanation {
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    line-height: 1.7;
+  }
+</style>

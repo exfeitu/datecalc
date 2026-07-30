@@ -1,0 +1,146 @@
+---
+// DateContext.astro — date contextual information
+import { getWeekday, isLeapYear } from '../lib/dates';
+import { formatDateLong } from '../lib/formatters';
+
+export interface Props {
+  date1: string;
+  date2: string;
+  days: number;
+  /** Optional: show year context (leap year info) */
+  showYearContext?: boolean;
+}
+
+const { date1, date2, days, showYearContext = true } = Astro.props;
+const weekday1 = getWeekday(date1);
+const weekday2 = getWeekday(date2);
+const year1 = parseInt(date1.slice(0, 4));
+const year2 = parseInt(date2.slice(0, 4));
+const weeks = Math.floor(days / 7);
+const remDays = days % 7;
+---
+
+<div class="date-context">
+  <div class="date-context-dates">
+    <div class="date-card">
+      <span class="date-label">From</span>
+      <span class="date-full">{formatDateLong(date1)}</span>
+      <span class="date-weekday">{weekday1}</span>
+    </div>
+    <div class="date-arrow">
+      <span class="date-arrow-days">{days} day{days === 1 ? '' : 's'}</span>
+      <span class="date-arrow-line"></span>
+    </div>
+    <div class="date-card">
+      <span class="date-label">To</span>
+      <span class="date-full">{formatDateLong(date2)}</span>
+      <span class="date-weekday">{weekday2}</span>
+    </div>
+  </div>
+
+  <div class="date-breakdown">
+    That's <strong>{weeks} week{weeks === 1 ? '' : 's'}</strong>
+    {remDays > 0 && <span> and <strong>{remDays} day{remDays === 1 ? '' : 's'}</strong></span>}.
+  </div>
+
+  {showYearContext && (
+    <p class="date-year-info">
+      {year1 === year2 ? (
+        <>{year1} is{isLeapYear(year1) ? '' : ' not'} a leap year ({isLeapYear(year1) ? 366 : 365} days).</>
+      ) : (
+        <>{year1} has {isLeapYear(year1) ? 366 : 365} days; {year2} has {isLeapYear(year2) ? 366 : 365} days.</>
+      )}
+    </p>
+  )}
+</div>
+
+<style>
+  .date-context {
+    margin: 1.5rem 0;
+  }
+
+  .date-context-dates {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .date-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--color-card-bg);
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    min-width: 160px;
+  }
+
+  .date-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+  }
+
+  .date-full {
+    font-weight: 600;
+    margin: 0.25rem 0;
+  }
+
+  .date-weekday {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .date-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .date-arrow-days {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .date-arrow-line {
+    width: 40px;
+    height: 1px;
+    background: var(--color-border);
+  }
+
+  .date-breakdown {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+  }
+
+  .date-year-info {
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-tertiary);
+  }
+
+  @media (max-width: 640px) {
+    .date-context-dates {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .date-arrow-line {
+      width: 1px;
+      height: 16px;
+    }
+
+    .date-card {
+      width: 100%;
+      max-width: 280px;
+    }
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+// RelatedQueries.astro — internal links block for programmatic pages
+export interface RelatedLink {
+  href: string;
+  label: string;
+}
+
+export interface Props {
+  links: RelatedLink[];
+  title?: string;
+}
+
+const { links, title = 'Related Date Calculations' } = Astro.props;
+---
+
+<section class="related-queries">
+  <h2>{title}</h2>
+  <ul>
+    {links.map((link) => (
+      <li><a href={link.href}>{link.label}</a></li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .related-queries {
+    margin: 2rem 0;
+    padding: 1.25rem;
+    background: var(--color-card-bg);
+    border-radius: 8px;
+  }
+
+  .related-queries h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .related-queries ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+  }
+
+  .related-queries li {
+    font-size: 0.9375rem;
+  }
+</style>

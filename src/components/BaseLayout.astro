@@ -1,0 +1,51 @@
+---
+// BaseLayout.astro — every page wrapper. Injects <head>, Header, Footer.
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  schema?: Record<string, unknown>[];
+}
+
+const { title, description, canonical, schema } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonical} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:site_name" content="DateCalc" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+
+  <!-- Schema.org JSON-LD -->
+  {schema?.map((s) => (
+    <script type="application/ld+json" set:html={JSON.stringify(s)}></script>
+  ))}
+</head>
+<body>
+  <Header />
+  <main>
+    <slot />
+  </main>
+  <Footer />
+</body>
+</html>

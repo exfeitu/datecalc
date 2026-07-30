@@ -1,0 +1,99 @@
+---
+// src/pages/days-left-in/[year].astro — Programmatic days-left-in-year pages
+import BaseLayout from '../../components/BaseLayout.astro';
+import AnswerHero from '../../components/AnswerHero.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import RelatedQueries from '../../components/RelatedQueries.astro';
+import { daysLeftInYear, isLeapYear, today } from '../../lib/dates';
+import { daysLeftInYearMeta } from '../../lib/meta';
+import { resultPageSchema } from '../../lib/schema';
+import { formatDateLong } from '../../lib/formatters';
+
+import type { GetStaticPaths } from 'astro';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+
+export const getStaticPaths: GetStaticPaths = () => {
+  const yearList = [2026, 2027, 2028];
+  return yearList.map((y) => ({
+    params: { year: String(y) },
+  }));
+};
+
+const { year } = Astro.params as { year: string };
+const yearNum = parseInt(year);
+const todayStr = today();
+const remaining = daysLeftInYear(yearNum);
+const isLeap = isLeapYear(yearNum);
+const totalDays = isLeap ? 366 : 365;
+const pctDone = Math.round(((totalDays - Math.max(0, remaining)) / totalDays) * 100);
+
+const meta = daysLeftInYearMeta(yearNum, Math.max(0, remaining));
+const pageUrl = `${SITE_URL}/days-left-in/${year}/`;
+
+const subtitle = remaining >= 0
+  ? `The year is about ${pctDone}% complete`
+  : `${yearNum} has ended — 0 days left`;
+
+const relatedLinks = [
+  { href: `/days-in/${year}/`, label: `Total days in ${yearNum}` },
+  { href: '/days-until/new-years-eve/2026/', label: 'Days until New Year\'s Eve 2026' },
+  { href: '/days-from-today/', label: 'Days from today calculator →' },
+];
+
+const faqs = [
+  {
+    question: `How many days are left in ${yearNum}?`,
+    answer: remaining > 0
+      ? `There are ${remaining} days left in ${yearNum} (as of ${formatDateLong(todayStr)}). ${yearNum} has ${totalDays} total days${isLeap ? ' (leap year)' : ''}.`
+      : remaining === 0
+        ? `Today (${formatDateLong(todayStr)}) is the last day of ${yearNum}! There are 0 days left.`
+        : `${yearNum} has already ended. There are 0 days left.`,
+  },
+  {
+    question: `What percentage of ${yearNum} has passed?`,
+    answer: remaining > 0
+      ? `Approximately ${pctDone}% of ${yearNum} has passed. There are ${remaining} days remaining out of ${totalDays} total days.`
+      : `${yearNum} is over. 100% of the year has passed.`,
+  },
+];
+
+const schemas = [
+  resultPageSchema({ title: meta.title, description: meta.description, url: pageUrl, faqs }),
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={pageUrl} schema={schemas}>
+  <Breadcrumb items={[
+    { name: 'Home', url: SITE_URL },
+    { name: `Days Left in ${yearNum}`, url: pageUrl },
+  ]} />
+
+  <AnswerHero value={Math.max(0, remaining)} unit={`days left in ${yearNum}`} subtitle={subtitle} />
+
+  <p class="explanation">
+    {remaining > 0 ? (
+      <>As of <strong>{formatDateLong(todayStr)}</strong>, there are{' '}
+        <strong>{remaining} day{remaining === 1 ? '' : 's'} left in {yearNum}</strong>.
+        The year {yearNum} has {totalDays} total days ({isLeap ? 'a leap year' : 'not a leap year'}).
+        That means {pctDone}% of the year has passed, with{' '}
+        {remaining} day{remaining === 1 ? '' : 's'} still to go.</>
+    ) : (
+      <><strong>{yearNum} has ended</strong> (or today is the last day). There are 0 days remaining
+        out of {totalDays} total days ({isLeap ? 'a leap year' : 'not a leap year'}).</>
+    )}
+  </p>
+
+  <RelatedQueries links={relatedLinks} />
+</BaseLayout>
+
+<style>
+  .explanation {
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    line-height: 1.7;
+  }
+</style>

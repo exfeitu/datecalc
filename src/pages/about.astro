@@ -1,0 +1,94 @@
+---
+// src/pages/about.astro — About page
+import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { organizationSchema, breadcrumbSchema } from '../lib/schema';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const PAGE_URL = `${SITE_URL}/about/`;
+
+const meta = {
+  title: `About DateCalc — Free Online Date Calculator | DateCalc`,
+  description: 'DateCalc is a free, fast, ad-free date calculation tool. Learn about our mission, technology, and commitment to privacy.',
+};
+
+const schemas = [
+  organizationSchema({ name: 'DateCalc', url: SITE_URL }),
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={schemas}>
+  <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'About', url: PAGE_URL }]} />
+
+  <h1>About DateCalc</h1>
+
+  <p class="lead">A fast, free, and simple date calculator. No ads, no tracking, no clutter.</p>
+
+  <section class="about-section">
+    <h2>Our Mission</h2>
+    <p>DateCalc was built to provide instant, accurate date calculations without the junk. Most date calculator sites are packed with ads, tracking scripts, and confusing interfaces. We keep it simple: enter your dates, get your answer, move on with your day.</p>
+  </section>
+
+  <section class="about-section">
+    <h2>What DateCalc Can Do</h2>
+    <ul>
+      <li><strong>Days Between Dates</strong> — calculate the exact number of days between any two calendar dates</li>
+      <li><strong>Days From Today</strong> — find what date falls N days from now</li>
+      <li><strong>Days From a Date</strong> — compute future or past dates from any starting point</li>
+      <li><strong>Days Until Events</strong> — countdown to holidays, seasons, sports, and more</li>
+      <li><strong>Days In a Month</strong> — how many days in any month, including leap year variations</li>
+      <li><strong>Age in Days</strong> — calculate your approximate age in days</li>
+      <li><strong>Days Left in Year</strong> — year countdown and progress tracker</li>
+    </ul>
+  </section>
+
+  <section class="about-section">
+    <h2>Technology</h2>
+    <p>DateCalc is built with <a href="https://astro.build">Astro</a>, a modern static site generator. All calculations happen either at build time or in your browser — no server processing, no database, no backend. This keeps DateCalc fast, secure, and free to operate.</p>
+    <p>Date formats follow <strong>ISO 8601</strong> (YYYY-MM-DD), the international standard. All dates use UTC noon to avoid timezone edge cases, ensuring consistent results worldwide.</p>
+  </section>
+
+  <section class="about-section">
+    <h2>Pages &amp; Freshness</h2>
+    <p>DateCalc generates hundreds of programmatic pages covering popular date calculations. Time-sensitive pages (Days From Today, Days Until) are <strong>rebuilt weekly</strong> via automated deployment to keep countdowns accurate.</p>
+  </section>
+
+  <section class="about-section">
+    <h2>Contact</h2>
+    <p>DateCalc is an independent project. For feedback, bug reports, or suggestions, please open an issue on our <a href="https://github.com/exfeitu/datecalc">GitHub repository</a>.</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .lead {
+    font-size: 1.0625rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    max-width: 540px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .about-section {
+    margin: 2rem 0;
+  }
+
+  .about-section h2 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .about-section p {
+    color: var(--color-text-secondary);
+    margin-bottom: 0.75rem;
+  }
+
+  .about-section ul {
+    color: var(--color-text-secondary);
+    padding-left: 1.25rem;
+  }
+
+  .about-section li {
+    margin-bottom: 0.375rem;
+    font-size: 0.9375rem;
+  }
+</style>

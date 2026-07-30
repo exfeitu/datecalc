@@ -1,0 +1,147 @@
+---
+// src/pages/index.astro — DateCalc Homepage
+import BaseLayout from '../components/BaseLayout.astro';
+import Calculator from '../components/Calculator.astro';
+import CategoryCard from '../components/CategoryCard.astro';
+import FAQ from '../components/FAQ.astro';
+import { homeMeta } from '../lib/meta';
+import { webAppSchema, breadcrumbSchema, organizationSchema } from '../lib/schema';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const meta = homeMeta();
+const schemas = [
+  webAppSchema({ name: 'DateCalc', url: SITE_URL, description: meta.description }),
+  breadcrumbSchema([{ name: 'Home', url: SITE_URL }]),
+  organizationSchema({ name: 'DateCalc', url: SITE_URL }),
+];
+
+const categories = [
+  { title: 'Days Between', description: 'Calculate the exact number of days between any two dates.', href: '/days-between/' },
+  { title: 'Days From Today', description: 'Find out what date falls N days from now. Common values: 30, 60, 90 days.', href: '/days-from-today/' },
+  { title: 'Days Until Events', description: 'Countdown to holidays, seasons, sports, and more.', href: '/days-until/' },
+];
+
+const popularLinks = [
+  { label: 'How many days until Christmas 2026?', href: '/days-until/christmas/2026/' },
+  { label: '90 days from today', href: '/days-from-today/90/' },
+  { label: 'Days between January 1 and December 31, 2026', href: '/days-between/2026-01-01/2026-12-31/' },
+  { label: 'How many days in February 2028? (leap year)', href: '/days-in/february/' },
+  { label: 'Days until Summer 2027', href: '/days-until/summer/2027/' },
+];
+
+const faqItems = [
+  {
+    question: 'How does DateCalc calculate days between dates?',
+    answer: 'DateCalc uses exact calendar arithmetic. Each date is converted to a timestamp, and the absolute difference in milliseconds is divided by 86,400,000 (the number of milliseconds in a day). This gives the precise number of calendar days between any two dates.',
+  },
+  {
+    question: 'Does DateCalc count the start date or end date?',
+    answer: 'DateCalc calculates the absolute difference between two dates — the number of 24-hour periods between them. If you enter the same date twice, the result is 0 days. For inclusive counting (including both start and end dates), simply add 1 to the result.',
+  },
+  {
+    question: 'How does DateCalc handle leap years?',
+    answer: 'DateCalc automatically accounts for leap years. A leap year occurs every 4 years (except century years not divisible by 400). For example, 2028 is a leap year with 366 days and February 29; 2026 is not a leap year.',
+  },
+  {
+    question: 'Is DateCalc really free?',
+    answer: 'Yes, DateCalc is completely free. There are no ads, no registration required, and no limits on usage. All calculations happen in your browser or at build time — none of your data is ever collected or stored.',
+  },
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={SITE_URL} schema={schemas}>
+  <h1>Date Calculator — Fast &amp; Free</h1>
+  <p class="home-intro">Instantly calculate days between dates, find future dates, and count down to events. No ads, no clutter, just answers.</p>
+
+  <Calculator />
+
+  <!-- Category Cards -->
+  <section class="home-categories">
+    <h2 class="sr-only">Tools</h2>
+    <div class="category-grid">
+      {categories.map(c => (
+        <CategoryCard title={c.title} description={c.description} href={c.href} />
+      ))}
+    </div>
+  </section>
+
+  <!-- Popular Now -->
+  <section class="home-popular">
+    <h2>Popular Now</h2>
+    <ul>
+      {popularLinks.map(link => (
+        <li><a href={link.href}>{link.label}</a></li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- More Tools -->
+  <section class="home-more">
+    <h2>More Tools</h2>
+    <ul>
+      <li><a href="/days-in/">Days in Month / Year</a> — how many days in each month</li>
+      <li><a href="/age-in-days/">Age in Days</a> — calculate your age in days</li>
+      <li><a href="/days-left-in/2026/">Days Left in 2026</a> — year countdown</li>
+    </ul>
+  </section>
+
+  <FAQ items={faqItems} />
+</BaseLayout>
+
+<style>
+  .home-intro {
+    font-size: 1.0625rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    max-width: 540px;
+    margin: 0 auto 0.5rem;
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .home-popular {
+    margin: 2rem 0;
+  }
+
+  .home-popular h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .home-popular ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+  }
+
+  .home-popular li {
+    font-size: 0.9375rem;
+  }
+
+  .home-more {
+    margin: 2rem 0;
+    padding: 1.25rem;
+    background: var(--color-card-bg);
+    border-radius: 8px;
+  }
+
+  .home-more h2 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .home-more ul {
+    list-style: none;
+  }
+
+  .home-more li {
+    font-size: 0.9375rem;
+    margin-bottom: 0.375rem;
+    color: var(--color-text-secondary);
+  }
+</style>

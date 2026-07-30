@@ -1,0 +1,171 @@
+---
+// src/pages/days-in/index.astro — Days In Month / Year Hub
+import BaseLayout from '../../components/BaseLayout.astro';
+import FAQ from '../../components/FAQ.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { webAppSchema } from '../../lib/schema';
+import { months } from '../../lib/data/months';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const PAGE_URL = `${SITE_URL}/days-in/`;
+
+const meta = {
+  title: `How Many Days in a Month? — Days In Calculator | DateCalc`,
+  description: 'Find out how many days are in each month. February in leap years, months with 30 vs 31 days, and more. Free reference guide.',
+};
+
+const schemas = [
+  webAppSchema({ name: 'Days In Month Calculator', url: PAGE_URL, description: meta.description }),
+];
+
+const faqItems = [
+  {
+    question: 'How many days are in each month?',
+    answer: 'January (31), February (28 or 29), March (31), April (30), May (31), June (30), July (31), August (31), September (30), October (31), November (30), December (31). Use the rhyme: "30 days has September, April, June, and November..."',
+  },
+  {
+    question: 'How many days in February during a leap year?',
+    answer: 'February has 29 days in a leap year. Leap years occur every 4 years, except century years not divisible by 400. 2028 is the next leap year.',
+  },
+  {
+    question: 'Why do months have different numbers of days?',
+    answer: 'The modern Gregorian calendar has 12 months of varying lengths totaling 365 days (366 in leap years). The pattern dates back to the Roman calendar, with adjustments made by Julius Caesar and Pope Gregory XIII.',
+  },
+];
+
+const currentYear = 2026;
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={schemas}>
+  <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Days In', url: PAGE_URL }]} />
+
+  <h1>How Many Days In Each Month?</h1>
+  <p class="hub-intro">Quick reference for days in every month of the year. Click any month for detailed information including leap year variations.</p>
+
+  <section class="months-grid-section">
+    <h2>Months of {currentYear}</h2>
+    <ul class="months-grid">
+      {months.map(m => (
+        <li>
+          <a href={`/days-in/${m.slug}/`}>
+            <span class="m-name">{m.name}</span>
+            <span class="m-days">{m.defaultDays} days</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="years-section">
+    <h2>Days In Year</h2>
+    <ul class="years-list">
+      {[2024, 2025, 2026, 2027, 2028, 2029, 2030].map(y => (
+        <li><a href={`/days-in/${y}/`}>How many days in {y}?</a></li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="hub-categories">
+    <h2>More Date Tools</h2>
+    <ul>
+      <li><a href="/days-between/">Days Between Dates</a> — calculate days between any two dates</li>
+      <li><a href="/days-from-today/">Days From Today</a> — what date falls N days from now</li>
+      <li><a href="/days-until/">Days Until Events</a> — countdown to holidays and events</li>
+    </ul>
+  </section>
+
+  <FAQ items={faqItems} />
+</BaseLayout>
+
+<style>
+  .hub-intro {
+    font-size: 1.0625rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    max-width: 540px;
+    margin: 0 auto 1rem;
+  }
+
+  .months-grid-section {
+    margin: 2rem 0;
+  }
+
+  .months-grid-section h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .months-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .months-grid a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s;
+  }
+
+  .months-grid a:hover {
+    border-color: var(--color-accent);
+  }
+
+  .m-name {
+    font-weight: 500;
+  }
+
+  .m-days {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .years-section {
+    margin: 2rem 0;
+  }
+
+  .years-section h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .years-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+  }
+
+  .years-list li {
+    font-size: 0.9375rem;
+  }
+
+  .hub-categories {
+    margin: 2rem 0;
+    padding: 1.25rem;
+    background: var(--color-card-bg);
+    border-radius: 8px;
+  }
+
+  .hub-categories h2 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hub-categories ul {
+    list-style: none;
+  }
+
+  .hub-categories li {
+    font-size: 0.9375rem;
+    margin-bottom: 0.375rem;
+    color: var(--color-text-secondary);
+  }
+</style>

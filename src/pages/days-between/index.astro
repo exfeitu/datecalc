@@ -1,0 +1,131 @@
+---
+// src/pages/days-between/index.astro — Days Between Hub Page
+import BaseLayout from '../../components/BaseLayout.astro';
+import Calculator from '../../components/Calculator.astro';
+import FAQ from '../../components/FAQ.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { daysBetweenHubMeta } from '../../lib/meta';
+import { webAppSchema, breadcrumbSchema } from '../../lib/schema';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const PAGE_URL = `${SITE_URL}/days-between/`;
+const meta = daysBetweenHubMeta();
+const schemas = [
+  webAppSchema({ name: 'Days Between Calculator', url: PAGE_URL, description: meta.description }),
+];
+
+const popularPairs = [
+  { date1: '2026-01-01', date2: '2026-12-31', label: 'Jan 1 to Dec 31, 2026' },
+  { date1: '2026-06-01', date2: '2026-08-31', label: 'Jun 1 to Aug 31, 2026 (Summer)' },
+  { date1: '2026-12-01', date2: '2026-12-25', label: 'Dec 1 to Dec 25, 2026 (Christmas countdown)' },
+  { date1: '2026-09-01', date2: '2026-12-20', label: 'Sep 1 to Dec 20, 2026 (Fall semester)' },
+  { date1: '2026-12-25', date2: '2027-01-01', label: 'Dec 25, 2026 to Jan 1, 2027' },
+  { date1: '2028-01-01', date2: '2028-12-31', label: 'Jan 1 to Dec 31, 2028 (leap year)' },
+  { date1: '2000-01-01', date2: '2026-01-01', label: 'Jan 1, 2000 to Jan 1, 2026 (26 years)' },
+  { date1: '2026-01-01', date2: '2026-04-01', label: 'Jan 1 to Apr 1, 2026 (90 days)' },
+  { date1: '2026-01-01', date2: '2026-06-30', label: 'Jan 1 to Jun 30, 2026 (half year)' },
+  { date1: '2026-01-01', date2: '2026-03-31', label: 'Jan 1 to Mar 31, 2026 (Q1)' },
+  { date1: '2026-11-01', date2: '2026-11-28', label: 'Nov 1 to Nov 28, 2026' },
+  { date1: '2026-01-01', date2: '2026-04-15', label: 'Jan 1 to Apr 15, 2026 (tax season)' },
+];
+
+const faqItems = [
+  {
+    question: 'How do I calculate days between two dates?',
+    answer: 'Enter both dates in the calculator above, or browse our popular date pairs below. Each calculation shows the exact number of calendar days, plus the breakdown in weeks and contextual information like the weekday of each date.',
+  },
+  {
+    question: 'Does the days-between count include both dates?',
+    answer: 'By default, DateCalc counts the absolute difference — the number of 24-hour periods between the dates. For example, January 1 to January 31 is 30 days (not 31). If you need inclusive counting, add 1 to the result.',
+  },
+  {
+    question: 'Are leap years accounted for in the calculations?',
+    answer: 'Yes. DateCalc automatically accounts for leap years. For example, February 1 to March 1 is 28 days in a non-leap year (2026) and 29 days in a leap year (2028).',
+  },
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={schemas}>
+  <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Days Between', url: PAGE_URL }]} />
+
+  <h1>Days Between Dates Calculator</h1>
+  <p class="hub-intro">Calculate the exact number of days between any two dates. Free, fast, and accurate. Includes weeks breakdown and date context.</p>
+
+  <Calculator />
+
+  <!-- Popular Date Pairs -->
+  <section class="popular-pairs">
+    <h2>Popular Date Pairs</h2>
+    <ul class="pairs-grid">
+      {popularPairs.map(pair => (
+        <li>
+          <a href={`/days-between/${pair.date1}/${pair.date2}/`}>
+            Days between {pair.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="hub-categories">
+    <h2>More Date Tools</h2>
+    <ul>
+      <li><a href="/days-from-today/">Days From Today</a> — find what date falls N days from now</li>
+      <li><a href="/days-from/90/2026-12-25/">90 Days From December 25, 2026</a></li>
+      <li><a href="/days-until/">Days Until Events</a> — countdown to holidays and events</li>
+    </ul>
+  </section>
+
+  <FAQ items={faqItems} />
+</BaseLayout>
+
+<style>
+  .hub-intro {
+    font-size: 1.0625rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    max-width: 540px;
+    margin: 0 auto 1rem;
+  }
+
+  .popular-pairs {
+    margin: 2rem 0;
+  }
+
+  .popular-pairs h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .pairs-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .pairs-grid li {
+    font-size: 0.9375rem;
+  }
+
+  .hub-categories {
+    margin: 2rem 0;
+    padding: 1.25rem;
+    background: var(--color-card-bg);
+    border-radius: 8px;
+  }
+
+  .hub-categories h2 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hub-categories ul {
+    list-style: none;
+  }
+
+  .hub-categories li {
+    font-size: 0.9375rem;
+    margin-bottom: 0.375rem;
+    color: var(--color-text-secondary);
+  }
+</style>

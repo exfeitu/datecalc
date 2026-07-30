@@ -1,0 +1,84 @@
+---
+// src/pages/privacy.astro — Privacy policy page
+import BaseLayout from '../components/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const PAGE_URL = `${SITE_URL}/privacy/`;
+
+const meta = {
+  title: `Privacy Policy — DateCalc | DateCalc`,
+  description: 'DateCalc privacy policy. We collect no personal data, use no cookies, and have no tracking. Your date calculations stay private.',
+};
+
+const lastUpdated = '2026-07-30';
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={[]}>
+  <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Privacy', url: PAGE_URL }]} />
+
+  <h1>Privacy Policy</h1>
+  <p class="lead">DateCalc takes your privacy seriously. In short: we collect nothing.</p>
+  <p class="updated">Last updated: {lastUpdated}</p>
+
+  <section class="privacy-section">
+    <h2>Data Collection</h2>
+    <p><strong>DateCalc does not collect, store, or process any personal data.</strong> All date calculations happen either at build time (on our server) or in your browser via JavaScript. Your inputs never leave your device.</p>
+  </section>
+
+  <section class="privacy-section">
+    <h2>Cookies</h2>
+    <p>DateCalc does not use any cookies. There are no session cookies, preference cookies, or tracking cookies of any kind.</p>
+  </section>
+
+  <section class="privacy-section">
+    <h2>Analytics &amp; Tracking</h2>
+    <p>In the MVP phase, DateCalc uses <strong>no analytics, no tracking scripts, and no third-party services</strong>. If analytics are added in the future (e.g., for understanding usage patterns), they will be privacy-first, GDPR-compliant, and disclosed here. No personal data will ever be sold or shared with third parties.</p>
+  </section>
+
+  <section class="privacy-section">
+    <h2>External Services</h2>
+    <p>DateCalc is hosted on <strong>Vercel</strong>. Vercel may collect standard server logs (IP address, user agent, request URL) for operational purposes. These logs are subject to Vercel's privacy policy and are not accessible to DateCalc. No external fonts, CDN resources, or third-party scripts are loaded on any DateCalc page.</p>
+  </section>
+
+  <section class="privacy-section">
+    <h2>Children's Privacy</h2>
+    <p>DateCalc is a general-audience tool suitable for all ages. We do not knowingly collect any information from children under 13.</p>
+  </section>
+
+  <section class="privacy-section">
+    <h2>Changes</h2>
+    <p>This policy may be updated as the site evolves. Changes will be reflected on this page with an updated date.</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .lead {
+    font-size: 1.0625rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    max-width: 540px;
+    margin: 0 auto 0.5rem;
+  }
+
+  .updated {
+    font-size: 0.8125rem;
+    color: var(--color-text-tertiary);
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .privacy-section {
+    margin: 1.5rem 0;
+  }
+
+  .privacy-section h2 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .privacy-section p {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+</style>

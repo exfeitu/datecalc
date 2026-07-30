@@ -1,0 +1,207 @@
+---
+// src/pages/days-until/index.astro — Days Until Hub Page
+import BaseLayout from '../../components/BaseLayout.astro';
+import FAQ from '../../components/FAQ.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { today, getEventDate, signedDaysBetween, getWeekday } from '../../lib/dates';
+import { formatDateLong } from '../../lib/formatters';
+import { webAppSchema } from '../../lib/schema';
+import { events, eventYears } from '../../lib/data/events';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const PAGE_URL = `${SITE_URL}/days-until/`;
+
+const meta = {
+  title: `Days Until Events — Countdown to Holidays & Dates | DateCalc`,
+  description: 'Countdown to holidays, seasons, sports events, and more. Find out exactly how many days until Christmas, Thanksgiving, Summer, and dozens of other events.',
+};
+
+const schemas = [
+  webAppSchema({ name: 'Days Until Events Countdown', url: PAGE_URL, description: meta.description }),
+];
+
+const todayStr = today();
+
+// Group events by category
+const categories: Record<string, { catName: string; items: { slug: string; name: string; days: number; isFuture: boolean; year: number }[] }> = {
+  holiday: { catName: 'Holidays', items: [] },
+  season: { catName: 'Seasons', items: [] },
+  sports: { catName: 'Sports', items: [] },
+  school: { catName: 'School', items: [] },
+  shopping: { catName: 'Shopping', items: [] },
+  entertainment: { catName: 'Entertainment', items: [] },
+  international: { catName: 'International', items: [] },
+  environment: { catName: 'Environment', items: [] },
+  financial: { catName: 'Financial', items: [] },
+  special: { catName: 'Special Dates', items: [] },
+};
+
+// For each event, find the next occurrence year
+const currentYear = parseInt(todayStr.slice(0, 4));
+const displayYears = [currentYear, currentYear + 1];
+
+for (const event of events) {
+  for (const year of displayYears) {
+    if (year === 2028 && event.slug === 'leap-day') continue; // Leap day only for 2028 but is handled
+    const eventDate = getEventDate(event, year);
+    const days = signedDaysBetween(todayStr, eventDate);
+    if (days >= 0) {
+      categories[event.category]?.items.push({
+        slug: event.slug,
+        name: event.name,
+        days,
+        isFuture: true,
+        year,
+      });
+      break; // Show the first future occurrence
+    }
+  }
+  // If no future occurrence in display years, show latest past
+  if (!categories[event.category]?.items.find(i => i.slug === event.slug)) {
+    const year = displayYears[displayYears.length - 1];
+    const eventDate = getEventDate(event, year);
+    const days = signedDaysBetween(todayStr, eventDate);
+    categories[event.category]?.items.push({
+      slug: event.slug,
+      name: event.name,
+      days: Math.abs(days),
+      isFuture: false,
+      year,
+    });
+  }
+}
+
+const activeCategories = Object.entries(categories).filter(([_, v]) => v.items.length > 0);
+
+const faqItems = [
+  {
+    question: 'How does the Days Until calculator work?',
+    answer: 'DateCalc calculates the exact number of calendar days between today and the target event date. All dates use UTC noon to avoid timezone edge cases, giving you an accurate countdown for any event.',
+  },
+  {
+    question: 'How often are the countdowns updated?',
+    answer: 'Days Until pages are rebuilt weekly via automated deployment, so countdowns are always within 7 days of accuracy. You can also use the calculator on this page for real-time results.',
+  },
+  {
+    question: 'What events are included?',
+    answer: 'We track major holidays (Christmas, New Year, Halloween, Thanksgiving), seasons (solstices, equinoxes), sports events (Super Bowl, March Madness), school dates, shopping events, and more — over 50 events across multiple categories.',
+  },
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={schemas}>
+  <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Days Until', url: PAGE_URL }]} />
+
+  <h1>Days Until Events — Countdown Calendar</h1>
+  <p class="hub-intro">Find out exactly how many days until your favorite holidays, seasons, and events. Updated weekly.</p>
+
+  <!-- Category sections -->
+  {activeCategories.map(([catKey, cat]) => (
+    <section class="event-category">
+      <h2>{cat.catName}</h2>
+      <ul class="event-grid">
+        {cat.items.sort((a, b) => a.days - b.days).map(item => (
+          <li>
+            <a href={`/days-until/${item.slug}/${item.year}/`}>
+              <span class="event-name">{item.name} {item.year}</span>
+              <span class="event-days">
+                {item.isFuture
+                  ? `${item.days} day${item.days === 1 ? '' : 's'} away`
+                  : `${item.days} day${item.days === 1 ? '' : 's'} ago`}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  <section class="hub-categories">
+    <h2>More Date Tools</h2>
+    <ul>
+      <li><a href="/days-between/">Days Between Dates</a> — calculate days between any two dates</li>
+      <li><a href="/days-from-today/">Days From Today</a> — what date falls N days from now</li>
+      <li><a href="/days-in/">Days in Month / Year</a> — how many days in each month</li>
+    </ul>
+  </section>
+
+  <FAQ items={faqItems} />
+</BaseLayout>
+
+<style>
+  .hub-intro {
+    font-size: 1.0625rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    max-width: 540px;
+    margin: 0 auto 1rem;
+  }
+
+  .event-category {
+    margin: 2rem 0;
+  }
+
+  .event-category h2 {
+    margin-bottom: 0.75rem;
+    font-size: 1.125rem;
+  }
+
+  .event-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .event-grid a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.625rem 0.875rem;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s;
+  }
+
+  .event-grid a:hover {
+    border-color: var(--color-accent);
+  }
+
+  .event-name {
+    font-weight: 500;
+    font-size: 0.9375rem;
+  }
+
+  .event-days {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    white-space: nowrap;
+    margin-left: 0.5rem;
+  }
+
+  .hub-categories {
+    margin: 2rem 0;
+    padding: 1.25rem;
+    background: var(--color-card-bg);
+    border-radius: 8px;
+  }
+
+  .hub-categories h2 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hub-categories ul {
+    list-style: none;
+  }
+
+  .hub-categories li {
+    font-size: 0.9375rem;
+    margin-bottom: 0.375rem;
+    color: var(--color-text-secondary);
+  }
+</style>

@@ -1,0 +1,67 @@
+---
+// Header.astro — site header with nav
+const navLinks = [
+  { href: '/days-between/', label: 'Days Between' },
+  { href: '/days-from-today/', label: 'Days From Today' },
+  { href: '/days-until/', label: 'Days Until' },
+  { href: '/days-in/', label: 'Days In' },
+];
+---
+<header class="site-header">
+  <a href="/" class="site-logo">DateCalc</a>
+  <nav aria-label="Main navigation" class="site-nav">
+    {navLinks.map(link => (
+      <a href={link.href}>{link.label}</a>
+    ))}
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 1.5rem;
+  }
+
+  .site-logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .site-logo:hover {
+    text-decoration: none;
+  }
+
+  .site-nav {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .site-nav a {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+
+  .site-nav a:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 640px) {
+    .site-header {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .site-nav {
+      gap: 0.75rem 1rem;
+    }
+  }
+</style>

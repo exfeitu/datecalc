@@ -1,0 +1,145 @@
+---
+// src/pages/age-in-days/index.astro — Age in Days Hub
+import BaseLayout from '../../components/BaseLayout.astro';
+import FAQ from '../../components/FAQ.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { ageInDays } from '../../lib/dates';
+import { webAppSchema } from '../../lib/schema';
+import { formatNumber } from '../../lib/formatters';
+import { birthYears } from '../../lib/data/birth-years';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const PAGE_URL = `${SITE_URL}/age-in-days/`;
+
+const meta = {
+  title: `Age in Days Calculator — How Many Days Old Are You? | DateCalc`,
+  description: 'Calculate your exact age in days. Enter your birth year or choose from popular birth years to see your age in days.',
+};
+
+const schemas = [
+  webAppSchema({ name: 'Age in Days Calculator', url: PAGE_URL, description: meta.description }),
+];
+
+const agesWithData = birthYears.map(y => ({
+  year: y,
+  days: ageInDays(y),
+}));
+
+const faqItems = [
+  {
+    question: 'How is age in days calculated?',
+    answer: 'Age in days is calculated by counting the number of days between your birth date and today. For simplicity, DateCalc uses January 1st as the birth date for each year. The result is an approximation that gives you a very close estimate of your age in days.',
+  },
+  {
+    question: 'Why does my age in days change?',
+    answer: 'Every day that passes adds one more day to your age. Since these pages are rebuilt weekly, the numbers reflect the most recent build date. Use the calculator on this page for real-time results.',
+  },
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={schemas}>
+  <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Age in Days', url: PAGE_URL }]} />
+
+  <h1>Age in Days Calculator</h1>
+  <p class="hub-intro">Find out approximately how many days old you are based on your birth year. Calculated from January 1st of your birth year to today.</p>
+
+  <section class="ages-section">
+    <h2>Popular Birth Years</h2>
+    <ul class="ages-grid">
+      {agesWithData.map(item => (
+        <li>
+          <a href={`/age-in-days/${item.year}/`}>
+            <span class="a-year">Born in {item.year}</span>
+            <span class="a-days">{formatNumber(item.days)} days old</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="hub-categories">
+    <h2>More Date Tools</h2>
+    <ul>
+      <li><a href="/days-between/">Days Between Dates</a> — calculate days between any two dates</li>
+      <li><a href="/days-from-today/">Days From Today</a> — what date falls N days from now</li>
+      <li><a href="/days-left-in/2026/">Days Left in 2026</a> — year countdown</li>
+    </ul>
+  </section>
+
+  <FAQ items={faqItems} />
+</BaseLayout>
+
+<style>
+  .hub-intro {
+    font-size: 1.0625rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    max-width: 540px;
+    margin: 0 auto 1rem;
+  }
+
+  .ages-section {
+    margin: 2rem 0;
+  }
+
+  .ages-section h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .ages-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .ages-grid a {
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem 1rem;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s;
+  }
+
+  .ages-grid a:hover {
+    border-color: var(--color-accent);
+  }
+
+  .a-year {
+    font-weight: 500;
+    font-size: 0.9375rem;
+  }
+
+  .a-days {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-top: 0.125rem;
+  }
+
+  .hub-categories {
+    margin: 2rem 0;
+    padding: 1.25rem;
+    background: var(--color-card-bg);
+    border-radius: 8px;
+  }
+
+  .hub-categories h2 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hub-categories ul {
+    list-style: none;
+  }
+
+  .hub-categories li {
+    font-size: 0.9375rem;
+    margin-bottom: 0.375rem;
+    color: var(--color-text-secondary);
+  }
+</style>

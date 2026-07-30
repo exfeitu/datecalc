@@ -1,0 +1,98 @@
+---
+// src/pages/days-from/[n]/[date].astro — Programmatic "N days from specific date" pages
+import BaseLayout from '../../../components/BaseLayout.astro';
+import AnswerHero from '../../../components/AnswerHero.astro';
+import DateContext from '../../../components/DateContext.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import RelatedQueries from '../../../components/RelatedQueries.astro';
+import { dateFromDays, getWeekday } from '../../../lib/dates';
+import { resultPageSchema } from '../../../lib/schema';
+import { formatDateLong } from '../../../lib/formatters';
+import { nValuesForDate } from '../../../lib/data/n-values';
+import { daysFromDates } from '../../../lib/data/days-from-dates';
+
+import type { GetStaticPaths } from 'astro';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+
+export const getStaticPaths: GetStaticPaths = () => {
+  const uniqueDates = [...new Set(daysFromDates)];
+  const paths: { params: { n: string; date: string } }[] = [];
+  for (const date of uniqueDates) {
+    for (const n of nValuesForDate) {
+      paths.push({ params: { n: String(n), date } });
+    }
+  }
+  return paths;
+};
+
+const { n, date } = Astro.params as { n: string; date: string };
+const nDays = parseInt(n);
+const resultDate = dateFromDays(date, nDays);
+const weekday = getWeekday(resultDate);
+const fromWeekday = getWeekday(date);
+const weeks = Math.floor(nDays / 7);
+const remDays = nDays % 7;
+
+const pageUrl = `${SITE_URL}/days-from/${n}/${date}/`;
+
+// Title and description
+const title = `${nDays} Days From ${formatDateLong(date)} — What Date Is ${nDays} Days After ${formatDateLong(date)}? | DateCalc`;
+const description = `${nDays} days from ${formatDateLong(date)} is ${formatDateLong(resultDate)}. ${resultDate} is a ${weekday}. That's ${weeks} weeks from ${formatDateLong(date)}.`;
+
+const subtitle = `That date is ${formatDateLong(resultDate)} (${weekday})`;
+
+const relatedLinks = [
+  { href: `/days-between/${date}/${resultDate}/`, label: `Days between ${formatDateLong(date)} and ${formatDateLong(resultDate)}` },
+  { href: `/days-from-today/${nDays}/`, label: `${nDays} days from today` },
+  { href: '/days-from-today/', label: 'More days-from calculators →' },
+];
+
+const faqs = [
+  {
+    question: `What date is ${nDays} days from ${formatDateLong(date)}?`,
+    answer: `${nDays} days from ${formatDateLong(date)} (a ${fromWeekday}) is ${formatDateLong(resultDate)} (a ${weekday}). That's ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''} later.`,
+  },
+  {
+    question: `How many weeks is ${nDays} days from ${formatDateLong(date)}?`,
+    answer: `${nDays} days is ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''}.`,
+  },
+];
+
+const schemas = [
+  resultPageSchema({ title, description, url: pageUrl, faqs }),
+];
+---
+
+<BaseLayout title={title} description={description} canonical={pageUrl} schema={schemas}>
+  <Breadcrumb items={[
+    { name: 'Home', url: SITE_URL },
+    { name: 'Days From Today', url: `${SITE_URL}/days-from-today/` },
+    { name: `${nDays} Days From ${formatDateLong(date)}`, url: pageUrl },
+  ]} />
+
+  <AnswerHero value={nDays} unit={`days from ${formatDateLong(date)}`} subtitle={subtitle} />
+
+  <DateContext date1={date} date2={resultDate} days={nDays} />
+
+  <p class="explanation">
+    <strong>{nDays} day{nDays === 1 ? '' : 's'}</strong> after
+    {' '}{formatDateLong(date)} ({fromWeekday})
+    {' '}is <strong>{formatDateLong(resultDate)}</strong> ({weekday}).
+    That's {weeks} week{weeks === 1 ? '' : 's'}
+    {remDays > 0 && <span> and {remDays} day{remDays === 1 ? '' : 's'}</span>} from the starting date.
+  </p>
+
+  <RelatedQueries links={relatedLinks} />
+</BaseLayout>
+
+<style>
+  .explanation {
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    line-height: 1.7;
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+// src/pages/days-from-today/[n].astro — Programmatic "N days from today" pages
+import BaseLayout from '../../components/BaseLayout.astro';
+import AnswerHero from '../../components/AnswerHero.astro';
+import DateContext from '../../components/DateContext.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import RelatedQueries from '../../components/RelatedQueries.astro';
+import { today, dateFromDays, getWeekday } from '../../lib/dates';
+import { daysFromTodayMeta } from '../../lib/meta';
+import { resultPageSchema } from '../../lib/schema';
+import { formatDateLong } from '../../lib/formatters';
+import { nValuesForToday } from '../../lib/data/n-values';
+
+import type { GetStaticPaths } from 'astro';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const CATEGORY_URL = `${SITE_URL}/days-from-today/`;
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return nValuesForToday.map((n) => ({
+    params: { n: String(n) },
+  }));
+};
+
+const { n } = Astro.params as { n: string };
+const nDays = parseInt(n);
+const todayStr = today();
+const resultDate = dateFromDays(todayStr, nDays);
+const weekday = getWeekday(resultDate);
+const weeks = Math.floor(nDays / 7);
+const remDays = nDays % 7;
+
+const meta = daysFromTodayMeta(nDays, resultDate);
+const pageUrl = `${SITE_URL}/days-from-today/${n}/`;
+
+const subtitle = weeks > 0
+  ? `That's ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''} from now`
+  : undefined;
+
+const relatedLinks = [
+  { href: `/days-between/${todayStr}/${resultDate}/`, label: `Days between ${formatDateLong(todayStr)} and ${formatDateLong(resultDate)}` },
+  { href: `/days-from/${nDays}/${todayStr}/`, label: `${nDays} days from any date` },
+  { href: `/days-from-today/${nDays + 1}/`, label: `${nDays + 1} days from today` },
+  { href: CATEGORY_URL, label: 'More days from today →' },
+  { href: '/days-between/', label: 'Days between dates calculator →' },
+];
+
+const faqs = [
+  {
+    question: `What date is ${nDays} days from today?`,
+    answer: `${nDays} days from today (${formatDateLong(todayStr)}) is ${formatDateLong(resultDate)}. ${resultDate} is a ${weekday}. That's ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''} from now.`,
+  },
+  {
+    question: `What day of the week is ${nDays} days from now?`,
+    answer: `${nDays} days from today is a ${weekday} (${formatDateLong(resultDate)}).`,
+  },
+];
+
+const schemas = [
+  resultPageSchema({ title: meta.title, description: meta.description, url: pageUrl, faqs }),
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={pageUrl} schema={schemas}>
+  <Breadcrumb items={[
+    { name: 'Home', url: SITE_URL },
+    { name: 'Days From Today', url: CATEGORY_URL },
+    { name: `${nDays} Days From Today`, url: pageUrl },
+  ]} />
+
+  <AnswerHero value={nDays} unit="days from today" subtitle={subtitle} />
+
+  <DateContext date1={todayStr} date2={resultDate} days={nDays} />
+
+  <p class="explanation">
+    <strong>{nDays} day{nDays === 1 ? '' : 's'}</strong> from today
+    ({formatDateLong(todayStr)}, a {getWeekday(todayStr)})
+    {' '}is <strong>{formatDateLong(resultDate)}</strong> ({weekday}).
+    That's {weeks} full week{weeks === 1 ? '' : 's'}
+    {remDays > 0 && <span> and {remDays} day{remDays === 1 ? '' : 's'}</span>} into the future.
+  </p>
+
+  <RelatedQueries links={relatedLinks} />
+</BaseLayout>
+
+<style>
+  .explanation {
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    line-height: 1.7;
+  }
+</style>

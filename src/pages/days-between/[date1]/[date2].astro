@@ -1,0 +1,101 @@
+---
+// src/pages/days-between/[date1]/[date2].astro — Programmatic date pair pages
+import BaseLayout from '../../../components/BaseLayout.astro';
+import AnswerHero from '../../../components/AnswerHero.astro';
+import DateContext from '../../../components/DateContext.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import RelatedQueries from '../../../components/RelatedQueries.astro';
+import { daysBetween, getWeekday, isLeapYear } from '../../../lib/dates';
+import { daysBetweenMeta } from '../../../lib/meta';
+import { resultPageSchema } from '../../../lib/schema';
+import { formatDateLong } from '../../../lib/formatters';
+import { datePairs } from '../../../lib/data/date-pairs';
+
+import type { GetStaticPaths } from 'astro';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const CATEGORY_URL = `${SITE_URL}/days-between/`;
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return datePairs.map((pair) => ({
+    params: { date1: pair.date1, date2: pair.date2 },
+  }));
+};
+
+const { date1, date2 } = Astro.params as { date1: string; date2: string };
+const pageUrl = `${SITE_URL}/days-between/${date1}/${date2}/`;
+
+const totalDays = daysBetween(date1, date2);
+const weeks = Math.floor(totalDays / 7);
+const remDays = totalDays % 7;
+const weekday1 = getWeekday(date1);
+const weekday2 = getWeekday(date2);
+const year1 = parseInt(date1.slice(0, 4));
+const year2 = parseInt(date2.slice(0, 4));
+
+const meta = daysBetweenMeta(date1, date2, totalDays);
+
+// Build related links: same-category neighbors + cross-category
+const relatedLinks = [
+  { href: `/days-from-today/${totalDays}/`, label: `${totalDays} days from today` },
+  { href: `/days-from/${totalDays}/${date1}/`, label: `${totalDays} days from ${formatDateLong(date1)}` },
+  { href: `/days-between/${date1}/${date2.slice(0, 5)}${String(parseInt(date2.slice(8, 10)) - 1).padStart(2, '0')}/`, label: `One day earlier` },
+  { href: CATEGORY_URL, label: 'More days between dates →' },
+  { href: '/days-from-today/', label: 'Days from today calculator →' },
+];
+
+const faqs = [
+  {
+    question: `How many days between ${formatDateLong(date1)} and ${formatDateLong(date2)}?`,
+    answer: `There are exactly ${totalDays} days between ${formatDateLong(date1)} and ${formatDateLong(date2)}. That's ${weeks} week${weeks === 1 ? '' : 's'} and ${remDays} day${remDays === 1 ? '' : 's'}.`,
+  },
+  {
+    question: `How many weeks between these dates?`,
+    answer: `${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''}.`,
+  },
+];
+
+const subtitle = weeks > 0
+  ? `That's ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''}`
+  : undefined;
+
+const schemas = [
+  resultPageSchema({ title: meta.title, description: meta.description, url: pageUrl, faqs }),
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={pageUrl} schema={schemas}>
+  <Breadcrumb items={[
+    { name: 'Home', url: SITE_URL },
+    { name: 'Days Between', url: CATEGORY_URL },
+    { name: `${formatDateLong(date1)} to ${formatDateLong(date2)}`, url: pageUrl },
+  ]} />
+
+  <AnswerHero value={totalDays} unit="days" subtitle={subtitle} />
+
+  <DateContext date1={date1} date2={date2} days={totalDays} />
+
+  <!-- Natural language explanation -->
+  <p class="explanation">
+    There are exactly <strong>{totalDays} day{totalDays === 1 ? '' : 's'}</strong> between
+    {' '}{formatDateLong(date1)} ({weekday1})
+    {' '}and{' '}
+    {formatDateLong(date2)} ({weekday2}).
+    {year1 === year2 && year1 === 2026 && (
+      <> A full year from January 1 to December 31, 2026 is 364 days (not 365 — the difference between dates, not the day count of the year).</>
+    )}
+  </p>
+
+  <RelatedQueries links={relatedLinks} />
+</BaseLayout>
+
+<style>
+  .explanation {
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    line-height: 1.7;
+  }
+</style>

@@ -1,0 +1,171 @@
+---
+// src/pages/days-from-today/index.astro — Days From Today Hub
+import BaseLayout from '../../components/BaseLayout.astro';
+import Calculator from '../../components/Calculator.astro';
+import FAQ from '../../components/FAQ.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { today, dateFromDays, getWeekday } from '../../lib/dates';
+import { daysFromTodayHubMeta } from '../../lib/meta';
+import { webAppSchema } from '../../lib/schema';
+import { formatDateLong } from '../../lib/formatters';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const PAGE_URL = `${SITE_URL}/days-from-today/`;
+const meta = daysFromTodayHubMeta();
+const schemas = [
+  webAppSchema({ name: 'Days From Today Calculator', url: PAGE_URL, description: meta.description }),
+];
+
+const todayStr = today();
+
+const popularNValues = [
+  { n: 7, label: '7 days (1 week)' },
+  { n: 14, label: '14 days (2 weeks)' },
+  { n: 21, label: '21 days (3 weeks)' },
+  { n: 30, label: '30 days (~1 month)' },
+  { n: 45, label: '45 days' },
+  { n: 60, label: '60 days (~2 months)' },
+  { n: 90, label: '90 days (~3 months)' },
+  { n: 120, label: '120 days (~4 months)' },
+  { n: 150, label: '150 days' },
+  { n: 180, label: '180 days (~6 months)' },
+  { n: 365, label: '365 days (1 year)' },
+];
+
+const popularWithDates = popularNValues.map(item => ({
+  ...item,
+  resultDate: dateFromDays(todayStr, item.n),
+  weekday: getWeekday(dateFromDays(todayStr, item.n)),
+}));
+
+const faqItems = [
+  {
+    question: 'How does the Days From Today calculator work?',
+    answer: 'Enter the number of days (N), and DateCalc adds exactly N calendar days to today\'s date. The result shows the exact future date and the day of the week.',
+  },
+  {
+    question: 'Does "days from today" count today?',
+    answer: 'No — "N days from today" means N calendar days after today. If today is Monday and you ask for 7 days from today, the result is next Monday (not Sunday).',
+  },
+  {
+    question: 'Is this calculator accurate for long time periods?',
+    answer: 'Yes. DateCalc accounts for leap years, different month lengths, and all calendar rules. It\'s accurate for any number of days, from 1 to 100,000+.',
+  },
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={schemas}>
+  <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Days From Today', url: PAGE_URL }]} />
+
+  <h1>Days From Today Calculator</h1>
+  <p class="hub-intro">Find out what date falls any number of days from now. Select a value below or enter a custom number.</p>
+
+  <Calculator />
+
+  <!-- Popular N values with computed dates -->
+  <section class="popular-values">
+    <h2>Popular Days From Today</h2>
+    <p class="today-note">Based on today's date: <strong>{formatDateLong(todayStr)}</strong></p>
+    <ul class="values-grid">
+      {popularWithDates.map(item => (
+        <li>
+          <a href={`/days-from-today/${item.n}/`}>
+            <span class="v-n">{item.n} days from today</span>
+            <span class="v-date">{formatDateLong(item.resultDate)} ({item.weekday})</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="hub-categories">
+    <h2>More Date Tools</h2>
+    <ul>
+      <li><a href="/days-between/">Days Between Dates</a> — calculate days between any two dates</li>
+      <li><a href="/days-from/90/2026-12-25/">90 Days From December 25, 2026</a></li>
+      <li><a href="/days-until/">Days Until Events</a> — countdown to holidays and events</li>
+    </ul>
+  </section>
+
+  <FAQ items={faqItems} />
+</BaseLayout>
+
+<style>
+  .hub-intro {
+    font-size: 1.0625rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    max-width: 540px;
+    margin: 0 auto 1rem;
+  }
+
+  .popular-values {
+    margin: 2rem 0;
+  }
+
+  .popular-values h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .today-note {
+    font-size: 0.875rem;
+    color: var(--color-text-tertiary);
+    margin-bottom: 0.75rem;
+  }
+
+  .values-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .values-grid a {
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem 1rem;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s;
+  }
+
+  .values-grid a:hover {
+    border-color: var(--color-accent);
+  }
+
+  .v-n {
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .v-date {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-top: 0.25rem;
+  }
+
+  .hub-categories {
+    margin: 2rem 0;
+    padding: 1.25rem;
+    background: var(--color-card-bg);
+    border-radius: 8px;
+  }
+
+  .hub-categories h2 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hub-categories ul {
+    list-style: none;
+  }
+
+  .hub-categories li {
+    font-size: 0.9375rem;
+    margin-bottom: 0.375rem;
+    color: var(--color-text-secondary);
+  }
+</style>

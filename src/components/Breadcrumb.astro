@@ -1,0 +1,59 @@
+---
+// Breadcrumb.astro — breadcrumb navigation with Schema.org
+import { breadcrumbSchema } from '../lib/schema';
+
+export interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+const { items } = Astro.props as { items: BreadcrumbItem[] };
+const schema = breadcrumbSchema(items);
+---
+
+<nav aria-label="Breadcrumb" class="breadcrumb">
+  <ol>
+    {items.map((item, i) => (
+      <li>
+        {i < items.length - 1 ? (
+          <a href={item.url}>{item.name}</a>
+        ) : (
+          <span aria-current="page">{item.name}</span>
+        )}
+        {i < items.length - 1 && <span class="breadcrumb-sep">›</span>}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+
+<style>
+  .breadcrumb {
+    margin-bottom: 1.5rem;
+  }
+
+  .breadcrumb ol {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    font-size: 0.875rem;
+  }
+
+  .breadcrumb li {
+    display: flex;
+    align-items: center;
+    color: var(--color-text-tertiary);
+  }
+
+  .breadcrumb a {
+    color: var(--color-text-secondary);
+  }
+
+  .breadcrumb-sep {
+    margin: 0 0.5rem;
+    color: var(--color-border);
+    user-select: none;
+  }
+</style>
