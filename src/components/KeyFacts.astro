@@ -1,0 +1,105 @@
+---
+// KeyFacts.astro — stats card showing date breakdown in hours/minutes/seconds
+export interface Props {
+  days: number;
+  weeks: number;
+  remDays: number;
+}
+
+const { days, weeks, remDays } = Astro.props;
+const hours = days * 24;
+const minutes = hours * 60;
+const seconds = minutes * 60;
+---
+<div class="kf">
+  <h2 class="kf-title">Key Facts</h2>
+  <dl class="kf-grid">
+    <div class="kf-item">
+      <dt class="kf-label">Total Days</dt>
+      <dd class="kf-value">{days.toLocaleString('en-US')}</dd>
+    </div>
+    <div class="kf-item">
+      <dt class="kf-label">Weeks</dt>
+      <dd class="kf-value">{weeks}{remDays > 0 && <span class="kf-extra"> + {remDays} day{remDays === 1 ? '' : 's'}</span>}</dd>
+    </div>
+    <div class="kf-item">
+      <dt class="kf-label">Hours</dt>
+      <dd class="kf-value">{hours.toLocaleString('en-US')}</dd>
+    </div>
+    <div class="kf-item">
+      <dt class="kf-label">Minutes</dt>
+      <dd class="kf-value">{minutes.toLocaleString('en-US')}</dd>
+    </div>
+    <div class="kf-item">
+      <dt class="kf-label">Seconds</dt>
+      <dd class="kf-value">{seconds.toLocaleString('en-US')}</dd>
+    </div>
+  </dl>
+</div>
+
+<style>
+  .kf {
+    margin: var(--sp-8) 0;
+    padding: var(--sp-5);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+  }
+
+  .kf-title {
+    font-size: var(--text-sm);
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--sp-4);
+    text-align: center;
+  }
+
+  .kf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--sp-3);
+  }
+
+  .kf-item {
+    text-align: center;
+    padding: var(--sp-3) var(--sp-2);
+    background: var(--color-bg);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border-light);
+  }
+
+  .kf-label {
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: var(--sp-1);
+  }
+
+  .kf-value {
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-text);
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+  }
+
+  .kf-extra {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .kf-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

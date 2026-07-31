@@ -5,6 +5,7 @@ import AnswerHero from '../../../components/AnswerHero.astro';
 import DateContext from '../../../components/DateContext.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import RelatedQueries from '../../../components/RelatedQueries.astro';
+import KeyFacts from '../../../components/KeyFacts.astro';
 import { daysBetween, getWeekday, isLeapYear } from '../../../lib/dates';
 import { daysBetweenMeta } from '../../../lib/meta';
 import { resultPageSchema } from '../../../lib/schema';
@@ -35,11 +36,12 @@ const year2 = parseInt(date2.slice(0, 4));
 
 const meta = daysBetweenMeta(date1, date2, totalDays);
 
-// Build related links: same-category neighbors + cross-category
 const relatedLinks = [
   { href: `/days-from-today/${totalDays}/`, label: `${totalDays} days from today` },
   { href: `/days-from/${totalDays}/${date1}/`, label: `${totalDays} days from ${formatDateLong(date1)}` },
-  { href: `/days-between/${date1}/${date2.slice(0, 5)}${String(parseInt(date2.slice(8, 10)) - 1).padStart(2, '0')}/`, label: `One day earlier` },
+  { href: `/days-in/${year1}/`, label: `Days in ${year1}` },
+  { href: `/days-left-in/${year2}/`, label: `Days left in ${year2}` },
+  { href: '/age-in-days/', label: 'Age in days calculator →' },
   { href: CATEGORY_URL, label: 'More days between dates →' },
   { href: '/days-from-today/', label: 'Days from today calculator →' },
 ];
@@ -75,8 +77,9 @@ const schemas = [
 
   <DateContext date1={date1} date2={date2} days={totalDays} />
 
-  <!-- Natural language explanation -->
-  <p class="explanation">
+  <KeyFacts days={totalDays} weeks={weeks} remDays={remDays} />
+
+  <p class="exp">
     There are exactly <strong>{totalDays} day{totalDays === 1 ? '' : 's'}</strong> between
     {' '}{formatDateLong(date1)} ({weekday1})
     {' '}and{' '}
@@ -90,12 +93,17 @@ const schemas = [
 </BaseLayout>
 
 <style>
-  .explanation {
+  .exp {
     max-width: 600px;
-    margin: 0 auto 1.5rem;
-    font-size: 0.9375rem;
+    margin: 0 auto var(--sp-4);
+    font-size: var(--text-base);
     color: var(--color-text-secondary);
     text-align: center;
-    line-height: 1.7;
+    line-height: 1.75;
+  }
+
+  .exp strong {
+    color: var(--color-text);
+    font-weight: 650;
   }
 </style>

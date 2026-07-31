@@ -5,6 +5,7 @@ import AnswerHero from '../../components/AnswerHero.astro';
 import DateContext from '../../components/DateContext.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import RelatedQueries from '../../components/RelatedQueries.astro';
+import KeyFacts from '../../components/KeyFacts.astro';
 import { today, dateFromDays, getWeekday } from '../../lib/dates';
 import { daysFromTodayMeta } from '../../lib/meta';
 import { resultPageSchema } from '../../lib/schema';
@@ -33,14 +34,17 @@ const remDays = nDays % 7;
 const meta = daysFromTodayMeta(nDays, resultDate);
 const pageUrl = `${SITE_URL}/days-from-today/${n}/`;
 
+const remStr = remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : '';
 const subtitle = weeks > 0
-  ? `That's ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''} from now`
+  ? `That's ${weeks} week${weeks === 1 ? '' : 's'}${remStr} from now`
   : undefined;
 
 const relatedLinks = [
-  { href: `/days-between/${todayStr}/${resultDate}/`, label: `Days between ${formatDateLong(todayStr)} and ${formatDateLong(resultDate)}` },
+  { href: `/days-between/${todayStr}/${resultDate}/`, label: `Days between today and ${formatDateLong(resultDate)}` },
   { href: `/days-from/${nDays}/${todayStr}/`, label: `${nDays} days from any date` },
   { href: `/days-from-today/${nDays + 1}/`, label: `${nDays + 1} days from today` },
+  { href: `/days-left-in/${new Date().getFullYear()}/`, label: `Days left in ${new Date().getFullYear()}` },
+  { href: '/age-in-days/', label: 'Age in days calculator →' },
   { href: CATEGORY_URL, label: 'More days from today →' },
   { href: '/days-between/', label: 'Days between dates calculator →' },
 ];
@@ -48,7 +52,7 @@ const relatedLinks = [
 const faqs = [
   {
     question: `What date is ${nDays} days from today?`,
-    answer: `${nDays} days from today (${formatDateLong(todayStr)}) is ${formatDateLong(resultDate)}. ${resultDate} is a ${weekday}. That's ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''} from now.`,
+    answer: `${nDays} days from today (${formatDateLong(todayStr)}) is ${formatDateLong(resultDate)}. ${resultDate} is a ${weekday}. That's ${weeks} week${weeks === 1 ? '' : 's'}${remStr} from now.`,
   },
   {
     question: `What day of the week is ${nDays} days from now?`,
@@ -72,7 +76,9 @@ const schemas = [
 
   <DateContext date1={todayStr} date2={resultDate} days={nDays} />
 
-  <p class="explanation">
+  <KeyFacts days={nDays} weeks={weeks} remDays={remDays} />
+
+  <p class="exp">
     <strong>{nDays} day{nDays === 1 ? '' : 's'}</strong> from today
     ({formatDateLong(todayStr)}, a {getWeekday(todayStr)})
     {' '}is <strong>{formatDateLong(resultDate)}</strong> ({weekday}).
@@ -84,12 +90,17 @@ const schemas = [
 </BaseLayout>
 
 <style>
-  .explanation {
+  .exp {
     max-width: 600px;
-    margin: 0 auto 1.5rem;
-    font-size: 0.9375rem;
+    margin: 0 auto var(--sp-4);
+    font-size: var(--text-base);
     color: var(--color-text-secondary);
     text-align: center;
-    line-height: 1.7;
+    line-height: 1.75;
+  }
+
+  .exp strong {
+    color: var(--color-text);
+    font-weight: 650;
   }
 </style>

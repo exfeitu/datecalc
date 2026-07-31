@@ -71,7 +71,7 @@ const schemas = [
 
   <AnswerHero value={Math.max(0, remaining)} unit={`days left in ${yearNum}`} subtitle={subtitle} />
 
-  <p class="explanation">
+  <p class="exp">
     {remaining > 0 ? (
       <>As of <strong>{formatDateLong(todayStr)}</strong>, there are{' '}
         <strong>{remaining} day{remaining === 1 ? '' : 's'} left in {yearNum}</strong>.
@@ -88,12 +88,17 @@ const schemas = [
 </BaseLayout>
 
 <style>
-  .explanation {
+  .exp {
     max-width: 600px;
-    margin: 0 auto 1.5rem;
-    font-size: 0.9375rem;
+    margin: 0 auto var(--sp-4);
+    font-size: var(--text-base);
     color: var(--color-text-secondary);
     text-align: center;
-    line-height: 1.7;
+    line-height: 1.75;
+  }
+
+  .exp strong {
+    color: var(--color-text);
+    font-weight: 650;
   }
 </style>

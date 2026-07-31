@@ -1,5 +1,5 @@
 ---
-// CategoryCard.astro — home page category card linking to a hub page
+// CategoryCard.astro — home page category card
 export interface Props {
   title: string;
   description: string;
@@ -8,39 +8,63 @@ export interface Props {
 
 const { title, description, href } = Astro.props;
 ---
-<a href={href} class="category-card">
-  <h3>{title}</h3>
-  <p>{description}</p>
+<a href={href} class="cc">
+  <h3 class="cc-title">{title}</h3>
+  <p class="cc-desc">{description}</p>
+  <span class="cc-cta" aria-hidden="true">Explore &rarr;</span>
 </a>
 
 <style>
-  .category-card {
-    display: block;
-    padding: 1.25rem;
-    background: var(--color-card-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
+  .cc {
+    display: flex;
+    flex-direction: column;
+    padding: var(--sp-5);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
     text-decoration: none;
     color: inherit;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition: border-color var(--transition-fast),
+                box-shadow var(--transition-fast),
+                transform var(--transition-fast);
   }
 
-  .category-card:hover {
+  .cc:hover {
     border-color: var(--color-accent);
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+    box-shadow: var(--shadow-accent);
     text-decoration: none;
+    transform: translateY(-1px);
   }
 
-  .category-card h3 {
-    font-size: 1.125rem;
-    font-weight: 600;
+  .cc-title {
+    font-size: var(--text-lg);
+    font-weight: 650;
+    color: var(--color-text);
+    margin-bottom: var(--sp-1);
+  }
+
+  .cc:hover .cc-title {
     color: var(--color-accent);
-    margin-bottom: 0.375rem;
   }
 
-  .category-card p {
-    font-size: 0.875rem;
+  .cc-desc {
+    font-size: var(--text-sm);
     color: var(--color-text-secondary);
-    margin: 0;
+    margin-bottom: var(--sp-3);
+    flex: 1;
+  }
+
+  .cc-cta {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-accent);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .cc:hover .cc-cta {
+    opacity: 1;
+    transform: translateX(0);
   }
 </style>

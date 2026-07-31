@@ -10,8 +10,7 @@ export interface BreadcrumbItem {
 const { items } = Astro.props as { items: BreadcrumbItem[] };
 const schema = breadcrumbSchema(items);
 ---
-
-<nav aria-label="Breadcrumb" class="breadcrumb">
+<nav aria-label="Breadcrumb" class="bc">
   <ol>
     {items.map((item, i) => (
       <li>
@@ -20,7 +19,7 @@ const schema = breadcrumbSchema(items);
         ) : (
           <span aria-current="page">{item.name}</span>
         )}
-        {i < items.length - 1 && <span class="breadcrumb-sep">›</span>}
+        {i < items.length - 1 && <span class="bc-sep" aria-hidden="true">/</span>}
       </li>
     ))}
   </ol>
@@ -29,31 +28,37 @@ const schema = breadcrumbSchema(items);
 <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
 
 <style>
-  .breadcrumb {
-    margin-bottom: 1.5rem;
+  .bc {
+    margin-bottom: var(--sp-4);
   }
 
-  .breadcrumb ol {
+  .bc ol {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    gap: 0;
-    font-size: 0.875rem;
+    align-items: center;
+    font-size: var(--text-sm);
   }
 
-  .breadcrumb li {
+  .bc li {
     display: flex;
     align-items: center;
     color: var(--color-text-tertiary);
   }
 
-  .breadcrumb a {
+  .bc a {
     color: var(--color-text-secondary);
   }
 
-  .breadcrumb-sep {
-    margin: 0 0.5rem;
+  .bc a:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .bc-sep {
+    margin: 0 var(--sp-2);
     color: var(--color-border);
     user-select: none;
+    font-weight: 300;
   }
 </style>

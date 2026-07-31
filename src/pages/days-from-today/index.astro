@@ -60,6 +60,16 @@ const faqItems = [
   <h1>Days From Today Calculator</h1>
   <p class="hub-intro">Find out what date falls any number of days from now. Select a value below or enter a custom number.</p>
 
+  <!-- Quick Jump -->
+  <nav class="qj" aria-label="Quick jump to common values">
+    <span class="qj-label">Quick Jump:</span>
+    <a href="/days-from-today/30/">30 days</a>
+    <a href="/days-from-today/60/">60 days</a>
+    <a href="/days-from-today/90/">90 days</a>
+    <a href="/days-from-today/180/">180 days</a>
+    <a href="/days-from-today/365/">365 days</a>
+  </nav>
+
   <Calculator />
 
   <!-- Popular N values with computed dates -->
@@ -92,71 +102,115 @@ const faqItems = [
 
 <style>
   .hub-intro {
-    font-size: 1.0625rem;
+    font-size: var(--text-base);
     color: var(--color-text-secondary);
     text-align: center;
     max-width: 540px;
-    margin: 0 auto 1rem;
+    margin: 0 auto var(--sp-4);
+  }
+
+  /* Quick Jump */
+  .qj {
+    text-align: center;
+    margin-bottom: var(--sp-6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-2);
+    flex-wrap: wrap;
+  }
+
+  .qj-label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+    margin-right: var(--sp-1);
+  }
+
+  .qj a {
+    display: inline-block;
+    padding: var(--sp-1) var(--sp-3);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--transition-fast),
+                background var(--transition-fast);
+  }
+
+  .qj a:hover {
+    border-color: var(--color-accent);
+    background: var(--color-accent-subtle);
+    text-decoration: none;
   }
 
   .popular-values {
-    margin: 2rem 0;
+    margin: var(--sp-8) 0;
   }
 
   .popular-values h2 {
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--sp-2);
   }
 
   .today-note {
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
     color: var(--color-text-tertiary);
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--sp-3);
   }
 
   .values-grid {
     list-style: none;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 0.5rem;
+    gap: var(--sp-2);
   }
 
   .values-grid a {
     display: flex;
     flex-direction: column;
-    padding: 0.75rem 1rem;
-    background: var(--color-card-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
+    padding: var(--sp-3) var(--sp-4);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-sm);
     text-decoration: none;
     color: inherit;
-    transition: border-color 0.15s;
+    transition: border-color var(--transition-fast),
+                box-shadow var(--transition-fast);
   }
 
   .values-grid a:hover {
     border-color: var(--color-accent);
+    box-shadow: var(--shadow-xs);
+    text-decoration: none;
   }
 
   .v-n {
-    font-weight: 600;
+    font-weight: 650;
     color: var(--color-accent);
   }
 
   .v-date {
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
     color: var(--color-text-secondary);
-    margin-top: 0.25rem;
+    margin-top: var(--sp-1);
   }
 
   .hub-categories {
-    margin: 2rem 0;
-    padding: 1.25rem;
-    background: var(--color-card-bg);
-    border-radius: 8px;
+    margin: var(--sp-8) 0;
+    padding: var(--sp-5);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
   }
 
   .hub-categories h2 {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+    font-size: var(--text-sm);
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--sp-3);
   }
 
   .hub-categories ul {
@@ -164,8 +218,8 @@ const faqItems = [
   }
 
   .hub-categories li {
-    font-size: 0.9375rem;
-    margin-bottom: 0.375rem;
+    font-size: var(--text-sm);
+    margin-bottom: var(--sp-2);
     color: var(--color-text-secondary);
   }
 </style>

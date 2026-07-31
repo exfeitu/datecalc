@@ -1,5 +1,5 @@
 ---
-// RelatedQueries.astro — internal links block for programmatic pages
+// RelatedQueries.astro — internal links block
 export interface RelatedLink {
   href: string;
   label: string;
@@ -10,40 +10,63 @@ export interface Props {
   title?: string;
 }
 
-const { links, title = 'Related Date Calculations' } = Astro.props;
+const { links, title = 'Related Calculations' } = Astro.props;
 ---
-
-<section class="related-queries">
-  <h2>{title}</h2>
-  <ul>
+<nav class="rq" aria-label={title}>
+  <h2 class="rq-title">{title}</h2>
+  <ul class="rq-list">
     {links.map((link) => (
       <li><a href={link.href}>{link.label}</a></li>
     ))}
   </ul>
-</section>
+</nav>
 
 <style>
-  .related-queries {
-    margin: 2rem 0;
-    padding: 1.25rem;
-    background: var(--color-card-bg);
-    border-radius: 8px;
+  .rq {
+    margin: var(--sp-8) 0;
+    padding: var(--sp-5);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
   }
 
-  .related-queries h2 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
+  .rq-title {
+    font-size: var(--text-sm);
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--sp-3);
   }
 
-  .related-queries ul {
+  .rq-list {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem 1.25rem;
+    gap: var(--sp-2) var(--sp-6);
   }
 
-  .related-queries li {
-    font-size: 0.9375rem;
+  .rq-list li {
+    font-size: var(--text-sm);
+  }
+
+  .rq-list a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    padding: var(--sp-1) 0;
+  }
+
+  .rq-list a::after {
+    content: '→';
+    font-size: var(--text-xs);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .rq-list a:hover::after {
+    opacity: 1;
+    transform: translateX(0);
   }
 </style>

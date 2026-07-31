@@ -15,62 +15,92 @@ export interface Props {
 
 const { items, pageUrl } = Astro.props;
 ---
-
 <section class="faq">
-  <h2>Frequently Asked Questions</h2>
-  <dl>
+  <h2 class="faq-title">Frequently Asked Questions</h2>
+  <div class="faq-list">
     {items.map((faq) => (
-      <details>
-        <summary>{faq.question}</summary>
-        <p>{faq.answer}</p>
+      <details class="faq-item">
+        <summary class="faq-q">{faq.question}</summary>
+        <div class="faq-a">
+          <p>{faq.answer}</p>
+        </div>
       </details>
     ))}
-  </dl>
+  </div>
 </section>
 
 <style>
   .faq {
-    margin: 2rem 0;
+    margin: var(--sp-8) 0;
   }
 
-  .faq h2 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
+  .faq-title {
+    font-size: var(--text-lg);
+    font-weight: 650;
+    margin-bottom: var(--sp-4);
   }
 
-  .faq dl {
+  .faq-list {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--sp-2);
   }
 
-  .faq details {
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    background: var(--color-card-bg);
-    cursor: pointer;
+  .faq-item {
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+    transition: border-color var(--transition-fast),
+                box-shadow var(--transition-fast);
   }
 
-  .faq details[open] {
+  .faq-item[open] {
+    border-color: var(--color-border);
+    box-shadow: var(--shadow-xs);
     background: var(--color-bg);
   }
 
-  .faq summary {
-    font-weight: 500;
-    font-size: 0.9375rem;
+  .faq-q {
+    padding: var(--sp-4) var(--sp-5);
+    font-weight: 550;
+    font-size: var(--text-sm);
+    cursor: pointer;
     user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    list-style: none;
   }
 
-  .faq summary::marker {
+  .faq-q::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-q::after {
+    content: '+';
+    flex-shrink: 0;
+    font-size: var(--text-lg);
+    font-weight: 400;
+    color: var(--color-text-tertiary);
+    width: 20px;
+    text-align: center;
+    transition: transform var(--transition-fast);
+  }
+
+  .faq-item[open] .faq-q::after {
+    content: '−';
     color: var(--color-accent);
   }
 
-  .faq p {
-    margin-top: 0.5rem;
-    font-size: 0.875rem;
+  .faq-a {
+    padding: 0 var(--sp-5) var(--sp-4);
+  }
+
+  .faq-a p {
+    font-size: var(--text-sm);
     color: var(--color-text-secondary);
-    line-height: 1.6;
+    line-height: 1.7;
+    margin-bottom: 0;
   }
 </style>

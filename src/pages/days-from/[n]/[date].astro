@@ -36,7 +36,6 @@ const remDays = nDays % 7;
 
 const pageUrl = `${SITE_URL}/days-from/${n}/${date}/`;
 
-// Title and description
 const title = `${nDays} Days From ${formatDateLong(date)} — What Date Is ${nDays} Days After ${formatDateLong(date)}? | DateCalc`;
 const description = `${nDays} days from ${formatDateLong(date)} is ${formatDateLong(resultDate)}. ${resultDate} is a ${weekday}. That's ${weeks} weeks from ${formatDateLong(date)}.`;
 
@@ -75,7 +74,7 @@ const schemas = [
 
   <DateContext date1={date} date2={resultDate} days={nDays} />
 
-  <p class="explanation">
+  <p class="exp">
     <strong>{nDays} day{nDays === 1 ? '' : 's'}</strong> after
     {' '}{formatDateLong(date)} ({fromWeekday})
     {' '}is <strong>{formatDateLong(resultDate)}</strong> ({weekday}).
@@ -87,12 +86,17 @@ const schemas = [
 </BaseLayout>
 
 <style>
-  .explanation {
+  .exp {
     max-width: 600px;
-    margin: 0 auto 1.5rem;
-    font-size: 0.9375rem;
+    margin: 0 auto var(--sp-4);
+    font-size: var(--text-base);
     color: var(--color-text-secondary);
     text-align: center;
-    line-height: 1.7;
+    line-height: 1.75;
+  }
+
+  .exp strong {
+    color: var(--color-text);
+    font-weight: 650;
   }
 </style>

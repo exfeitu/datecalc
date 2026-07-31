@@ -1,19 +1,22 @@
 ---
 // Calculator.astro — interactive date calculator (only component with JS)
 ---
-<div class="calculator">
-  <div class="calc-inputs">
-    <div class="calc-field">
-      <label for="calc-date1">Start date</label>
-      <input type="date" id="calc-date1" />
+<div class="calc">
+  <h2 class="calc-title">Calculate Days Between Dates</h2>
+  <div class="calc-body">
+    <div class="calc-inputs">
+      <div class="calc-field">
+        <label for="calc-date1">Start date</label>
+        <input type="date" id="calc-date1" />
+      </div>
+      <span class="calc-sep" aria-hidden="true">→</span>
+      <div class="calc-field">
+        <label for="calc-date2">End date</label>
+        <input type="date" id="calc-date2" />
+      </div>
     </div>
-    <span class="calc-arrow" aria-hidden="true">→</span>
-    <div class="calc-field">
-      <label for="calc-date2">End date</label>
-      <input type="date" id="calc-date2" />
-    </div>
+    <div class="calc-output" id="calc-result" aria-live="polite"></div>
   </div>
-  <div class="calc-result" id="calc-result" aria-live="polite"></div>
 </div>
 
 <script>
@@ -33,12 +36,14 @@
     const days = Math.abs(Math.round((t2 - t1) / MS_PER_DAY));
     const weeks = Math.floor(days / 7);
     const rem = days % 7;
+    const dayLabel = days === 1 ? 'day' : 'days';
+    const weekLabel = weeks === 1 ? 'week' : 'weeks';
+    const remStr = rem ? ' and ' + rem + ' ' + (rem === 1 ? 'day' : 'days') : '';
 
-    result.innerHTML = `
-      <span class="result-value">${days.toLocaleString('en-US')}</span>
-      <span class="result-unit">day${days === 1 ? '' : 's'}</span>
-      <p class="result-subtitle">That's ${weeks} week${weeks === 1 ? '' : 's'}${rem ? ` and ${rem} day${rem === 1 ? '' : 's'}` : ''}</p>
-    `;
+    result.innerHTML =
+      '<span class="calc-num">' + days.toLocaleString('en-US') + '</span>' +
+      '<span class="calc-unit">' + dayLabel + '</span>' +
+      '<p class="calc-sub">That\'s ' + weeks + ' ' + weekLabel + remStr + '</p>';
   }
 
   d1.addEventListener('change', update);
@@ -46,12 +51,22 @@
 </script>
 
 <style>
-  .calculator {
-    background: var(--color-card-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin: 1.5rem 0;
+  .calc {
+    margin: var(--sp-6) 0;
+  }
+
+  .calc-title {
+    font-size: var(--text-lg);
+    font-weight: 650;
+    text-align: center;
+    margin-bottom: var(--sp-4);
+  }
+
+  .calc-body {
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-6);
     text-align: center;
   }
 
@@ -59,70 +74,88 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    gap: 1rem;
+    gap: var(--sp-4);
     flex-wrap: wrap;
   }
 
   .calc-field {
     display: flex;
     flex-direction: column;
-    gap: 0.375rem;
+    gap: var(--sp-1);
   }
 
   .calc-field label {
-    font-size: 0.8125rem;
-    font-weight: 500;
-    color: var(--color-text-secondary);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
     text-align: left;
   }
 
   .calc-field input {
-    font-size: 1rem;
-    padding: 0.5rem 0.75rem;
+    font-size: var(--text-base);
+    padding: var(--sp-2) var(--sp-3);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     font-family: var(--font-sans);
     background: var(--color-bg);
-    min-width: 160px;
+    min-width: 170px;
+    transition: border-color var(--transition-fast),
+                box-shadow var(--transition-fast);
+  }
+
+  .calc-field input:hover {
+    border-color: var(--color-text-tertiary);
   }
 
   .calc-field input:focus {
-    outline: 2px solid var(--color-accent);
-    outline-offset: -1px;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-glow);
+    outline: none;
   }
 
-  .calc-arrow {
-    font-size: 1.25rem;
+  .calc-sep {
+    font-size: var(--text-xl);
     color: var(--color-text-tertiary);
-    padding-bottom: 0.5rem;
+    padding-bottom: var(--sp-2);
   }
 
-  .calc-result {
-    margin-top: 1.25rem;
-    min-height: 3rem;
+  .calc-output {
+    margin-top: var(--sp-5);
+    min-height: 2rem;
   }
 
-  .result-value {
+  .calc-num {
     display: block;
+    font-family: var(--font-mono);
     font-size: 2.5rem;
     font-weight: 800;
-    color: var(--color-accent);
-    line-height: 1.2;
+    color: var(--color-text);
+    line-height: 1.15;
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
   }
 
-  .result-unit {
+  .calc-unit {
     display: block;
-    font-size: 1.125rem;
-    color: var(--color-text-secondary);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    color: var(--color-accent);
+    margin-top: var(--sp-1);
   }
 
-  .result-subtitle {
-    margin-top: 0.5rem;
+  .calc-sub {
+    margin-top: var(--sp-3);
     color: var(--color-text-secondary);
-    font-size: 0.9375rem;
+    font-size: var(--text-sm);
   }
 
   @media (max-width: 640px) {
+    .calc-body {
+      padding: var(--sp-4);
+    }
+
     .calc-inputs {
       flex-direction: column;
       align-items: stretch;
@@ -133,9 +166,13 @@
       min-width: 0;
     }
 
-    .calc-arrow {
-      transform: rotate(90deg);
+    .calc-sep {
+      text-align: center;
       padding: 0;
+    }
+
+    .calc-num {
+      font-size: 2rem;
     }
   }
 </style>

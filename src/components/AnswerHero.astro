@@ -1,44 +1,92 @@
 ---
-// AnswerHero.astro — large-format answer display for programmatic pages
+// AnswerHero.astro — signature large-format answer display
 export interface Props {
   value: number;
-  unit: string;      // "days", "weeks", etc.
-  subtitle?: string; // "That's 52 weeks and 1 day"
+  unit: string;
+  subtitle?: string;
 }
 
 const { value, unit, subtitle } = Astro.props;
 ---
-<div class="answer-hero">
-  <span class="answer-value">{value.toLocaleString('en-US')}</span>
-  <span class="answer-unit">{unit}</span>
-  {subtitle && <p class="answer-subtitle">{subtitle}</p>}
+<div class="hero">
+  <div class="hero-number" aria-label={`${value.toLocaleString('en-US')} ${unit}`}>
+    <span class="hero-value">{value.toLocaleString('en-US')}</span>
+    <span class="hero-unit">{unit}</span>
+  </div>
+  <div class="hero-accent" aria-hidden="true"></div>
+  {subtitle && <p class="hero-sub">{subtitle}</p>}
   <slot />
 </div>
 
 <style>
-  .answer-hero {
+  .hero {
     text-align: center;
-    padding: 2rem 0 1.5rem;
+    padding: var(--sp-10) 0 var(--sp-6);
+    position: relative;
   }
 
-  .answer-value {
+  .hero-number {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .hero-value {
     display: block;
-    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-family: var(--font-mono);
+    font-size: clamp(3.25rem, 10vw, 5.5rem);
     font-weight: 800;
-    line-height: 1.1;
-    color: var(--color-accent);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
   }
 
-  .answer-unit {
+  .hero-unit {
     display: block;
-    font-size: 1.25rem;
-    color: var(--color-text-secondary);
-    margin-top: 0.25rem;
+    font-size: var(--text-xl);
+    font-weight: 500;
+    color: var(--color-accent);
+    margin-top: var(--sp-1);
+    letter-spacing: 0.02em;
   }
 
-  .answer-subtitle {
-    margin-top: 0.75rem;
-    font-size: 1rem;
+  .hero-accent {
+    width: 48px;
+    height: 3px;
+    margin: var(--sp-5) auto 0;
+    border-radius: 2px;
+    background: linear-gradient(
+      90deg,
+      var(--color-accent),
+      var(--color-accent-hover)
+    );
+    opacity: 0.7;
+  }
+
+  .hero-sub {
+    margin-top: var(--sp-4);
+    font-size: var(--text-base);
     color: var(--color-text-secondary);
+    line-height: 1.5;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: var(--sp-8) 0 var(--sp-4);
+    }
+
+    .hero-value {
+      font-size: clamp(2.25rem, 12vw, 3.5rem);
+    }
+
+    .hero-unit {
+      font-size: var(--text-lg);
+    }
   }
 </style>

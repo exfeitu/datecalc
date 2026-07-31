@@ -16,16 +16,16 @@ const schemas = [
 ];
 
 const categories = [
-  { title: 'Days Between', description: 'Calculate the exact number of days between any two dates.', href: '/days-between/' },
-  { title: 'Days From Today', description: 'Find out what date falls N days from now. Common values: 30, 60, 90 days.', href: '/days-from-today/' },
-  { title: 'Days Until Events', description: 'Countdown to holidays, seasons, sports, and more.', href: '/days-until/' },
+  { title: 'Days Between', description: 'Calculate exact days between any two dates.', href: '/days-between/' },
+  { title: 'Days From Today', description: 'What date is N days from now? 30, 60, 90 days and more.', href: '/days-from-today/' },
+  { title: 'Days Until Events', description: 'Countdown to holidays, seasons, sports, and special days.', href: '/days-until/' },
 ];
 
 const popularLinks = [
-  { label: 'How many days until Christmas 2026?', href: '/days-until/christmas/2026/' },
+  { label: 'Days until Christmas 2026', href: '/days-until/christmas/2026/' },
   { label: '90 days from today', href: '/days-from-today/90/' },
-  { label: 'Days between January 1 and December 31, 2026', href: '/days-between/2026-01-01/2026-12-31/' },
-  { label: 'How many days in February 2028? (leap year)', href: '/days-in/february/' },
+  { label: 'Days between Jan 1 and Dec 31, 2026', href: '/days-between/2026-01-01/2026-12-31/' },
+  { label: 'Days in February (leap year)', href: '/days-in/february/' },
   { label: 'Days until Summer 2027', href: '/days-until/summer/2027/' },
 ];
 
@@ -44,21 +44,23 @@ const faqItems = [
   },
   {
     question: 'Is DateCalc really free?',
-    answer: 'Yes, DateCalc is completely free. There are no ads, no registration required, and no limits on usage. All calculations happen in your browser or at build time — none of your data is ever collected or stored.',
+    answer: 'Yes, DateCalc is completely free. There are no ads, no registration, and no usage limits. All calculations happen in your browser or at build time — none of your data is ever collected or stored.',
   },
 ];
 ---
 
 <BaseLayout title={meta.title} description={meta.description} canonical={SITE_URL} schema={schemas}>
-  <h1>Date Calculator — Fast &amp; Free</h1>
-  <p class="home-intro">Instantly calculate days between dates, find future dates, and count down to events. No ads, no clutter, just answers.</p>
+  <section class="home-hero">
+    <h1>Date Calculator</h1>
+    <p class="home-tagline">Fast, free, no clutter. Just answers.</p>
+  </section>
 
   <Calculator />
 
   <!-- Category Cards -->
-  <section class="home-categories">
-    <h2 class="sr-only">Tools</h2>
-    <div class="category-grid">
+  <section class="home-section">
+    <h2 class="home-section-title">Tools</h2>
+    <div class="home-grid">
       {categories.map(c => (
         <CategoryCard title={c.title} description={c.description} href={c.href} />
       ))}
@@ -66,9 +68,9 @@ const faqItems = [
   </section>
 
   <!-- Popular Now -->
-  <section class="home-popular">
-    <h2>Popular Now</h2>
-    <ul>
+  <section class="home-section">
+    <h2 class="home-section-title">Popular Now</h2>
+    <ul class="home-links">
       {popularLinks.map(link => (
         <li><a href={link.href}>{link.label}</a></li>
       ))}
@@ -76,63 +78,87 @@ const faqItems = [
   </section>
 
   <!-- More Tools -->
-  <section class="home-more">
-    <h2>More Tools</h2>
+  <nav class="home-more" aria-label="More tools">
+    <h2 class="home-more-title">More Tools</h2>
     <ul>
-      <li><a href="/days-in/">Days in Month / Year</a> — how many days in each month</li>
-      <li><a href="/age-in-days/">Age in Days</a> — calculate your age in days</li>
-      <li><a href="/days-left-in/2026/">Days Left in 2026</a> — year countdown</li>
+      <li><a href="/days-in/">Days in Month / Year</a> <span>&mdash; how many days in each month</span></li>
+      <li><a href="/age-in-days/">Age in Days</a> <span>&mdash; calculate your age in days</span></li>
+      <li><a href="/days-left-in/2026/">Days Left in 2026</a> <span>&mdash; year progress countdown</span></li>
     </ul>
-  </section>
+  </nav>
 
   <FAQ items={faqItems} />
 </BaseLayout>
 
 <style>
-  .home-intro {
-    font-size: 1.0625rem;
-    color: var(--color-text-secondary);
+  .home-hero {
     text-align: center;
-    max-width: 540px;
-    margin: 0 auto 0.5rem;
+    padding: var(--sp-8) 0 var(--sp-2);
   }
 
-  .category-grid {
+  .home-hero h1 {
+    font-size: clamp(2rem, 6vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin-bottom: var(--sp-2);
+  }
+
+  .home-tagline {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* Sections */
+  .home-section {
+    margin: var(--sp-8) 0;
+  }
+
+  .home-section-title {
+    font-size: var(--text-sm);
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--sp-4);
+  }
+
+  /* Grid */
+  .home-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin: 2rem 0;
+    gap: var(--sp-4);
   }
 
-  .home-popular {
-    margin: 2rem 0;
-  }
-
-  .home-popular h2 {
-    margin-bottom: 0.75rem;
-  }
-
-  .home-popular ul {
+  /* Popular links */
+  .home-links {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem 1.25rem;
+    gap: var(--sp-2) var(--sp-6);
   }
 
-  .home-popular li {
-    font-size: 0.9375rem;
+  .home-links li {
+    font-size: var(--text-sm);
   }
 
+  /* More tools */
   .home-more {
-    margin: 2rem 0;
-    padding: 1.25rem;
-    background: var(--color-card-bg);
-    border-radius: 8px;
+    margin: var(--sp-8) 0;
+    padding: var(--sp-5);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
   }
 
-  .home-more h2 {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+  .home-more-title {
+    font-size: var(--text-sm);
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--sp-3);
   }
 
   .home-more ul {
@@ -140,8 +166,22 @@ const faqItems = [
   }
 
   .home-more li {
-    font-size: 0.9375rem;
-    margin-bottom: 0.375rem;
+    font-size: var(--text-sm);
+    margin-bottom: var(--sp-2);
     color: var(--color-text-secondary);
+  }
+
+  .home-more li span {
+    color: var(--color-text-tertiary);
+  }
+
+  @media (max-width: 640px) {
+    .home-hero {
+      padding: var(--sp-4) 0 var(--sp-2);
+    }
+
+    .home-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

@@ -135,7 +135,7 @@ const schemas = [
 
     <AnswerHero value={days} unit={unit} subtitle={subtitle} />
 
-    <p class="explanation" set:html={explanation} />
+    <p class="exp" set:html={explanation} />
 
     <RelatedQueries links={relatedLinks} />
   </BaseLayout>
@@ -147,12 +147,17 @@ const schemas = [
 )}
 
 <style>
-  .explanation {
+  .exp {
     max-width: 600px;
-    margin: 0 auto 1.5rem;
-    font-size: 0.9375rem;
+    margin: 0 auto var(--sp-4);
+    font-size: var(--text-base);
     color: var(--color-text-secondary);
     text-align: center;
-    line-height: 1.7;
+    line-height: 1.75;
+  }
+
+  .exp :global(strong) {
+    color: var(--color-text);
+    font-weight: 650;
   }
 </style>
