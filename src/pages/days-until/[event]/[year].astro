@@ -6,6 +6,7 @@ import DateContext from '../../../components/DateContext.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import RelatedQueries from '../../../components/RelatedQueries.astro';
 import KeyFacts from '../../../components/KeyFacts.astro';
+import Timeline from '../../../components/Timeline.astro';
 import { today, getEventDate, signedDaysBetween, getWeekday } from '../../../lib/dates';
 import { daysUntilMeta } from '../../../lib/meta';
 import { resultPageSchema } from '../../../lib/schema';
@@ -121,6 +122,8 @@ const schemas = [
         {remDays > 0 && <span> and {remDays} day{remDays === 1 ? '' : 's'}</span>} before today.</>
     )}
   </p>
+
+  <Timeline date1={isFuture ? todayStr : eventDate} date2={isFuture ? eventDate : todayStr} days={absDays} />
 
   <RelatedQueries links={relatedLinks} />
 </BaseLayout>

@@ -6,6 +6,7 @@ import DateContext from '../../components/DateContext.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import RelatedQueries from '../../components/RelatedQueries.astro';
 import KeyFacts from '../../components/KeyFacts.astro';
+import Timeline from '../../components/Timeline.astro';
 import { today, dateFromDays, getWeekday } from '../../lib/dates';
 import { daysFromTodayMeta } from '../../lib/meta';
 import { resultPageSchema } from '../../lib/schema';
@@ -93,6 +94,8 @@ const schemas = [
     That's {weeks} full week{weeks === 1 ? '' : 's'}
     {remDays > 0 && <span> and {remDays} day{remDays === 1 ? '' : 's'}</span>} into the future.
   </p>
+
+  <Timeline date1={todayStr} date2={resultDate} days={nDays} />
 
   <RelatedQueries links={relatedLinks} />
 </BaseLayout>

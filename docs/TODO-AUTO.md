@@ -1,19 +1,19 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-01 04:48 UTC
+> Last updated: 2026-08-01 06:48 UTC
 
-## 🔴 High
-- [ ] Create a "Timeline" visual component showing the two dates on a time axis
+## 🔴 High (0 remaining!)
+<!-- All High items completed -->
 
 ## 🟡 Medium (0 remaining!)
 <!-- All Medium items completed -->
 
 ## 🟢 Low
-- [ ] Add /about page content
-- [ ] Review day-of-week labels readability on mobile
 - [ ] Add "Share this result" copy link button (zero JS)
 - [ ] Verify all 459 pages pass schema.org validator
+- [ ] Review day-of-week labels readability on mobile
+- [ ] ⚠️ COMPACT NEEDED — context full, run /compact
 
 ## ✅ Done
 - [x] 2026-07-31: Add KeyFacts stats card to 3 main templates
@@ -25,3 +25,5 @@
 - [x] 2026-08-01: Update all 4 index pages styles to new CSS variables
 - [x] 2026-08-01: Expand all meta descriptions to 120-155 chars
 - [x] 2026-08-01: Refine DateContext leap year text to natural language
+- [x] 2026-08-01: Create Timeline visual component + inject into 3 templates
+- [x] 2026-08-01: Update about page content and styles

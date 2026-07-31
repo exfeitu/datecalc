@@ -1,0 +1,172 @@
+---
+// Timeline.astro — visual time-axis showing date span
+import { formatDateLong } from '../lib/formatters';
+import { getWeekday } from '../lib/dates';
+
+export interface Props {
+  date1: string;
+  date2: string;
+  days: number;
+}
+
+const { date1, date2, days } = Astro.props;
+const weekday1 = getWeekday(date1);
+const weekday2 = getWeekday(date2);
+const year1 = date1.slice(0, 4);
+const year2 = date2.slice(0, 4);
+const sameYear = year1 === year2;
+---
+<div class="tl">
+  <div class="tl-line" aria-hidden="true">
+    <div class="tl-dot tl-dot-start"></div>
+    <div class="tl-bar"></div>
+    <div class="tl-dot tl-dot-end"></div>
+  </div>
+  <div class="tl-points">
+    <div class="tl-point tl-point-start">
+      <span class="tl-date">{formatDateLong(date1)}</span>
+      <span class="tl-wk">{weekday1}</span>
+      {sameYear && <span class="tl-yr">{year1}</span>}
+    </div>
+    <div class="tl-center">
+      <span class="tl-days">{days.toLocaleString('en-US')} day{days === 1 ? '' : 's'}</span>
+    </div>
+    <div class="tl-point tl-point-end">
+      <span class="tl-date">{formatDateLong(date2)}</span>
+      <span class="tl-wk">{weekday2}</span>
+      {sameYear && <span class="tl-yr">{year2}</span>}
+    </div>
+  </div>
+</div>
+
+<style>
+  .tl {
+    margin: var(--sp-8) 0;
+    padding: var(--sp-5);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+  }
+
+  /* The horizontal bar */
+  .tl-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--sp-4);
+  }
+
+  .tl-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .tl-dot-start {
+    background: var(--color-accent);
+    box-shadow: 0 0 0 4px var(--color-accent-subtle);
+  }
+
+  .tl-dot-end {
+    background: var(--color-accent-hover);
+    box-shadow: 0 0 0 4px var(--color-accent-subtle);
+  }
+
+  .tl-bar {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      var(--color-accent),
+      var(--color-accent-hover)
+    );
+    min-width: 40px;
+    margin: 0 -1px;
+  }
+
+  /* Date labels below */
+  .tl-points {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-top: var(--sp-3);
+  }
+
+  .tl-point {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .tl-point-start {
+    align-items: flex-start;
+  }
+
+  .tl-point-end {
+    align-items: flex-end;
+  }
+
+  .tl-date {
+    font-weight: 650;
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    white-space: nowrap;
+  }
+
+  .tl-wk {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+  }
+
+  .tl-yr {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+  }
+
+  .tl-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 0 var(--sp-2);
+  }
+
+  .tl-days {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-accent);
+    white-space: nowrap;
+    background: var(--color-bg);
+    padding: 2px var(--sp-2);
+    border-radius: var(--radius-sm);
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 640px) {
+    .tl-points {
+      flex-direction: column;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    .tl-point-start,
+    .tl-point-end {
+      align-items: center;
+      text-align: center;
+    }
+
+    .tl-line {
+      padding: 0;
+    }
+
+    .tl-bar {
+      min-width: 20px;
+    }
+  }
+</style>
