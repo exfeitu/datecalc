@@ -1,6 +1,7 @@
 /**
  * src/lib/meta.ts
  * Generate <title> and <meta name="description"> for each page template.
+ * Target: descriptions 120-155 chars.
  */
 
 import { getWeekday, isLeapYear } from './dates';
@@ -41,7 +42,7 @@ export function daysBetweenMeta(date1: string, date2: string, days: number): Met
 
   return {
     title: `${days} Days Between ${date1} and ${date2} | ${SITE_NAME}`,
-    description: `There are exactly ${days} days between ${date1} and ${date2}. That's ${weeks} weeks and ${rem} days. ${date1} is a ${w1}, ${date2} is a ${w2}.`,
+    description: `There are exactly ${days} days between ${date1} and ${date2}. That's ${weeks} weeks and ${rem} days. ${date1} is a ${w1}, ${date2} is a ${w2}. Free date calculator with weeks breakdown.`,
   };
 }
 
@@ -50,16 +51,18 @@ export function daysFromTodayHubMeta(): Meta {
   return {
     title: `Days From Today Calculator | ${SITE_NAME}`,
     description:
-      'Find out what date falls N days from today. Common values: 30, 45, 60, 90, 180, 365 days. Fast and free.',
+      'Find out what date falls N days from today. Common values: 30, 45, 60, 90, 180, 365 days. Fast, free, and accurate.',
   };
 }
 
 /** Days From Today Programmatic Page */
 export function daysFromTodayMeta(n: number, resultDate: string): Meta {
   const weekday = getWeekday(resultDate);
+  const weeks = Math.floor(n / 7);
+  const rem = n % 7;
   return {
     title: `${formatNumber(n)} Days From Today — What Date Is ${n} Days From Now? | ${SITE_NAME}`,
-    description: `${n} days from today is ${resultDate}. ${resultDate} is a ${weekday}. That's ${Math.floor(n / 7)} weeks from now.`,
+    description: `${n} days from today is ${resultDate} (a ${weekday}). That's ${weeks} weeks and ${rem} days from now. Use DateCalc to find any future date — fast, free, and accurate.`,
   };
 }
 
@@ -68,7 +71,7 @@ export function daysUntilMeta(eventName: string, year: number, days: number, eve
   const weekday = getWeekday(eventDate);
   return {
     title: `How Many Days Until ${eventName} ${year}? | ${SITE_NAME}`,
-    description: `There are ${days} days until ${eventName} ${year}. ${eventName} falls on ${weekday}, ${eventDate} this year.`,
+    description: `There are ${days} days until ${eventName} ${year}. ${eventName} falls on ${weekday}, ${eventDate}. Use DateCalc's free countdown tool to track holidays, seasons, and events.`,
   };
 }
 
@@ -76,31 +79,34 @@ export function daysUntilMeta(eventName: string, year: number, days: number, eve
 export function daysInMonthMeta(month: string, days: number, year: number): Meta {
   return {
     title: `How Many Days in ${month} ${year}? | ${SITE_NAME}`,
-    description: `${month} ${year} has ${days} days. ${month} always has ${days} days except February in leap years.`,
+    description: `${month} ${year} has ${days} days. Find out how many days are in each month, including February leap year variations. Free quick-reference calendar guide from DateCalc.`,
   };
 }
 
 /** Days In Year Programmatic Page */
 export function daysInYearMeta(year: number, days: number, isLeap: boolean): Meta {
-  const leapText = isLeap ? 'a leap year' : 'not a leap year';
+  const leapText = isLeap ? 'a leap year with 366 days' : 'not a leap year, it has 365 days';
   return {
     title: `How Many Days in ${year}? | ${SITE_NAME}`,
-    description: `${year} has ${days} days. ${year} is ${leapText}.`,
+    description: `${year} has ${days} days — it is ${leapText}. Learn how leap years work and check any year with DateCalc's free reference tool.`,
   };
 }
 
 /** Age In Days Programmatic Page */
 export function ageInDaysMeta(birthYear: number, ageInDays: number): Meta {
+  const years = Math.floor(ageInDays / 365);
   return {
     title: `Age in Days — Born in ${birthYear} | ${SITE_NAME}`,
-    description: `A person born in ${birthYear} is approximately ${formatNumber(ageInDays)} days old. That's about ${Math.floor(ageInDays / 365)} years.`,
+    description: `A person born in ${birthYear} is approximately ${formatNumber(ageInDays)} days old. That's about ${years} years, or ${formatNumber(Math.floor(ageInDays / 7))} weeks. Free age calculator from DateCalc.`,
   };
 }
 
 /** Days Left In Year Programmatic Page */
 export function daysLeftInYearMeta(year: number, daysLeft: number): Meta {
+  const total = isLeapYear(year) ? 366 : 365;
+  const pct = Math.round(((total - daysLeft) / total) * 100);
   return {
     title: `How Many Days Left in ${year}? | ${SITE_NAME}`,
-    description: `There are ${daysLeft} days left in ${year}. The year is ${isLeapYear(year) ? '' : 'not '}a leap year with ${isLeapYear(year) ? 366 : 365} total days.`,
+    description: `There are ${daysLeft} days left in ${year} (about ${pct}% complete). ${year} has ${total} total days${isLeapYear(year) ? ' (a leap year)' : ''}. Track year progress with DateCalc.`,
   };
 }

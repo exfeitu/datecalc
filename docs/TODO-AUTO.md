@@ -1,15 +1,13 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-01 02:48 UTC
+> Last updated: 2026-08-01 04:48 UTC
 
 ## 🔴 High
 - [ ] Create a "Timeline" visual component showing the two dates on a time axis
 
-## 🟡 Medium
-- [ ] Check meta description lengths across all templates (target 120-155 chars)
-- [ ] Refine DateContext leap year text to be more natural
-- [ ] Update age-in-days index page styles to new CSS variables
+## 🟡 Medium (0 remaining!)
+<!-- All Medium items completed -->
 
 ## 🟢 Low
 - [ ] Add /about page content
@@ -24,4 +22,6 @@
 - [x] 2026-08-01: Add 2-3 more internal links to RelatedQueries in all 3 templates
 - [x] 2026-08-01: Add Quick Jump nav to days-from-today index page
 - [x] 2026-08-01: Add 2 FAQ items per template (each 2→4 questions)
-- [x] 2026-08-01: Update days-between, days-until, days-in index styles to new CSS vars
+- [x] 2026-08-01: Update all 4 index pages styles to new CSS variables
+- [x] 2026-08-01: Expand all meta descriptions to 120-155 chars
+- [x] 2026-08-01: Refine DateContext leap year text to natural language

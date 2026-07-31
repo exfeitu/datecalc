@@ -48,9 +48,11 @@ const remDays = days % 7;
   {showYearContext && (
     <p class="dc-year">
       {year1 === year2 ? (
-        <>{year1} is{isLeapYear(year1) ? '' : ' not'} a leap year ({isLeapYear(year1) ? 366 : 365} days).</>
+        isLeapYear(year1)
+          ? <>{year1} is a leap year — it has 366 days with an extra day on February 29.</>
+          : <>{year1} is a common year with the usual 365 days.</>
       ) : (
-        <>{year1} has {isLeapYear(year1) ? 366 : 365} days; {year2} has {isLeapYear(year2) ? 366 : 365} days.</>
+        <>{year1} has {isLeapYear(year1) ? 366 : 365} days; {year2} has {isLeapYear(year2) ? 366 : 365} days. Leap years add a day every four years.</>
       )}
     </p>
   )}
