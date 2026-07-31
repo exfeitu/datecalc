@@ -55,6 +55,14 @@ const faqs = [
     question: `How many weeks between these dates?`,
     answer: `${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''}.`,
   },
+  {
+    question: `What day of the week is ${formatDateLong(date1)}?`,
+    answer: `${formatDateLong(date1)} is a ${weekday1}.`,
+  },
+  {
+    question: `How is the days between calculation done?`,
+    answer: `DateCalc converts both dates to UTC timestamps and divides the absolute difference by 86,400,000 milliseconds per day. The result is the exact number of calendar days between ${formatDateLong(date1)} and ${formatDateLong(date2)}.`,
+  },
 ];
 
 const subtitle = weeks > 0

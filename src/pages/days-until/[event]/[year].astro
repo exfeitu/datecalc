@@ -78,6 +78,14 @@ const faqs = [
     question: `What day of the week is ${eventData!.name} ${eventYear}?`,
     answer: `${eventData!.name} ${eventYear} is on a ${weekday} (${formatDateLong(eventDate)}).`,
   },
+  {
+    question: `How many weeks ${verb} ${eventData!.name} ${eventYear}?`,
+    answer: `There ${isFuture ? 'are' : 'were'} ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''} ${verb} ${eventData!.name} ${eventYear}.`,
+  },
+  {
+    question: `When exactly is ${eventData!.name} ${eventYear}?`,
+    answer: `${eventData!.name} ${eventYear} is on ${formatDateLong(eventDate)}. ${isFuture ? 'Mark your calendar!' : 'It has already passed this year.'}`,
+  },
 ];
 
 const schemas = [

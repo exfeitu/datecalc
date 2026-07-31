@@ -58,6 +58,14 @@ const faqs = [
     question: `What day of the week is ${nDays} days from now?`,
     answer: `${nDays} days from today is a ${weekday} (${formatDateLong(resultDate)}).`,
   },
+  {
+    question: `How many weeks is ${nDays} days?`,
+    answer: `${nDays} days is ${weeks} week${weeks === 1 ? '' : 's'}${remStr}.`,
+  },
+  {
+    question: `What's the formula for days from today?`,
+    answer: `DateCalc takes today's date (${formatDateLong(todayStr)}) and adds ${nDays} calendar days, accounting for all month lengths and leap years automatically. The result is always exact.`,
+  },
 ];
 
 const schemas = [
