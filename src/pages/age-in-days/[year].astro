@@ -9,6 +9,7 @@ import ShareLink from '../../components/ShareLink.astro';
 import { ageInDays } from '../../lib/dates';
 import { ageInDaysMeta } from '../../lib/meta';
 import { resultPageSchema } from '../../lib/schema';
+import { isBuilt } from '../../lib/data/routes';
 import { formatNumber } from '../../lib/formatters';
 import { birthYears } from '../../lib/data/birth-years';
 
@@ -44,7 +45,7 @@ const relatedLinks = [
   { href: '/age-in-days/', label: 'More birth years →' },
   { href: '/days-from-today/', label: 'Days from today calculator →' },
   { href: '/days-left-in/2026/', label: 'Days left in 2026 →' },
-];
+].filter(l => isBuilt(l.href));
 
 const faqs = [
   {

@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-01 18:20 UTC
+> Last updated: 2026-08-01 19:10 UTC
 
 ## 🔴 High (0 remaining!)
 <!-- All High items completed -->
@@ -14,6 +14,8 @@
 - [ ] FUTURE: Monitor GSC for thin-content pages after UI redesign
 
 ## ✅ Done
+- [x] 2026-08-01: Fix 623 broken internal links → 0. Added shared `isBuilt()` (src/lib/data/routes.ts) that knows which curated routes are generated; all 6 programmatic templates filter related links through it
+- [x] 2026-08-01: Fix leap-day 2027 broken link in days-until hub (exclude leap-day, built only for 2028)
 - [x] 2026-08-01: Bold UI redesign "Engineering Logbook" — graph-paper grid bg, white plates, serif display + mono kicker system
 - [x] 2026-08-01: AnswerHero measuring-ruler signature — tick row + blue needle under every answer number
 - [x] 2026-08-01: Header — serif wordmark + ruler-tick mark + active-section nav highlight

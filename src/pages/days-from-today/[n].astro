@@ -13,6 +13,7 @@ import { daysFromTodayMeta } from '../../lib/meta';
 import { resultPageSchema } from '../../lib/schema';
 import { formatDateLong } from '../../lib/formatters';
 import { nValuesForToday } from '../../lib/data/n-values';
+import { isBuilt } from '../../lib/data/routes';
 
 import type { GetStaticPaths } from 'astro';
 
@@ -49,7 +50,7 @@ const relatedLinks = [
   { href: '/age-in-days/', label: 'Age in days calculator →' },
   { href: CATEGORY_URL, label: 'More days from today →' },
   { href: '/days-between/', label: 'Days between dates calculator →' },
-];
+].filter(l => isBuilt(l.href));
 
 const faqs = [
   {

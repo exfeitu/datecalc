@@ -9,6 +9,7 @@ import { daysLeftInYear, isLeapYear, today } from '../../lib/dates';
 import { daysLeftInYearMeta } from '../../lib/meta';
 import { resultPageSchema } from '../../lib/schema';
 import { formatDateLong } from '../../lib/formatters';
+import { isBuilt } from '../../lib/data/routes';
 
 import type { GetStaticPaths } from 'astro';
 
@@ -44,7 +45,7 @@ const relatedLinks = [
   { href: '/days-from-today/', label: 'Days from today calculator →' },
   { href: '/days-between/', label: 'Days between dates calculator →' },
   { href: '/age-in-days/', label: 'Age in days calculator →' },
-];
+].filter(l => isBuilt(l.href));
 
 const faqs = [
   {

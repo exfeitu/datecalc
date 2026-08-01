@@ -11,6 +11,7 @@ import ShareLink from '../../../components/ShareLink.astro';
 import { daysBetween, getWeekday, isLeapYear } from '../../../lib/dates';
 import { daysBetweenMeta } from '../../../lib/meta';
 import { resultPageSchema } from '../../../lib/schema';
+import { isBuilt } from '../../../lib/data/routes';
 import { formatDateLong } from '../../../lib/formatters';
 import { datePairs } from '../../../lib/data/date-pairs';
 
@@ -46,7 +47,7 @@ const relatedLinks = [
   { href: '/age-in-days/', label: 'Age in days calculator →' },
   { href: CATEGORY_URL, label: 'More days between dates →' },
   { href: '/days-from-today/', label: 'Days from today calculator →' },
-];
+].filter(l => isBuilt(l.href));
 
 const faqs = [
   {

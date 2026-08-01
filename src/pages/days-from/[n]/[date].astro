@@ -10,6 +10,7 @@ import Timeline from '../../../components/Timeline.astro';
 import ShareLink from '../../../components/ShareLink.astro';
 import { dateFromDays, getWeekday } from '../../../lib/dates';
 import { resultPageSchema } from '../../../lib/schema';
+import { isBuilt } from '../../../lib/data/routes';
 import { formatDateLong } from '../../../lib/formatters';
 import { nValuesForDate } from '../../../lib/data/n-values';
 import { daysFromDates } from '../../../lib/data/days-from-dates';
@@ -51,7 +52,7 @@ const relatedLinks = [
   { href: `/days-in/${new Date(date).getFullYear()}/`, label: `Days in ${new Date(date).getFullYear()}` },
   { href: '/days-from-today/', label: 'Days from today calculator →' },
   { href: '/days-between/', label: 'Days between dates calculator →' },
-];
+].filter(l => isBuilt(l.href));
 
 const faqs = [
   {

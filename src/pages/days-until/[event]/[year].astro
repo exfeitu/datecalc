@@ -11,6 +11,7 @@ import ShareLink from '../../../components/ShareLink.astro';
 import { today, getEventDate, signedDaysBetween, getWeekday } from '../../../lib/dates';
 import { daysUntilMeta } from '../../../lib/meta';
 import { resultPageSchema } from '../../../lib/schema';
+import { isBuilt } from '../../../lib/data/routes';
 import { formatDateLong } from '../../../lib/formatters';
 import { events, eventYears } from '../../../lib/data/events';
 
@@ -69,7 +70,7 @@ const relatedLinks = [
   { href: '/age-in-days/', label: 'Age in days calculator →' },
   { href: '/days-until/', label: 'More days until events →' },
   { href: '/days-from-today/', label: 'Days from today calculator →' },
-];
+].filter(l => isBuilt(l.href));
 
 const faqs = [
   {

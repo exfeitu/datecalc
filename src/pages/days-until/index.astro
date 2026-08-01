@@ -40,9 +40,9 @@ const categories: Record<string, { catName: string; items: { slug: string; name:
 const currentYear = parseInt(todayStr.slice(0, 4));
 const displayYears = [currentYear, currentYear + 1];
 
-for (const event of events) {
+// leap-day is only built for 2028 (not in displayYears), so exclude it from the hub
+for (const event of events.filter(e => e.slug !== 'leap-day')) {
   for (const year of displayYears) {
-    if (year === 2028 && event.slug === 'leap-day') continue; // Leap day only for 2028 but is handled
     const eventDate = getEventDate(event, year);
     const days = signedDaysBetween(todayStr, eventDate);
     if (days >= 0) {
