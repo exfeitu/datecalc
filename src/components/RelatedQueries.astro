@@ -13,7 +13,7 @@ export interface Props {
 const { links, title = 'Related Calculations' } = Astro.props;
 ---
 <nav class="rq" aria-label={title}>
-  <h2 class="rq-title">{title}</h2>
+  <h2 class="rq-title kicker">{title}</h2>
   <ul class="rq-list">
     {links.map((link) => (
       <li><a href={link.href}>{link.label}</a></li>
@@ -24,19 +24,16 @@ const { links, title = 'Related Calculations' } = Astro.props;
 <style>
   .rq {
     margin: var(--sp-8) 0;
-    padding: var(--sp-5) var(--sp-6);
+    padding: var(--sp-6);
     background: var(--color-card);
     border: 1px solid var(--color-border-light);
     border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
   }
 
   .rq-title {
-    font-size: var(--text-sm);
-    font-weight: 650;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-text-tertiary);
     margin-bottom: var(--sp-4);
+    color: var(--color-text-tertiary);
   }
 
   .rq-list {

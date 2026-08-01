@@ -51,7 +51,6 @@ const faqItems = [
 
 <BaseLayout title={meta.title} description={meta.description} canonical={SITE_URL} schema={schemas}>
   <section class="home-hero">
-    <div class="home-hero-halo" aria-hidden="true"></div>
     <h1>Date Calculator</h1>
     <p class="home-tagline">Fast, free, no clutter. Just answers.</p>
   </section>
@@ -60,8 +59,7 @@ const faqItems = [
 
   <!-- Category Cards -->
   <section class="home-section">
-    <h2 class="home-section-title">Tools</h2>
-    <p class="home-section-desc">Every tool is free, instant, and works on any device. No sign-up, no limits.</p>
+    <h2 class="home-section-title kicker">Tools</h2>
     <div class="home-grid">
       {categories.map(c => (
         <CategoryCard title={c.title} description={c.description} href={c.href} />
@@ -71,7 +69,7 @@ const faqItems = [
 
   <!-- Popular Now -->
   <section class="home-section">
-    <h2 class="home-section-title">Popular Now</h2>
+    <h2 class="home-section-title kicker">Popular Now</h2>
     <ul class="home-links">
       {popularLinks.map(link => (
         <li><a href={link.href}>{link.label}</a></li>
@@ -81,7 +79,7 @@ const faqItems = [
 
   <!-- More Tools -->
   <nav class="home-more" aria-label="More tools">
-    <h2 class="home-more-title">More Tools</h2>
+    <h2 class="home-more-title kicker">More Tools</h2>
     <ul>
       <li><a href="/days-in/">Days in Month / Year</a> <span>&mdash; how many days in each month</span></li>
       <li><a href="/age-in-days/">Age in Days</a> <span>&mdash; calculate your age in days</span></li>
@@ -96,35 +94,11 @@ const faqItems = [
   .home-hero {
     text-align: center;
     padding: var(--sp-10) 0 var(--sp-4);
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Subtle halo behind the homepage title */
-  .home-hero-halo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -65%);
-    width: 260px;
-    height: 260px;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle at center,
-      var(--color-accent-subtle) 0%,
-      transparent 70%
-    );
-    pointer-events: none;
-    z-index: 0;
   }
 
   .home-hero h1 {
-    font-size: clamp(2rem, 6vw, 2.75rem);
-    font-weight: 800;
-    letter-spacing: -0.025em;
+    font-size: clamp(2.25rem, 6vw, 3rem);
     margin-bottom: var(--sp-2);
-    position: relative;
-    z-index: 1;
   }
 
   .home-tagline {
@@ -132,8 +106,6 @@ const faqItems = [
     color: var(--color-text-secondary);
     max-width: 480px;
     margin: 0 auto;
-    position: relative;
-    z-index: 1;
   }
 
   /* Sections */
@@ -142,18 +114,8 @@ const faqItems = [
   }
 
   .home-section-title {
-    font-size: var(--text-sm);
-    font-weight: 650;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-text-tertiary);
-    margin-bottom: var(--sp-2);
-  }
-
-  .home-section-desc {
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
     margin-bottom: var(--sp-4);
+    color: var(--color-text-tertiary);
   }
 
   /* Grid */
@@ -178,19 +140,16 @@ const faqItems = [
   /* More tools */
   .home-more {
     margin: var(--sp-8) 0;
-    padding: var(--sp-5) var(--sp-6);
+    padding: var(--sp-6);
     background: var(--color-card);
     border: 1px solid var(--color-border-light);
     border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
   }
 
   .home-more-title {
-    font-size: var(--text-sm);
-    font-weight: 650;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-text-tertiary);
     margin-bottom: var(--sp-4);
+    color: var(--color-text-tertiary);
   }
 
   .home-more ul {
@@ -210,11 +169,6 @@ const faqItems = [
   @media (max-width: 640px) {
     .home-hero {
       padding: var(--sp-6) 0 var(--sp-2);
-    }
-
-    .home-hero-halo {
-      width: 200px;
-      height: 200px;
     }
 
     .home-grid {

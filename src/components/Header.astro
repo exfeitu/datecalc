@@ -6,15 +6,22 @@ const navLinks = [
   { href: '/days-until/', label: 'Days Until' },
   { href: '/days-in/', label: 'Days In' },
 ];
+
+const path = Astro.url.pathname;
 ---
 <header class="sh">
   <a href="/" class="sh-logo" aria-label="DateCalc home">
-    <span class="sh-logo-mark" aria-hidden="true">◷</span>
-    DateCalc
+    <span class="sh-logo-mark" aria-hidden="true"></span>
+    <span class="sh-logo-word">DateCalc</span>
   </a>
   <nav aria-label="Main navigation" class="sh-nav">
     {navLinks.map(link => (
-      <a href={link.href}>{link.label}</a>
+      <a
+        href={link.href}
+        class:list={{ 'is-active': path.startsWith(link.href) }}
+      >
+        {link.label}
+      </a>
     ))}
   </nav>
 </header>
@@ -31,36 +38,45 @@ const navLinks = [
     position: sticky;
     top: 0;
     z-index: 10;
-    background: rgba(250, 250, 249, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: rgba(246, 246, 244, 0.92);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 
   .sh-logo {
-    font-size: var(--text-lg);
-    font-weight: 750;
-    color: var(--color-text);
-    text-decoration: none;
-    letter-spacing: -0.02em;
     display: flex;
     align-items: center;
     gap: var(--sp-2);
-  }
-
-  .sh-logo-mark {
-    font-size: 1.15em;
-    color: var(--color-accent);
-    display: inline-block;
-  }
-
-  .sh-logo:hover {
-    color: var(--color-accent);
+    color: var(--color-text);
     text-decoration: none;
   }
 
-  .sh-logo:hover .sh-logo-mark {
-    transform: rotate(15deg);
-    transition: transform var(--transition-base);
+  .sh-logo:hover {
+    text-decoration: none;
+  }
+
+  /* Ruler-tick mark */
+  .sh-logo-mark {
+    width: 20px;
+    height: 14px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--color-accent) 0 2px,
+      transparent 2px 5px
+    );
+    opacity: 0.9;
+  }
+
+  .sh-logo-word {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+
+  .sh-logo:hover .sh-logo-word {
+    color: var(--color-accent);
   }
 
   .sh-nav {
@@ -86,15 +102,17 @@ const navLinks = [
     text-decoration: none;
   }
 
+  .sh-nav a.is-active {
+    color: var(--color-accent);
+    background: var(--color-accent-subtle);
+  }
+
   @media (max-width: 640px) {
     .sh {
       flex-direction: column;
       gap: var(--sp-3);
       padding: var(--sp-3) 0;
       margin-bottom: var(--sp-4);
-      position: static;
-      backdrop-filter: none;
-      background: transparent;
     }
 
     .sh-nav {

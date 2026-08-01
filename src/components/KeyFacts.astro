@@ -12,27 +12,27 @@ const minutes = hours * 60;
 const seconds = minutes * 60;
 ---
 <div class="kf">
-  <h2 class="kf-title">Key Facts</h2>
+  <h2 class="kf-title kicker">Key Facts</h2>
   <dl class="kf-grid">
     <div class="kf-item">
       <dt class="kf-label">Total Days</dt>
-      <dd class="kf-value">{days.toLocaleString('en-US')}</dd>
+      <dd class="kf-value num">{days.toLocaleString('en-US')}</dd>
     </div>
     <div class="kf-item">
       <dt class="kf-label">Weeks</dt>
-      <dd class="kf-value">{weeks}{remDays > 0 && <span class="kf-extra"> + {remDays} day{remDays === 1 ? '' : 's'}</span>}</dd>
+      <dd class="kf-value num">{weeks}{remDays > 0 && <span class="kf-extra">+ {remDays} day{remDays === 1 ? '' : 's'}</span>}</dd>
     </div>
     <div class="kf-item">
       <dt class="kf-label">Hours</dt>
-      <dd class="kf-value">{hours.toLocaleString('en-US')}</dd>
+      <dd class="kf-value num">{hours.toLocaleString('en-US')}</dd>
     </div>
     <div class="kf-item">
       <dt class="kf-label">Minutes</dt>
-      <dd class="kf-value">{minutes.toLocaleString('en-US')}</dd>
+      <dd class="kf-value num">{minutes.toLocaleString('en-US')}</dd>
     </div>
     <div class="kf-item">
       <dt class="kf-label">Seconds</dt>
-      <dd class="kf-value">{seconds.toLocaleString('en-US')}</dd>
+      <dd class="kf-value num">{seconds.toLocaleString('en-US')}</dd>
     </div>
   </dl>
 </div>
@@ -44,16 +44,13 @@ const seconds = minutes * 60;
     background: var(--color-card);
     border: 1px solid var(--color-border-light);
     border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
   }
 
   .kf-title {
-    font-size: var(--text-sm);
-    font-weight: 650;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-text-tertiary);
     margin-bottom: var(--sp-4);
     text-align: center;
+    color: var(--color-text-tertiary);
   }
 
   .kf-grid {
@@ -74,6 +71,7 @@ const seconds = minutes * 60;
   .kf-label {
     font-size: var(--text-xs);
     font-weight: 500;
+    font-family: var(--font-mono);
     color: var(--color-text-tertiary);
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -81,12 +79,9 @@ const seconds = minutes * 60;
   }
 
   .kf-value {
-    font-family: var(--font-mono);
     font-size: var(--text-2xl);
     font-weight: 750;
     color: var(--color-text);
-    font-feature-settings: "tnum";
-    font-variant-numeric: tabular-nums;
   }
 
   .kf-extra {

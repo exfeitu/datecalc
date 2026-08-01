@@ -29,7 +29,7 @@ const sameYear = year1 === year2;
       {sameYear && <span class="tl-yr">{year1}</span>}
     </div>
     <div class="tl-center">
-      <span class="tl-days">{days.toLocaleString('en-US')} day{days === 1 ? '' : 's'}</span>
+      <span class="tl-days num">{days.toLocaleString('en-US')} day{days === 1 ? '' : 's'}</span>
     </div>
     <div class="tl-point tl-point-end">
       <span class="tl-date">{formatDateLong(date2)}</span>
@@ -46,6 +46,7 @@ const sameYear = year1 === year2;
     background: var(--color-card);
     border: 1px solid var(--color-border-light);
     border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
   }
 
   /* The horizontal bar */
@@ -138,7 +139,6 @@ const sameYear = year1 === year2;
   }
 
   .tl-days {
-    font-family: var(--font-mono);
     font-size: var(--text-sm);
     font-weight: 750;
     color: var(--color-accent);
@@ -146,9 +146,7 @@ const sameYear = year1 === year2;
     background: var(--color-accent-subtle);
     padding: var(--sp-1) var(--sp-3);
     border-radius: 999px;
-    border: 1px solid rgba(37, 99, 235, 0.12);
-    font-feature-settings: "tnum";
-    font-variant-numeric: tabular-nums;
+    border: 1px solid rgba(29, 78, 216, 0.14);
   }
 
   @media (max-width: 640px) {

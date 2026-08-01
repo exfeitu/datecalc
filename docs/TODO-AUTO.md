@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-01 17:00 UTC
+> Last updated: 2026-08-01 18:20 UTC
 
 ## 🔴 High (0 remaining!)
 <!-- All High items completed -->
@@ -10,9 +10,17 @@
 <!-- All Medium items completed -->
 
 ## 🟢 Low
-- [ ] ⚠️ COMPACT NEEDED — context full, run /compact
+- [ ] FUTURE: Consider a light homepage hero graphic / illustration (currently type-only)
+- [ ] FUTURE: Monitor GSC for thin-content pages after UI redesign
 
 ## ✅ Done
+- [x] 2026-08-01: Bold UI redesign "Engineering Logbook" — graph-paper grid bg, white plates, serif display + mono kicker system
+- [x] 2026-08-01: AnswerHero measuring-ruler signature — tick row + blue needle under every answer number
+- [x] 2026-08-01: Header — serif wordmark + ruler-tick mark + active-section nav highlight
+- [x] 2026-08-01: Card components — white plates, mono kickers, hairline borders (CategoryCard/DateContext/KeyFacts/Timeline/FAQ/RelatedQueries/ShareLink)
+- [x] 2026-08-01: Homepage serif hero + mono section kickers; all 4 hub pages mono headings
+- [x] 2026-08-01: Fix grid texture full-bleed (html), remove dead utility classes
+- [x] 2026-08-01: Verify build 459 pages + CSS budget (4.5KB inline / 6KB shared asset)
 - [x] 2026-08-01: Fix 404 page CSS — replaced non-existent vars, used design system tokens
 - [x] 2026-08-01: Add cross-links to all 4 index pages — consistent "More Date Tools" sections
 - [x] 2026-08-01: Enrich days-from/[n]/[date] — KeyFacts + Timeline + ShareLink + 6 links + 4 FAQs

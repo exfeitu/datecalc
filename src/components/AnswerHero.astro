@@ -1,5 +1,5 @@
 ---
-// AnswerHero.astro — signature large-format answer display
+// AnswerHero.astro — signature instrument readout with measuring ruler
 export interface Props {
   value: number;
   unit: string;
@@ -7,14 +7,21 @@ export interface Props {
 }
 
 const { value, unit, subtitle } = Astro.props;
+const label = `${value.toLocaleString('en-US')} ${unit}`;
 ---
 <div class="hero">
-  <div class="hero-halo" aria-hidden="true"></div>
-  <div class="hero-number" aria-label={`${value.toLocaleString('en-US')} ${unit}`}>
-    <span class="hero-value">{value.toLocaleString('en-US')}</span>
+  <p class="hero-kicker">Result</p>
+  <div class="hero-number" aria-label={label}>
+    <span class="hero-value num">{value.toLocaleString('en-US')}</span>
     <span class="hero-unit">{unit}</span>
   </div>
-  <div class="hero-accent" aria-hidden="true"></div>
+
+  <!-- Measuring ruler — the signature -->
+  <div class="hero-ruler" aria-hidden="true">
+    <span class="hero-ruler-ticks"></span>
+    <span class="hero-ruler-marker"></span>
+  </div>
+
   {subtitle && <p class="hero-sub">{subtitle}</p>}
   <slot />
 </div>
@@ -22,28 +29,12 @@ const { value, unit, subtitle } = Astro.props;
 <style>
   .hero {
     text-align: center;
-    padding: var(--sp-12) 0 var(--sp-6);
+    padding: var(--sp-10) 0 var(--sp-6);
     position: relative;
-    overflow: hidden;
   }
 
-  /* Precision lens halo — the signature element */
-  .hero-halo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -60%);
-    width: 320px;
-    height: 320px;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle at center,
-      var(--color-accent-subtle) 0%,
-      var(--color-accent-subtle) 20%,
-      transparent 65%
-    );
-    pointer-events: none;
-    z-index: 0;
+  .hero-kicker {
+    margin-bottom: var(--sp-3);
   }
 
   .hero-number {
@@ -51,48 +42,69 @@ const { value, unit, subtitle } = Astro.props;
     flex-direction: column;
     align-items: center;
     gap: 0;
-    position: relative;
-    z-index: 1;
   }
 
   .hero-value {
     display: block;
-    font-family: var(--font-mono);
-    font-size: clamp(3.25rem, 10vw, 5.5rem);
-    font-weight: 850;
+    font-size: clamp(3.5rem, 11vw, 6rem);
+    font-weight: 750;
     line-height: 1;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
     color: var(--color-text);
-    font-feature-settings: "tnum";
-    font-variant-numeric: tabular-nums;
+    text-shadow: 0 1px 0 var(--color-border-light);
   }
 
   .hero-unit {
-    display: inline-block;
-    font-size: var(--text-base);
-    font-weight: 600;
+    display: block;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-xl);
+    font-weight: 500;
     color: var(--color-accent);
     margin-top: var(--sp-2);
-    letter-spacing: 0.02em;
-    background: var(--color-accent-subtle);
-    padding: var(--sp-1) var(--sp-4);
-    border-radius: 999px;
-    border: 1px solid rgba(37, 99, 235, 0.12);
+    letter-spacing: 0.01em;
   }
 
-  .hero-accent {
-    width: 64px;
-    height: 4px;
-    margin: var(--sp-6) auto 0;
-    border-radius: 2px;
-    background: linear-gradient(
-      90deg,
-      var(--color-accent),
-      var(--color-accent-hover)
-    );
-    box-shadow: 0 0 12px var(--color-accent-glow);
+  /* Measuring ruler: tick row + baseline + blue needle */
+  .hero-ruler {
     position: relative;
-    z-index: 1;
+    width: min(340px, 86%);
+    height: 20px;
+    margin: var(--sp-6) auto 0;
+  }
+
+  .hero-ruler-ticks {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 9px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--color-text-tertiary) 0 1px,
+      transparent 1px 6px
+    );
+  }
+
+  .hero-ruler-marker {
+    position: absolute;
+    left: 50%;
+    top: -1px;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 11px;
+    background: var(--color-accent);
+    box-shadow: 0 1px 4px var(--color-accent-glow);
+  }
+
+  .hero-ruler::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 9px;
+    height: 1px;
+    background: var(--color-border);
   }
 
   .hero-sub {
@@ -103,8 +115,6 @@ const { value, unit, subtitle } = Astro.props;
     max-width: 480px;
     margin-left: auto;
     margin-right: auto;
-    position: relative;
-    z-index: 1;
   }
 
   @media (max-width: 640px) {
@@ -112,24 +122,17 @@ const { value, unit, subtitle } = Astro.props;
       padding: var(--sp-8) 0 var(--sp-4);
     }
 
-    .hero-halo {
-      width: 240px;
-      height: 240px;
-    }
-
     .hero-value {
-      font-size: clamp(2.25rem, 12vw, 3.5rem);
+      font-size: clamp(2.5rem, 14vw, 4rem);
     }
 
     .hero-unit {
-      font-size: var(--text-sm);
-      padding: var(--sp-1) var(--sp-3);
+      font-size: var(--text-lg);
     }
 
-    .hero-accent {
-      width: 48px;
-      height: 3px;
-      margin: var(--sp-4) auto 0;
+    .hero-ruler {
+      width: min(280px, 92%);
+      margin-top: var(--sp-5);
     }
   }
 </style>

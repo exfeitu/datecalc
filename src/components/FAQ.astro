@@ -14,7 +14,7 @@ export interface Props {
 const { items, pageUrl } = Astro.props;
 ---
 <section class="faq">
-  <h2 class="faq-title">Frequently Asked Questions</h2>
+  <h2 class="faq-title kicker">Frequently Asked Questions</h2>
   <div class="faq-list">
     {items.map((faq) => (
       <details class="faq-item">
@@ -33,9 +33,9 @@ const { items, pageUrl } = Astro.props;
   }
 
   .faq-title {
-    font-size: var(--text-lg);
-    font-weight: 700;
+    font-size: var(--text-sm);
     margin-bottom: var(--sp-4);
+    color: var(--color-text-tertiary);
   }
 
   .faq-list {
@@ -45,22 +45,23 @@ const { items, pageUrl } = Astro.props;
   }
 
   .faq-item {
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-border-light);
     border-radius: var(--radius-md);
     background: var(--color-card);
+    box-shadow: var(--shadow-xs);
     transition: border-color var(--transition-fast),
                 box-shadow var(--transition-fast),
                 background var(--transition-fast);
   }
 
   .faq-item:hover {
-    border-color: var(--color-text-tertiary);
+    border-color: var(--color-border);
   }
 
   .faq-item[open] {
     border-color: var(--color-accent);
     box-shadow: var(--shadow-sm);
-    background: var(--color-bg);
+    background: var(--color-card);
   }
 
   .faq-q {
@@ -84,24 +85,27 @@ const { items, pageUrl } = Astro.props;
   .faq-q::after {
     content: '+';
     flex-shrink: 0;
-    font-size: var(--text-lg);
-    font-weight: 400;
+    font-size: var(--text-base);
+    font-weight: 500;
     color: var(--color-text-tertiary);
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     text-align: center;
     line-height: 22px;
+    border: 1px solid var(--color-border);
     border-radius: 50%;
     background: var(--color-bg);
     transition: transform var(--transition-fast),
                 background var(--transition-fast),
-                color var(--transition-fast);
+                color var(--transition-fast),
+                border-color var(--transition-fast);
   }
 
   .faq-item[open] .faq-q::after {
     content: '−';
     color: #fff;
     background: var(--color-accent);
+    border-color: var(--color-accent);
   }
 
   .faq-a {
