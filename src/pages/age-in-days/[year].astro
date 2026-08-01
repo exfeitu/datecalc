@@ -4,6 +4,8 @@ import BaseLayout from '../../components/BaseLayout.astro';
 import AnswerHero from '../../components/AnswerHero.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import RelatedQueries from '../../components/RelatedQueries.astro';
+import KeyFacts from '../../components/KeyFacts.astro';
+import ShareLink from '../../components/ShareLink.astro';
 import { ageInDays } from '../../lib/dates';
 import { ageInDaysMeta } from '../../lib/meta';
 import { resultPageSchema } from '../../lib/schema';
@@ -26,6 +28,7 @@ const birthYear = parseInt(year);
 const totalDays = ageInDays(birthYear);
 const years = Math.floor(totalDays / 365);
 const weeks = Math.floor(totalDays / 7);
+const remDays = totalDays % 7;
 
 const meta = ageInDaysMeta(birthYear, totalDays);
 const pageUrl = `${SITE_URL}/age-in-days/${year}/`;
@@ -33,11 +36,13 @@ const pageUrl = `${SITE_URL}/age-in-days/${year}/`;
 const subtitle = `That's about ${years} years, or ${formatNumber(weeks)} weeks`;
 
 const relatedLinks = [
-  ...birthYears.filter(y => y !== birthYear).slice(0, 5).map(y => ({
+  ...birthYears.filter(y => y !== birthYear).slice(0, 4).map(y => ({
     href: `/age-in-days/${y}/`,
     label: `Age in days for someone born in ${y}`,
   })),
+  { href: `/days-between/${birthYear}-01-01/${new Date().getFullYear()}-01-01/`, label: `Days between ${birthYear} and ${new Date().getFullYear()}` },
   { href: '/age-in-days/', label: 'More birth years →' },
+  { href: '/days-from-today/', label: 'Days from today calculator →' },
   { href: '/days-left-in/2026/', label: 'Days left in 2026 →' },
 ];
 
@@ -49,6 +54,10 @@ const faqs = [
   {
     question: `How is age in days calculated for ${birthYear}?`,
     answer: `The calculation counts every calendar day from January 1, ${birthYear} to the current date. DateCalc uses UTC noon times for consistent, accurate results that account for all leap years in between.`,
+  },
+  {
+    question: `How many weeks old is someone born in ${birthYear}?`,
+    answer: `A person born in ${birthYear} is approximately ${formatNumber(weeks)} week${weeks === 1 ? '' : 's'} old. That's ${formatNumber(totalDays)} days total.`,
   },
 ];
 
@@ -72,6 +81,10 @@ const schemas = [
     That's roughly {years} years (at 365 days per year), or {formatNumber(weeks)} weeks.
     This calculation accounts for all leap years between {birthYear} and today.
   </p>
+
+  <KeyFacts days={totalDays} weeks={weeks} remDays={remDays} />
+
+  <ShareLink url={pageUrl} />
 
   <RelatedQueries links={relatedLinks} />
 </BaseLayout>

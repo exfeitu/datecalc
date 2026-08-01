@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-01 13:00 UTC
+> Last updated: 2026-08-01 15:00 UTC
 
 ## 🔴 High (0 remaining!)
 <!-- All High items completed -->
@@ -13,6 +13,9 @@
 - [ ] ⚠️ COMPACT NEEDED — context full, run /compact
 
 ## ✅ Done
+- [x] 2026-08-01: Enrich days-from/[n]/[date] — KeyFacts + Timeline + ShareLink + 6 links + 4 FAQs
+- [x] 2026-08-01: Enrich age-in-days/[year] — KeyFacts + ShareLink + 5 links + 3 FAQs
+- [x] 2026-08-01: Enrich days-in/[slug] — KeyFacts + ShareLink for both months and years
 - [x] 2026-08-01: Enrich days-left-in template — ShareLink + 7 related links (was 3)
 - [x] 2026-08-01: Verify schema.org — all 451 non-error pages pass JSON-LD + semantic checks
 - [x] 2026-08-01: Add "Share this result" copy link component (ShareLink.astro) — zero JS, readonly input

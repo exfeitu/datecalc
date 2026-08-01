@@ -4,6 +4,8 @@ import BaseLayout from '../../components/BaseLayout.astro';
 import AnswerHero from '../../components/AnswerHero.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import RelatedQueries from '../../components/RelatedQueries.astro';
+import KeyFacts from '../../components/KeyFacts.astro';
+import ShareLink from '../../components/ShareLink.astro';
 import { isLeapYear, daysInMonth } from '../../lib/dates';
 import { daysInMonthMeta, daysInYearMeta } from '../../lib/meta';
 import { resultPageSchema } from '../../lib/schema';
@@ -119,6 +121,8 @@ if (isYear) {
 }
 
 const pageUrl = `${SITE_URL}/days-in/${slug}/`;
+const totalWeeks = Math.floor(days / 7);
+const remDays = days % 7;
 
 const schemas = [
   resultPageSchema({ title, description, url: pageUrl, faqs }),
@@ -136,6 +140,10 @@ const schemas = [
     <AnswerHero value={days} unit={unit} subtitle={subtitle} />
 
     <p class="exp" set:html={explanation} />
+
+    <KeyFacts days={days} weeks={totalWeeks} remDays={remDays} />
+
+    <ShareLink url={pageUrl} />
 
     <RelatedQueries links={relatedLinks} />
   </BaseLayout>

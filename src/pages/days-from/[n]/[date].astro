@@ -5,6 +5,9 @@ import AnswerHero from '../../../components/AnswerHero.astro';
 import DateContext from '../../../components/DateContext.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import RelatedQueries from '../../../components/RelatedQueries.astro';
+import KeyFacts from '../../../components/KeyFacts.astro';
+import Timeline from '../../../components/Timeline.astro';
+import ShareLink from '../../../components/ShareLink.astro';
 import { dateFromDays, getWeekday } from '../../../lib/dates';
 import { resultPageSchema } from '../../../lib/schema';
 import { formatDateLong } from '../../../lib/formatters';
@@ -44,7 +47,10 @@ const subtitle = `That date is ${formatDateLong(resultDate)} (${weekday})`;
 const relatedLinks = [
   { href: `/days-between/${date}/${resultDate}/`, label: `Days between ${formatDateLong(date)} and ${formatDateLong(resultDate)}` },
   { href: `/days-from-today/${nDays}/`, label: `${nDays} days from today` },
-  { href: '/days-from-today/', label: 'More days-from calculators →' },
+  { href: `/days-from/${nDays + 1}/${date}/`, label: `${nDays + 1} days from ${formatDateLong(date)}` },
+  { href: `/days-in/${new Date(date).getFullYear()}/`, label: `Days in ${new Date(date).getFullYear()}` },
+  { href: '/days-from-today/', label: 'Days from today calculator →' },
+  { href: '/days-between/', label: 'Days between dates calculator →' },
 ];
 
 const faqs = [
@@ -53,8 +59,16 @@ const faqs = [
     answer: `${nDays} days from ${formatDateLong(date)} (a ${fromWeekday}) is ${formatDateLong(resultDate)} (a ${weekday}). That's ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''} later.`,
   },
   {
+    question: `What day of the week is ${nDays} days after ${formatDateLong(date)}?`,
+    answer: `${nDays} days after ${formatDateLong(date)} is a ${weekday} (${formatDateLong(resultDate)}).`,
+  },
+  {
     question: `How many weeks is ${nDays} days from ${formatDateLong(date)}?`,
     answer: `${nDays} days is ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''}.`,
+  },
+  {
+    question: `How is this date calculated?`,
+    answer: `DateCalc adds ${nDays} calendar days to ${formatDateLong(date)}, accounting for month lengths and leap years automatically. The calculation uses UTC noon times for consistent results across all time zones.`,
   },
 ];
 
@@ -74,6 +88,8 @@ const schemas = [
 
   <DateContext date1={date} date2={resultDate} days={nDays} />
 
+  <KeyFacts days={nDays} weeks={weeks} remDays={remDays} />
+
   <p class="exp">
     <strong>{nDays} day{nDays === 1 ? '' : 's'}</strong> after
     {' '}{formatDateLong(date)} ({fromWeekday})
@@ -81,6 +97,10 @@ const schemas = [
     That's {weeks} week{weeks === 1 ? '' : 's'}
     {remDays > 0 && <span> and {remDays} day{remDays === 1 ? '' : 's'}</span>} from the starting date.
   </p>
+
+  <Timeline date1={date} date2={resultDate} days={nDays} />
+
+  <ShareLink url={pageUrl} />
 
   <RelatedQueries links={relatedLinks} />
 </BaseLayout>
