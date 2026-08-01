@@ -4,6 +4,7 @@ import BaseLayout from '../../components/BaseLayout.astro';
 import AnswerHero from '../../components/AnswerHero.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import RelatedQueries from '../../components/RelatedQueries.astro';
+import ShareLink from '../../components/ShareLink.astro';
 import { daysLeftInYear, isLeapYear, today } from '../../lib/dates';
 import { daysLeftInYearMeta } from '../../lib/meta';
 import { resultPageSchema } from '../../lib/schema';
@@ -38,7 +39,11 @@ const subtitle = remaining >= 0
 const relatedLinks = [
   { href: `/days-in/${year}/`, label: `Total days in ${yearNum}` },
   { href: '/days-until/new-years-eve/2026/', label: 'Days until New Year\'s Eve 2026' },
+  { href: '/days-until/christmas/2026/', label: 'Days until Christmas 2026' },
+  { href: `/days-from-today/${Math.max(0, remaining)}/`, label: `${Math.max(0, remaining)} days from today` },
   { href: '/days-from-today/', label: 'Days from today calculator →' },
+  { href: '/days-between/', label: 'Days between dates calculator →' },
+  { href: '/age-in-days/', label: 'Age in days calculator →' },
 ];
 
 const faqs = [
@@ -83,6 +88,8 @@ const schemas = [
         out of {totalDays} total days ({isLeap ? 'a leap year' : 'not a leap year'}).</>
     )}
   </p>
+
+  <ShareLink url={pageUrl} />
 
   <RelatedQueries links={relatedLinks} />
 </BaseLayout>
