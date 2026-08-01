@@ -26,6 +26,21 @@
 
   const MS_PER_DAY = 86_400_000;
 
+  function urlParams() {
+    return new URLSearchParams(window.location.search);
+  }
+
+  // Keep the URL shareable: ?start=YYYY-MM-DD&end=YYYY-MM-DD
+  function syncUrl() {
+    const params = urlParams();
+    if (d1.value) params.set('start', d1.value);
+    else params.delete('start');
+    if (d2.value) params.set('end', d2.value);
+    else params.delete('end');
+    const qs = params.toString();
+    history.replaceState(null, '', qs ? window.location.pathname + '?' + qs : window.location.pathname);
+  }
+
   function update() {
     if (!d1.value || !d2.value) {
       result.innerHTML = '';
@@ -44,7 +59,15 @@
       '<span class="calc-num">' + days.toLocaleString('en-US') + '</span>' +
       '<span class="calc-unit">' + dayLabel + '</span>' +
       '<p class="calc-sub">That\'s ' + weeks + ' ' + weekLabel + remStr + '</p>';
+
+    syncUrl();
   }
+
+  // Prefill from ?start=&end= so a shared URL reproduces the result
+  const initial = urlParams();
+  if (initial.get('start')) d1.value = initial.get('start')!;
+  if (initial.get('end')) d2.value = initial.get('end')!;
+  if (initial.get('start') || initial.get('end')) update();
 
   d1.addEventListener('change', update);
   d2.addEventListener('change', update);
