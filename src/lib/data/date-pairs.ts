@@ -65,12 +65,9 @@ export const datePairs: DatePair[] = [
   { date1: '2026-12-15', date2: '2027-02-15', category: 'cross-year', priority: 2 },
 
   // === 30-Day Intervals ===
-  { date1: '2026-01-01', date2: '2026-01-31', category: '30-day', priority: 3 },
   { date1: '2026-02-01', date2: '2026-03-03', category: '30-day', priority: 3 },
-  { date1: '2026-03-01', date2: '2026-03-31', category: '30-day', priority: 3 },
 
   // === 60-Day Intervals ===
-  { date1: '2026-01-01', date2: '2026-03-02', category: '60-day', priority: 3 },
   { date1: '2026-07-01', date2: '2026-08-30', category: '60-day', priority: 3 },
 
   // === 90-Day Intervals ===
@@ -83,7 +80,6 @@ export const datePairs: DatePair[] = [
   { date1: '2026-09-01', date2: '2026-12-30', category: '120-day', priority: 3 },
 
   // === 180-Day (approx 6 months) ===
-  { date1: '2026-01-01', date2: '2026-06-30', category: '180-day', priority: 2 },
   { date1: '2026-07-01', date2: '2026-12-28', category: '180-day', priority: 2 },
 
   // === Sport Events ===
@@ -96,8 +92,6 @@ export const datePairs: DatePair[] = [
   { date1: '2026-01-01', date2: '2026-03-02', category: 'pop-culture', priority: 3 }, // to Oscars 2026
 
   // === Business ===
-  { date1: '2026-01-01', date2: '2026-03-31', category: 'business', priority: 2 }, // Q1
-  { date1: '2026-07-01', date2: '2026-09-30', category: 'business', priority: 2 }, // Q3
   { date1: '2026-11-01', date2: '2026-11-28', category: 'business', priority: 2 }, // BF month
 
   // === Milestones ===
@@ -120,7 +114,6 @@ export const datePairs: DatePair[] = [
   // === More cross-year and edge cases ===
   { date1: '2026-01-01', date2: '2026-12-30', category: 'year-end', priority: 3 },
   { date1: '2026-01-02', date2: '2026-12-31', category: 'year-end', priority: 3 },
-  { date1: '2027-01-01', date2: '2027-12-31', category: 'year', priority: 2 },
   { date1: '2026-06-15', date2: '2026-09-15', category: 'summer', priority: 2 },
   { date1: '2026-11-01', date2: '2026-12-24', category: 'holiday', priority: 2 },
   { date1: '2026-03-01', date2: '2026-05-31', category: 'spring', priority: 3 },

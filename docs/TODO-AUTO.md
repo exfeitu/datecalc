@@ -16,6 +16,7 @@
 - [ ] FUTURE: Monitor GSC for thin-content pages after UI redesign
 
 ## ✅ Done
+- [x] 2026-08-02: Dedupe date-pairs.ts — removed 7 duplicate date pairs (same URL, different category label). Build count corrected 459→452 (was inflated by duplicate routes). Real count: 451 sitemap routes + 404. Audit all green. category/priority fields confirmed unused
 - [x] 2026-08-02: Homepage hero graphic — new TodayPlate component (zero-JS, build-time): mini calendar of current month w/ today highlighted in blue, year-progress bar + needle, day-of-year readout. Fills the type-only hero. Adds ~1.2KB shared CSS, homepage ~21.9KB HTML. Added --radius-xs token
 - [x] 2026-08-01: Fix days-until title/meta/h1 saying "until" for past events → now "since" (e.g. "How Many Days Since Spring 2026?"). Full-site audit: 0 broken links, 0 missing/multi h1, 0 desc >160, 0 thin
 - [x] 2026-08-01: Enrich meta descriptions below 100 chars (69 pages → 0): days-until adds weeks/day breakdown + since-verb; days-from adds weekday + exact weeks. Target 120-155 chars
