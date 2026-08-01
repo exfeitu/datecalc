@@ -2,6 +2,7 @@
 // BaseLayout.astro — every page wrapper. Injects <head>, Header, Footer.
 import Header from './Header.astro';
 import Footer from './Footer.astro';
+import Analytics from '@vercel/analytics/astro';
 import '../styles/global.css';
 
 export interface Props {
@@ -47,5 +48,8 @@ const { title, description, canonical, schema } = Astro.props;
     <slot />
   </main>
   <Footer />
+
+  <!-- Vercel Analytics (Web Analytics + Speed Insights) — first-party, no-op outside Vercel -->
+  <Analytics />
 </body>
 </html>
