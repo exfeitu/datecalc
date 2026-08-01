@@ -1,0 +1,70 @@
+---
+// ShareLink.astro — Share/copy link section, zero JS
+export interface Props {
+  url: string;
+}
+
+const { url } = Astro.props;
+---
+<div class="share">
+  <h2 class="share-title">Share This Result</h2>
+  <input
+    class="share-input"
+    type="text"
+    value={url}
+    readonly
+    aria-label="Page URL"
+    onclick="this.select()"
+  />
+  <p class="share-hint">Click to select, then copy (Ctrl+C or ⌘C)</p>
+</div>
+
+<style>
+  .share {
+    margin: var(--sp-10) 0 var(--sp-8);
+    padding: var(--sp-5);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+
+  .share-title {
+    font-size: var(--text-sm);
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--sp-3);
+  }
+
+  .share-input {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: var(--sp-3) var(--sp-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    outline: none;
+    cursor: text;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .share-input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-glow);
+  }
+
+  .share-hint {
+    margin-top: var(--sp-2);
+    margin-bottom: 0;
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+  }
+</style>

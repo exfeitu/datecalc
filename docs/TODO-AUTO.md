@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-01 06:48 UTC
+> Last updated: 2026-08-01 09:00 UTC
 
 ## 🔴 High (0 remaining!)
 <!-- All High items completed -->
@@ -10,12 +10,12 @@
 <!-- All Medium items completed -->
 
 ## 🟢 Low
-- [ ] Add "Share this result" copy link button (zero JS)
 - [ ] Verify all 459 pages pass schema.org validator
-- [ ] Review day-of-week labels readability on mobile
 - [ ] ⚠️ COMPACT NEEDED — context full, run /compact
 
 ## ✅ Done
+- [x] 2026-08-01: Add "Share this result" copy link component (ShareLink.astro) — zero JS, readonly input
+- [x] 2026-08-01: Review day-of-week labels readability — increased mobile font size + contrast
 - [x] 2026-07-31: Add KeyFacts stats card to 3 main templates
 - [x] 2026-07-31: Fix DateContext period spacing bug
 - [x] 2026-07-31: Full CSS redesign — global.css + 12 components + 4 templates

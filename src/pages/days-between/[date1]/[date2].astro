@@ -7,6 +7,7 @@ import Breadcrumb from '../../../components/Breadcrumb.astro';
 import RelatedQueries from '../../../components/RelatedQueries.astro';
 import KeyFacts from '../../../components/KeyFacts.astro';
 import Timeline from '../../../components/Timeline.astro';
+import ShareLink from '../../../components/ShareLink.astro';
 import { daysBetween, getWeekday, isLeapYear } from '../../../lib/dates';
 import { daysBetweenMeta } from '../../../lib/meta';
 import { resultPageSchema } from '../../../lib/schema';
@@ -99,6 +100,8 @@ const schemas = [
   </p>
 
   <Timeline date1={date1} date2={date2} days={totalDays} />
+
+  <ShareLink url={pageUrl} />
 
   <RelatedQueries links={relatedLinks} />
 </BaseLayout>
