@@ -49,7 +49,7 @@ const isFuture = days >= 0;
 const verb = isFuture ? 'until' : 'since';
 const daysText = isFuture ? `${absDays} day${absDays === 1 ? '' : 's'} until` : `${absDays} day${absDays === 1 ? '' : 's'} since`;
 
-const meta = daysUntilMeta(eventData!.name, eventYear, absDays, eventDate);
+const meta = daysUntilMeta(eventData!.name, eventYear, absDays, eventDate, isFuture ? 'until' : 'since');
 const pageUrl = `${SITE_URL}/days-until/${event}/${year}/`;
 
 const nextYear = eventYear + 1;
@@ -106,7 +106,7 @@ const schemas = [
   <AnswerHero
     value={absDays}
     unit={`days ${verb}`}
-    heading={`How many days until ${eventData!.name} ${eventYear}?`}
+    heading={`How many days ${verb} ${eventData!.name} ${eventYear}?`}
     subtitle={subtitle}
   />
 

@@ -65,11 +65,24 @@ export function daysFromTodayMeta(n: number, resultDate: string): Meta {
 }
 
 /** Days Until Event Programmatic Page */
-export function daysUntilMeta(eventName: string, year: number, days: number, eventDate: string): Meta {
+export function daysUntilMeta(
+  eventName: string,
+  year: number,
+  days: number,
+  eventDate: string,
+  verb: 'until' | 'since',
+): Meta {
   const weekday = getWeekday(eventDate);
+  const weeks = Math.floor(days / 7);
+  const rem = days % 7;
+  const weekLabel = weeks === 1 ? 'week' : 'weeks';
+  const remStr = rem ? ` and ${rem} day${rem === 1 ? '' : 's'}` : '';
   return {
-    title: `How Many Days Until ${eventName} ${year}? | ${SITE_NAME}`,
-    description: `There are ${days} days until ${eventName} ${year} (${weekday}, ${formatDateLong(eventDate)}). Free countdown with DateCalc.`,
+    title: `How Many Days ${verb === 'until' ? 'Until' : 'Since'} ${eventName} ${year}? | ${SITE_NAME}`,
+    description:
+      verb === 'until'
+        ? `There are ${days} days until ${eventName} ${year} (${weekday}, ${formatDateLong(eventDate)}). That's ${weeks} ${weekLabel}${remStr}. Free countdown with DateCalc.`
+        : `${eventName} ${year} was ${days} days ago (${weekday}, ${formatDateLong(eventDate)}). That's ${weeks} ${weekLabel}${remStr}. Free date countdown with DateCalc.`,
   };
 }
 

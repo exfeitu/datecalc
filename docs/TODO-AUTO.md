@@ -16,6 +16,9 @@
 - [ ] FUTURE: Monitor GSC for thin-content pages after UI redesign
 
 ## ✅ Done
+- [x] 2026-08-01: Fix days-until title/meta/h1 saying "until" for past events → now "since" (e.g. "How Many Days Since Spring 2026?"). Full-site audit: 0 broken links, 0 missing/multi h1, 0 desc >160, 0 thin
+- [x] 2026-08-01: Enrich meta descriptions below 100 chars (69 pages → 0): days-until adds weeks/day breakdown + since-verb; days-from adds weekday + exact weeks. Target 120-155 chars
+- [x] 2026-08-01: Remove stale .claude/skills/frontend-design.md (project copy of plugin the user uninstalled)
 - [x] 2026-08-01: Calculator reads ?start=&end= URL params — prefill + shareable URL sync (homepage + hub pages)
 - [x] 2026-08-01: Fix missing <h1> on all 443 programmatic pages. AnswerHero now takes a `heading` prop (renders serif h1 above the readout); all 7 templates pass their question. Audit: 0 pages missing h1, 0 duplicates
 - [x] 2026-08-01: Trim meta descriptions over 160 chars to 0 (days-between, days-until, days-in month). Polished days-until desc with formatted dates
