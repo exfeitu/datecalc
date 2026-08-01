@@ -137,7 +137,12 @@ const schemas = [
       { name: contextLabel, url: pageUrl },
     ]} />
 
-    <AnswerHero value={days} unit={unit} subtitle={subtitle} />
+    <AnswerHero
+      value={days}
+      unit={unit}
+      heading={isYear ? `How many days in ${yearNum}?` : `How many days in ${monthData!.name}?`}
+      subtitle={subtitle}
+    />
 
     <p class="exp" set:html={explanation} />
 

@@ -85,7 +85,12 @@ const schemas = [
     { name: `${nDays} Days From ${formatDateLong(date)}`, url: pageUrl },
   ]} />
 
-  <AnswerHero value={nDays} unit={`days from ${formatDateLong(date)}`} subtitle={subtitle} />
+  <AnswerHero
+    value={nDays}
+    unit={`days from ${formatDateLong(date)}`}
+    heading={`What date is ${nDays} days from ${formatDateLong(date)}?`}
+    subtitle={subtitle}
+  />
 
   <DateContext date1={date} date2={resultDate} days={nDays} />
 

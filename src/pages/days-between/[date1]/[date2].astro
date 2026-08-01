@@ -84,7 +84,12 @@ const schemas = [
     { name: `${formatDateLong(date1)} to ${formatDateLong(date2)}`, url: pageUrl },
   ]} />
 
-  <AnswerHero value={totalDays} unit="days" subtitle={subtitle} />
+  <AnswerHero
+    value={totalDays}
+    unit="days"
+    heading={`How many days between ${formatDateLong(date1)} and ${formatDateLong(date2)}?`}
+    subtitle={subtitle}
+  />
 
   <DateContext date1={date1} date2={date2} days={totalDays} />
 

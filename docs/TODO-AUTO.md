@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-01 19:10 UTC
+> Last updated: 2026-08-01 21:06 UTC
 
 ## 🔴 High (0 remaining!)
 <!-- All High items completed -->
@@ -14,6 +14,8 @@
 - [ ] FUTURE: Monitor GSC for thin-content pages after UI redesign
 
 ## ✅ Done
+- [x] 2026-08-01: Fix missing <h1> on all 443 programmatic pages. AnswerHero now takes a `heading` prop (renders serif h1 above the readout); all 7 templates pass their question. Audit: 0 pages missing h1, 0 duplicates
+- [x] 2026-08-01: Trim meta descriptions over 160 chars to 0 (days-between, days-until, days-in month). Polished days-until desc with formatted dates
 - [x] 2026-08-01: Fix 623 broken internal links → 0. Added shared `isBuilt()` (src/lib/data/routes.ts) that knows which curated routes are generated; all 6 programmatic templates filter related links through it
 - [x] 2026-08-01: Fix leap-day 2027 broken link in days-until hub (exclude leap-day, built only for 2028)
 - [x] 2026-08-01: Bold UI redesign "Engineering Logbook" — graph-paper grid bg, white plates, serif display + mono kicker system

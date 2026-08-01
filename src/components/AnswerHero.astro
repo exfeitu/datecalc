@@ -3,13 +3,16 @@
 export interface Props {
   value: number;
   unit: string;
+  /** Page <h1> question rendered above the readout (SEO: every page needs exactly one h1). */
+  heading?: string;
   subtitle?: string;
 }
 
-const { value, unit, subtitle } = Astro.props;
+const { value, unit, subtitle, heading } = Astro.props;
 const label = `${value.toLocaleString('en-US')} ${unit}`;
 ---
 <div class="hero">
+  {heading && <h1 class="hero-heading">{heading}</h1>}
   <p class="hero-kicker">Result</p>
   <div class="hero-number" aria-label={label}>
     <span class="hero-value num">{value.toLocaleString('en-US')}</span>
@@ -31,6 +34,17 @@ const label = `${value.toLocaleString('en-US')} ${unit}`;
     text-align: center;
     padding: var(--sp-10) 0 var(--sp-6);
     position: relative;
+  }
+
+  .hero-heading {
+    font-family: var(--font-serif);
+    font-size: clamp(1.4rem, 4.5vw, 1.9rem);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    margin: 0 auto var(--sp-4);
+    max-width: 560px;
+    text-wrap: balance;
   }
 
   .hero-kicker {

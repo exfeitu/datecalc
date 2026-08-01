@@ -75,7 +75,12 @@ const schemas = [
     { name: `Days Left in ${yearNum}`, url: pageUrl },
   ]} />
 
-  <AnswerHero value={Math.max(0, remaining)} unit={`days left in ${yearNum}`} subtitle={subtitle} />
+  <AnswerHero
+    value={Math.max(0, remaining)}
+    unit={`days left in ${yearNum}`}
+    heading={`How many days are left in ${yearNum}?`}
+    subtitle={subtitle}
+  />
 
   <p class="exp">
     {remaining > 0 ? (

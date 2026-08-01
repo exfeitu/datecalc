@@ -83,7 +83,12 @@ const schemas = [
     { name: `${nDays} Days From Today`, url: pageUrl },
   ]} />
 
-  <AnswerHero value={nDays} unit="days from today" subtitle={subtitle} />
+  <AnswerHero
+    value={nDays}
+    unit="days from today"
+    heading={`What date is ${nDays} days from today?`}
+    subtitle={subtitle}
+  />
 
   <DateContext date1={todayStr} date2={resultDate} days={nDays} />
 

@@ -5,7 +5,7 @@
  */
 
 import { getWeekday, isLeapYear } from './dates';
-import { formatNumber } from './formatters';
+import { formatNumber, formatDateLong } from './formatters';
 
 /** Base site name appended to all titles */
 const SITE_NAME = 'DateCalc';
@@ -37,12 +37,10 @@ export function daysBetweenHubMeta(): Meta {
 export function daysBetweenMeta(date1: string, date2: string, days: number): Meta {
   const weeks = Math.floor(days / 7);
   const rem = days % 7;
-  const w1 = getWeekday(date1);
-  const w2 = getWeekday(date2);
 
   return {
     title: `${days} Days Between ${date1} and ${date2} | ${SITE_NAME}`,
-    description: `There are exactly ${days} days between ${date1} and ${date2}. That's ${weeks} weeks and ${rem} days. ${date1} is a ${w1}, ${date2} is a ${w2}. Free date calculator with weeks breakdown.`,
+    description: `There are exactly ${days} days between ${date1} and ${date2}. That's ${weeks} weeks and ${rem} days. Free date calculator with weeks breakdown.`,
   };
 }
 
@@ -71,7 +69,7 @@ export function daysUntilMeta(eventName: string, year: number, days: number, eve
   const weekday = getWeekday(eventDate);
   return {
     title: `How Many Days Until ${eventName} ${year}? | ${SITE_NAME}`,
-    description: `There are ${days} days until ${eventName} ${year}. ${eventName} falls on ${weekday}, ${eventDate}. Use DateCalc's free countdown tool to track holidays, seasons, and events.`,
+    description: `There are ${days} days until ${eventName} ${year} (${weekday}, ${formatDateLong(eventDate)}). Free countdown with DateCalc.`,
   };
 }
 
@@ -79,7 +77,7 @@ export function daysUntilMeta(eventName: string, year: number, days: number, eve
 export function daysInMonthMeta(month: string, days: number, year: number): Meta {
   return {
     title: `How Many Days in ${month} ${year}? | ${SITE_NAME}`,
-    description: `${month} ${year} has ${days} days. Find out how many days are in each month, including February leap year variations. Free quick-reference calendar guide from DateCalc.`,
+    description: `${month} ${year} has ${days} days. Check how many days every month has, plus leap-year February. Free from DateCalc.`,
   };
 }
 

@@ -103,7 +103,12 @@ const schemas = [
     { name: `${eventData!.name} ${eventYear}`, url: pageUrl },
   ]} />
 
-  <AnswerHero value={absDays} unit={`days ${verb}`} subtitle={subtitle} />
+  <AnswerHero
+    value={absDays}
+    unit={`days ${verb}`}
+    heading={`How many days until ${eventData!.name} ${eventYear}?`}
+    subtitle={subtitle}
+  />
 
   <DateContext date1={isFuture ? todayStr : eventDate} date2={isFuture ? eventDate : todayStr} days={absDays} />
 

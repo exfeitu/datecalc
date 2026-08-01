@@ -74,7 +74,12 @@ const schemas = [
     { name: `Born in ${birthYear}`, url: pageUrl },
   ]} />
 
-  <AnswerHero value={totalDays} unit="days old" subtitle={subtitle} />
+  <AnswerHero
+    value={totalDays}
+    unit="days old"
+    heading={`How many days old is someone born in ${birthYear}?`}
+    subtitle={subtitle}
+  />
 
   <p class="exp">
     Someone born on <strong>January 1, {birthYear}</strong> is approximately{' '}
