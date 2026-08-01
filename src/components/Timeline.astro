@@ -42,7 +42,7 @@ const sameYear = year1 === year2;
 <style>
   .tl {
     margin: var(--sp-8) 0;
-    padding: var(--sp-5);
+    padding: var(--sp-6) var(--sp-5);
     background: var(--color-card);
     border: 1px solid var(--color-border-light);
     border-radius: var(--radius-md);
@@ -57,25 +57,25 @@ const sameYear = year1 === year2;
   }
 
   .tl-dot {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     flex-shrink: 0;
   }
 
   .tl-dot-start {
     background: var(--color-accent);
-    box-shadow: 0 0 0 4px var(--color-accent-subtle);
+    box-shadow: 0 0 0 5px var(--color-accent-subtle);
   }
 
   .tl-dot-end {
     background: var(--color-accent-hover);
-    box-shadow: 0 0 0 4px var(--color-accent-subtle);
+    box-shadow: 0 0 0 5px var(--color-accent-subtle);
   }
 
   .tl-bar {
     flex: 1;
-    height: 2px;
+    height: 3px;
     background: linear-gradient(
       90deg,
       var(--color-accent),
@@ -83,6 +83,7 @@ const sameYear = year1 === year2;
     );
     min-width: 40px;
     margin: 0 -1px;
+    border-radius: 2px;
   }
 
   /* Date labels below */
@@ -90,7 +91,7 @@ const sameYear = year1 === year2;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-top: var(--sp-3);
+    margin-top: var(--sp-4);
   }
 
   .tl-point {
@@ -133,23 +134,28 @@ const sameYear = year1 === year2;
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;
-    padding: 0 var(--sp-2);
+    padding: 0 var(--sp-3);
   }
 
   .tl-days {
     font-family: var(--font-mono);
     font-size: var(--text-sm);
-    font-weight: 700;
+    font-weight: 750;
     color: var(--color-accent);
     white-space: nowrap;
-    background: var(--color-bg);
-    padding: 2px var(--sp-2);
-    border-radius: var(--radius-sm);
+    background: var(--color-accent-subtle);
+    padding: var(--sp-1) var(--sp-3);
+    border-radius: 999px;
+    border: 1px solid rgba(37, 99, 235, 0.12);
     font-feature-settings: "tnum";
     font-variant-numeric: tabular-nums;
   }
 
   @media (max-width: 640px) {
+    .tl {
+      padding: var(--sp-4) var(--sp-3);
+    }
+
     .tl-points {
       flex-direction: column;
       align-items: center;

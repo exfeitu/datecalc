@@ -1,7 +1,5 @@
 ---
 // FAQ.astro — FAQ block with Schema.org FAQPage
-import { resultPageSchema } from '../lib/schema';
-
 export interface FaqItem {
   question: string;
   answer: string;
@@ -36,7 +34,7 @@ const { items, pageUrl } = Astro.props;
 
   .faq-title {
     font-size: var(--text-lg);
-    font-weight: 650;
+    font-weight: 700;
     margin-bottom: var(--sp-4);
   }
 
@@ -47,22 +45,27 @@ const { items, pageUrl } = Astro.props;
   }
 
   .faq-item {
-    border: 1px solid var(--color-border-light);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     background: var(--color-card);
     transition: border-color var(--transition-fast),
-                box-shadow var(--transition-fast);
+                box-shadow var(--transition-fast),
+                background var(--transition-fast);
+  }
+
+  .faq-item:hover {
+    border-color: var(--color-text-tertiary);
   }
 
   .faq-item[open] {
-    border-color: var(--color-border);
-    box-shadow: var(--shadow-xs);
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-sm);
     background: var(--color-bg);
   }
 
   .faq-q {
     padding: var(--sp-4) var(--sp-5);
-    font-weight: 550;
+    font-weight: 600;
     font-size: var(--text-sm);
     cursor: pointer;
     user-select: none;
@@ -71,6 +74,7 @@ const { items, pageUrl } = Astro.props;
     justify-content: space-between;
     gap: var(--sp-3);
     list-style: none;
+    color: var(--color-text);
   }
 
   .faq-q::-webkit-details-marker {
@@ -83,14 +87,21 @@ const { items, pageUrl } = Astro.props;
     font-size: var(--text-lg);
     font-weight: 400;
     color: var(--color-text-tertiary);
-    width: 20px;
+    width: 22px;
+    height: 22px;
     text-align: center;
-    transition: transform var(--transition-fast);
+    line-height: 22px;
+    border-radius: 50%;
+    background: var(--color-bg);
+    transition: transform var(--transition-fast),
+                background var(--transition-fast),
+                color var(--transition-fast);
   }
 
   .faq-item[open] .faq-q::after {
     content: '−';
-    color: var(--color-accent);
+    color: #fff;
+    background: var(--color-accent);
   }
 
   .faq-a {

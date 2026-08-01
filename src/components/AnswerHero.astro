@@ -9,6 +9,7 @@ export interface Props {
 const { value, unit, subtitle } = Astro.props;
 ---
 <div class="hero">
+  <div class="hero-halo" aria-hidden="true"></div>
   <div class="hero-number" aria-label={`${value.toLocaleString('en-US')} ${unit}`}>
     <span class="hero-value">{value.toLocaleString('en-US')}</span>
     <span class="hero-unit">{unit}</span>
@@ -21,8 +22,28 @@ const { value, unit, subtitle } = Astro.props;
 <style>
   .hero {
     text-align: center;
-    padding: var(--sp-10) 0 var(--sp-6);
+    padding: var(--sp-12) 0 var(--sp-6);
     position: relative;
+    overflow: hidden;
+  }
+
+  /* Precision lens halo — the signature element */
+  .hero-halo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at center,
+      var(--color-accent-subtle) 0%,
+      var(--color-accent-subtle) 20%,
+      transparent 65%
+    );
+    pointer-events: none;
+    z-index: 0;
   }
 
   .hero-number {
@@ -30,50 +51,60 @@ const { value, unit, subtitle } = Astro.props;
     flex-direction: column;
     align-items: center;
     gap: 0;
+    position: relative;
+    z-index: 1;
   }
 
   .hero-value {
     display: block;
     font-family: var(--font-mono);
     font-size: clamp(3.25rem, 10vw, 5.5rem);
-    font-weight: 800;
+    font-weight: 850;
     line-height: 1;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.03em;
     color: var(--color-text);
     font-feature-settings: "tnum";
     font-variant-numeric: tabular-nums;
   }
 
   .hero-unit {
-    display: block;
-    font-size: var(--text-xl);
-    font-weight: 500;
+    display: inline-block;
+    font-size: var(--text-base);
+    font-weight: 600;
     color: var(--color-accent);
-    margin-top: var(--sp-1);
+    margin-top: var(--sp-2);
     letter-spacing: 0.02em;
+    background: var(--color-accent-subtle);
+    padding: var(--sp-1) var(--sp-4);
+    border-radius: 999px;
+    border: 1px solid rgba(37, 99, 235, 0.12);
   }
 
   .hero-accent {
-    width: 48px;
-    height: 3px;
-    margin: var(--sp-5) auto 0;
+    width: 64px;
+    height: 4px;
+    margin: var(--sp-6) auto 0;
     border-radius: 2px;
     background: linear-gradient(
       90deg,
       var(--color-accent),
       var(--color-accent-hover)
     );
-    opacity: 0.7;
+    box-shadow: 0 0 12px var(--color-accent-glow);
+    position: relative;
+    z-index: 1;
   }
 
   .hero-sub {
     margin-top: var(--sp-4);
     font-size: var(--text-base);
     color: var(--color-text-secondary);
-    line-height: 1.5;
+    line-height: 1.6;
     max-width: 480px;
     margin-left: auto;
     margin-right: auto;
+    position: relative;
+    z-index: 1;
   }
 
   @media (max-width: 640px) {
@@ -81,12 +112,24 @@ const { value, unit, subtitle } = Astro.props;
       padding: var(--sp-8) 0 var(--sp-4);
     }
 
+    .hero-halo {
+      width: 240px;
+      height: 240px;
+    }
+
     .hero-value {
       font-size: clamp(2.25rem, 12vw, 3.5rem);
     }
 
     .hero-unit {
-      font-size: var(--text-lg);
+      font-size: var(--text-sm);
+      padding: var(--sp-1) var(--sp-3);
+    }
+
+    .hero-accent {
+      width: 48px;
+      height: 3px;
+      margin: var(--sp-4) auto 0;
     }
   }
 </style>

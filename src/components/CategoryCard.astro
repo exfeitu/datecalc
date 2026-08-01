@@ -9,15 +9,17 @@ export interface Props {
 const { title, description, href } = Astro.props;
 ---
 <a href={href} class="cc">
-  <h3 class="cc-title">{title}</h3>
-  <p class="cc-desc">{description}</p>
-  <span class="cc-cta" aria-hidden="true">Explore &rarr;</span>
+  <div class="cc-accent" aria-hidden="true"></div>
+  <div class="cc-body">
+    <h3 class="cc-title">{title}</h3>
+    <p class="cc-desc">{description}</p>
+    <span class="cc-cta" aria-hidden="true">Explore &rarr;</span>
+  </div>
 </a>
 
 <style>
   .cc {
     display: flex;
-    flex-direction: column;
     padding: var(--sp-5);
     background: var(--color-card);
     border: 1px solid var(--color-border-light);
@@ -27,13 +29,41 @@ const { title, description, href } = Astro.props;
     transition: border-color var(--transition-fast),
                 box-shadow var(--transition-fast),
                 transform var(--transition-fast);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Left accent bar — visible on hover */
+  .cc-accent {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--color-accent);
+    border-radius: 3px 0 0 3px;
+    opacity: 0;
+    transform: scaleY(0.6);
+    transition: opacity var(--transition-fast),
+                transform var(--transition-base);
+  }
+
+  .cc:hover .cc-accent {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  .cc-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
 
   .cc:hover {
     border-color: var(--color-accent);
     box-shadow: var(--shadow-accent);
     text-decoration: none;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
   }
 
   .cc-title {
@@ -56,15 +86,13 @@ const { title, description, href } = Astro.props;
 
   .cc-cta {
     font-size: var(--text-sm);
-    font-weight: 500;
+    font-weight: 600;
     color: var(--color-accent);
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: opacity var(--transition-fast), transform var(--transition-fast);
+    opacity: 0.5;
+    transition: opacity var(--transition-fast);
   }
 
   .cc:hover .cc-cta {
     opacity: 1;
-    transform: translateX(0);
   }
 </style>

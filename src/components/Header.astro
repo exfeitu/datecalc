@@ -8,7 +8,10 @@ const navLinks = [
 ];
 ---
 <header class="sh">
-  <a href="/" class="sh-logo" aria-label="DateCalc home">DateCalc</a>
+  <a href="/" class="sh-logo" aria-label="DateCalc home">
+    <span class="sh-logo-mark" aria-hidden="true">◷</span>
+    DateCalc
+  </a>
   <nav aria-label="Main navigation" class="sh-nav">
     {navLinks.map(link => (
       <a href={link.href}>{link.label}</a>
@@ -23,8 +26,14 @@ const navLinks = [
     justify-content: space-between;
     align-items: center;
     padding: var(--sp-4) 0;
-    border-bottom: 1px solid var(--color-border-light);
+    border-bottom: 1px solid var(--color-border);
     margin-bottom: var(--sp-6);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(250, 250, 249, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   .sh-logo {
@@ -33,6 +42,15 @@ const navLinks = [
     color: var(--color-text);
     text-decoration: none;
     letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+
+  .sh-logo-mark {
+    font-size: 1.15em;
+    color: var(--color-accent);
+    display: inline-block;
   }
 
   .sh-logo:hover {
@@ -40,9 +58,14 @@ const navLinks = [
     text-decoration: none;
   }
 
+  .sh-logo:hover .sh-logo-mark {
+    transform: rotate(15deg);
+    transition: transform var(--transition-base);
+  }
+
   .sh-nav {
     display: flex;
-    gap: var(--sp-5);
+    gap: var(--sp-1);
     flex-wrap: wrap;
   }
 
@@ -51,11 +74,15 @@ const navLinks = [
     font-weight: 500;
     color: var(--color-text-secondary);
     white-space: nowrap;
-    padding: var(--sp-1) 0;
+    padding: var(--sp-1) var(--sp-3);
+    border-radius: var(--radius-sm);
+    transition: color var(--transition-fast),
+                background var(--transition-fast);
   }
 
   .sh-nav a:hover {
     color: var(--color-accent);
+    background: var(--color-accent-subtle);
     text-decoration: none;
   }
 
@@ -65,11 +92,18 @@ const navLinks = [
       gap: var(--sp-3);
       padding: var(--sp-3) 0;
       margin-bottom: var(--sp-4);
+      position: static;
+      backdrop-filter: none;
+      background: transparent;
     }
 
     .sh-nav {
-      gap: var(--sp-3) var(--sp-4);
+      gap: var(--sp-1) var(--sp-2);
       justify-content: center;
+    }
+
+    .sh-nav a {
+      padding: var(--sp-1) var(--sp-2);
     }
   }
 </style>
