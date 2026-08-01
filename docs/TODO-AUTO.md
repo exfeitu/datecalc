@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-01 15:00 UTC
+> Last updated: 2026-08-01 17:00 UTC
 
 ## 🔴 High (0 remaining!)
 <!-- All High items completed -->
@@ -13,6 +13,8 @@
 - [ ] ⚠️ COMPACT NEEDED — context full, run /compact
 
 ## ✅ Done
+- [x] 2026-08-01: Fix 404 page CSS — replaced non-existent vars, used design system tokens
+- [x] 2026-08-01: Add cross-links to all 4 index pages — consistent "More Date Tools" sections
 - [x] 2026-08-01: Enrich days-from/[n]/[date] — KeyFacts + Timeline + ShareLink + 6 links + 4 FAQs
 - [x] 2026-08-01: Enrich age-in-days/[year] — KeyFacts + ShareLink + 5 links + 3 FAQs
 - [x] 2026-08-01: Enrich days-in/[slug] — KeyFacts + ShareLink for both months and years
