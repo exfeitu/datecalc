@@ -61,6 +61,7 @@
   --sp-12: 3rem;
 
   /* Radii */
+  --radius-xs: 4px;
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
