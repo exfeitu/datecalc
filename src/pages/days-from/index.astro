@@ -1,0 +1,178 @@
+---
+// src/pages/days-from/index.astro — Days From a Date Hub
+import BaseLayout from '../../components/BaseLayout.astro';
+import FAQ from '../../components/FAQ.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { daysFromHubMeta } from '../../lib/meta';
+import { webAppSchema } from '../../lib/schema';
+import { dateFromDays, getWeekday } from '../../lib/dates';
+import { formatDateLong } from '../../lib/formatters';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const PAGE_URL = `${SITE_URL}/days-from/`;
+const meta = daysFromHubMeta();
+const schemas = [
+  webAppSchema({ name: 'Days From a Date Calculator', url: PAGE_URL, description: meta.description }),
+];
+
+// Curated N-days-from-date combos — every one is a generated page (n ∈ nValuesForDate, date ∈ daysFromDates)
+const popularFrom = [
+  { n: 30, date: '2026-01-01', label: 'New Year\'s Day 2026' },
+  { n: 30, date: '2026-12-25', label: 'Christmas Day 2026' },
+  { n: 45, date: '2026-04-15', label: 'Tax Day 2026' },
+  { n: 60, date: '2026-06-21', label: 'Summer solstice 2026' },
+  { n: 60, date: '2028-02-29', label: 'Leap Day 2028' },
+  { n: 90, date: '2026-01-01', label: 'New Year\'s Day 2026' },
+  { n: 90, date: '2026-09-01', label: 'Fall semester start 2026' },
+  { n: 90, date: '2026-12-25', label: 'Christmas Day 2026' },
+  { n: 120, date: '2026-07-04', label: 'Independence Day 2026' },
+  { n: 180, date: '2026-01-01', label: 'New Year\'s Day 2026' },
+  { n: 180, date: '2026-12-31', label: 'New Year\'s Eve 2026' },
+  { n: 180, date: '2027-01-01', label: 'New Year\'s Day 2027' },
+];
+
+const faqItems = [
+  {
+    question: 'How do I find what date is N days from a specific date?',
+    answer: 'Pick a start date and a number of days. DateCalc adds the exact number of calendar days and shows the resulting date, its weekday, and the equivalent weeks and days. For example, 90 days from January 1, 2026 is April 1, 2026.',
+  },
+  {
+    question: 'What date is 30 days from today?',
+    answer: 'Use the calculator or browse the "Days From Today" tool for common values like 30, 60, or 90 days. The exact result depends on the starting date and is always a real calendar date — leap days included.',
+  },
+  {
+    question: 'How are leap years handled when adding days?',
+    answer: 'DateCalc accounts for leap years automatically. Adding 60 days from February 29, 2028 (a leap day) lands on April 29, 2028 — the extra day is included in the total.',
+  },
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={schemas}>
+  <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Days From a Date', url: PAGE_URL }]} />
+
+  <h1>Days From a Date Calculator</h1>
+  <p class="hub-intro">Find what date falls N days after any start date — 30, 45, 60, 90, 120, or 180 days out. Free, fast, and accurate.</p>
+
+  <!-- Popular examples -->
+  <section class="popular">
+    <h2>Popular Calculations</h2>
+    <ul class="grid">
+      {popularFrom.map(item => {
+        const result = dateFromDays(item.date, item.n);
+        return (
+          <li>
+            <a href={`/days-from/${item.n}/${item.date}/`}>
+              <span class="card-num">{item.n} days from</span>
+              <span class="card-label">{item.label}</span>
+              <span class="card-result">= {formatDateLong(result)}, a {getWeekday(result)}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+
+  <section class="hub-categories">
+    <h2>More Date Tools</h2>
+    <ul>
+      <li><a href="/days-from-today/">Days From Today</a> — what date is N days from now</li>
+      <li><a href="/days-between/">Days Between Dates</a> — exact days between two dates</li>
+      <li><a href="/days-until/">Days Until Events</a> — countdown to holidays and events</li>
+      <li><a href="/days-in/">Days in Month / Year</a> — how many days in each month</li>
+      <li><a href="/age-in-days/">Age in Days</a> — calculate your age in days</li>
+      <li><a href="/days-left-in/2026/">Days Left in 2026</a> — year countdown tracker</li>
+    </ul>
+  </section>
+
+  <FAQ items={faqItems} />
+</BaseLayout>
+
+<style>
+  .hub-intro {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    text-align: center;
+    max-width: 540px;
+    margin: 0 auto var(--sp-4);
+  }
+
+  .popular {
+    margin: var(--sp-8) 0;
+  }
+
+  .popular h2 {
+    font-family: var(--font-mono);
+    margin-bottom: var(--sp-3);
+  }
+
+  .grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--sp-2);
+  }
+
+  .grid a {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--sp-3) var(--sp-4);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .grid a:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-xs);
+    text-decoration: none;
+  }
+
+  .card-num {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--color-accent);
+    font-size: var(--text-base);
+  }
+
+  .card-label {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .card-result {
+    color: var(--color-text-tertiary);
+  }
+
+  .hub-categories {
+    margin: var(--sp-8) 0;
+    padding: var(--sp-5);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+  }
+
+  .hub-categories h2 {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--sp-3);
+  }
+
+  .hub-categories ul {
+    list-style: none;
+  }
+
+  .hub-categories li {
+    font-size: var(--text-sm);
+    margin-bottom: var(--sp-2);
+    color: var(--color-text-secondary);
+  }
+</style>

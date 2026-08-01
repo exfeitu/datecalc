@@ -51,6 +51,7 @@ const relatedLinks = [
   { href: `/days-from/${nDays + 1}/${date}/`, label: `${nDays + 1} days from ${formatDateLong(date)}` },
   { href: `/days-in/${new Date(date).getFullYear()}/`, label: `Days in ${new Date(date).getFullYear()}` },
   { href: '/days-from-today/', label: 'Days from today calculator →' },
+  { href: '/days-from/', label: 'Days from a date calculator →' },
   { href: '/days-between/', label: 'Days between dates calculator →' },
 ].filter(l => isBuilt(l.href));
 

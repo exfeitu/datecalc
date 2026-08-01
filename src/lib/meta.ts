@@ -64,6 +64,24 @@ export function daysFromTodayMeta(n: number, resultDate: string): Meta {
   };
 }
 
+/** Days From a Date Hub */
+export function daysFromHubMeta(): Meta {
+  return {
+    title: `Days From a Date Calculator | ${SITE_NAME}`,
+    description:
+      'Find what date falls N days from any start date. Calculate 30, 45, 60, 90, 120, or 180 days after a specific date. Free and fast with DateCalc.',
+  };
+}
+
+/** Days Left in Year Hub */
+export function daysLeftInHubMeta(): Meta {
+  return {
+    title: `Days Left in the Year Calculator | ${SITE_NAME}`,
+    description:
+      'See how many days are left in the year, with day-by-day year progress. Check 2026, 2027, or 2028 instantly. Free year countdown with DateCalc.',
+  };
+}
+
 /** Days Until Event Programmatic Page */
 export function daysUntilMeta(
   eventName: string,

@@ -1,0 +1,185 @@
+---
+// src/pages/days-left-in/index.astro — Days Left in Year Hub
+import BaseLayout from '../../components/BaseLayout.astro';
+import FAQ from '../../components/FAQ.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { daysLeftInHubMeta } from '../../lib/meta';
+import { webAppSchema } from '../../lib/schema';
+import { isLeapYear, daysLeftInYear, today } from '../../lib/dates';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const PAGE_URL = `${SITE_URL}/days-left-in/`;
+const meta = daysLeftInHubMeta();
+const schemas = [
+  webAppSchema({ name: 'Days Left in the Year Calculator', url: PAGE_URL, description: meta.description }),
+];
+
+const years = [2026, 2027, 2028].map(y => {
+  const total = isLeapYear(y) ? 366 : 365;
+  const left = Math.max(0, daysLeftInYear(y));
+  const pct = Math.round(((total - left) / total) * 100);
+  return { year: y, total, left, pct };
+});
+
+const faqItems = [
+  {
+    question: 'How many days are left in the current year?',
+    answer: `As of ${today()}, there are ${Math.max(0, daysLeftInYear(2026))} days left in 2026. Use the calculator to check any year — leap years have 366 days and end with a different remaining count.`,
+  },
+  {
+    question: 'How is the number of days left calculated?',
+    answer: 'DateCalc subtracts today\'s date from December 31 of the target year. It accounts for leap years, so February 29 is included when it exists. The result updates whenever the site is rebuilt.',
+  },
+  {
+    question: 'How many days are in a full year?',
+    answer: 'A standard year has 365 days. Leap years (divisible by 4, except century years not divisible by 400) have 366 days. For example, 2028 is a leap year and 2026 is not.',
+  },
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={schemas}>
+  <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Days Left in Year', url: PAGE_URL }]} />
+
+  <h1>Days Left in the Year Calculator</h1>
+  <p class="hub-intro">Track how many days remain in any year, with day-by-day year progress. Check 2026, 2027, or 2028 instantly.</p>
+
+  <!-- Year progress cards -->
+  <section class="year-list">
+    {years.map(y => (
+      <a class="year-card" href={`/days-left-in/${y.year}/`}>
+        <span class="year-num">{y.year}</span>
+        <span class="year-facts">
+          <span class="year-left"><strong>{y.left.toLocaleString('en-US')}</strong> days left</span>
+          <span class="year-total">{y.pct}% of the year has passed &middot; {y.total} days total</span>
+        </span>
+        <span class="year-arrow" aria-hidden="true">→</span>
+      </a>
+    ))}
+  </section>
+
+  <section class="hub-categories">
+    <h2>More Date Tools</h2>
+    <ul>
+      <li><a href="/days-in/">Days in Month / Year</a> — how many days in each month</li>
+      <li><a href="/days-until/">Days Until Events</a> — countdown to holidays and events</li>
+      <li><a href="/days-from-today/">Days From Today</a> — what date is N days from now</li>
+      <li><a href="/days-between/">Days Between Dates</a> — exact days between two dates</li>
+      <li><a href="/age-in-days/">Age in Days</a> — calculate your age in days</li>
+      <li><a href="/days-until/new-years-eve/2026/">Days until New Year's Eve 2026</a></li>
+    </ul>
+  </section>
+
+  <FAQ items={faqItems} />
+</BaseLayout>
+
+<style>
+  .hub-intro {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    text-align: center;
+    max-width: 540px;
+    margin: 0 auto var(--sp-4);
+  }
+
+  .year-list {
+    list-style: none;
+    display: grid;
+    gap: var(--sp-2);
+    margin: var(--sp-8) 0;
+  }
+
+  .year-card {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+    padding: var(--sp-4) var(--sp-5);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .year-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-xs);
+    text-decoration: none;
+  }
+
+  .year-num {
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    font-weight: 800;
+    color: var(--color-accent);
+    font-feature-settings: 'tnum';
+    font-variant-numeric: tabular-nums;
+    min-width: 3.2rem;
+  }
+
+  .year-facts {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .year-left {
+    font-size: var(--text-base);
+    color: var(--color-text);
+  }
+
+  .year-left strong {
+    font-family: var(--font-mono);
+    font-feature-settings: 'tnum';
+    font-variant-numeric: tabular-nums;
+  }
+
+  .year-total {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+  }
+
+  .year-arrow {
+    margin-left: auto;
+    color: var(--color-text-tertiary);
+    font-size: var(--text-lg);
+  }
+
+  .hub-categories {
+    margin: var(--sp-8) 0;
+    padding: var(--sp-5);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+  }
+
+  .hub-categories h2 {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--sp-3);
+  }
+
+  .hub-categories ul {
+    list-style: none;
+  }
+
+  .hub-categories li {
+    font-size: var(--text-sm);
+    margin-bottom: var(--sp-2);
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 640px) {
+    .year-card {
+      padding: var(--sp-3) var(--sp-4);
+    }
+
+    .year-num {
+      min-width: 2.6rem;
+      font-size: var(--text-lg);
+    }
+  }
+</style>
