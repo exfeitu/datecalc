@@ -16,6 +16,7 @@
 - [ ] FUTURE: Monitor GSC for thin-content pages after UI redesign
 
 ## ✅ Done
+- [x] 2026-08-02: New /days-in/{month}/{year}/ route — 84 pages covering "how many days in [month] [year]" (12 months × 7 years, 2024-2030). Closes the gap where month pages were 2026-anchored (Feb 2028 = 29 days now a real page). isBuilt handles month/year combos; month pages link to all year variants, year pages link to all 12 months. Build 454→538, sitemap 453→537
 - [x] 2026-08-02: Create /days-from/ + /days-left-in/ hub pages (were 404 URLs that isBuilt() wrongly claimed as built). Now all 7 templates have parent hubs. days-from hub: 12 popular combos; days-left-in hub: 2026/27/28 progress cards. Cross-linked from templates + homepage. Build 452→454, sitemap 451→453
 - [x] 2026-08-02: Dedupe date-pairs.ts — removed 7 duplicate date pairs (same URL, different category label). Build count corrected 459→452 (was inflated by duplicate routes). Real count: 451 sitemap routes + 404. Audit all green. category/priority fields confirmed unused
 - [x] 2026-08-02: Homepage hero graphic — new TodayPlate component (zero-JS, build-time): mini calendar of current month w/ today highlighted in blue, year-progress bar + needle, day-of-year readout. Fills the type-only hero. Adds ~1.2KB shared CSS, homepage ~21.9KB HTML. Added --radius-xs token

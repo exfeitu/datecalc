@@ -45,6 +45,7 @@ export function isBuilt(href: string): boolean {
       return fromNSet.has(parseInt(rest[0])) && fromDateSet.has(rest[1]);
     case 'days-in':
       if (rest.length === 0) return true; // hub
+      if (rest.length === 2) return monthSlugSet.has(rest[0]) && yearSet.has(parseInt(rest[1])); // month/year grid
       const n = parseInt(rest[0]);
       return !isNaN(n) ? yearSet.has(n) : monthSlugSet.has(rest[0]);
     case 'days-left-in':

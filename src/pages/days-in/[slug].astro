@@ -73,6 +73,10 @@ if (isYear) {
       href: `/days-in/${y}/`,
       label: `Days in ${y}`,
     })),
+    ...months.map(m => ({
+      href: `/days-in/${m.slug}/${yearNum}/`,
+      label: `Days in ${m.name} ${yearNum}`,
+    })),
     { href: '/days-in/', label: 'Days in months →' },
   ];
 } else if (monthData) {
@@ -102,6 +106,10 @@ if (isYear) {
     ...months.filter(m => m.index !== monthData.index).slice(0, 5).map(m => ({
       href: `/days-in/${m.slug}/`,
       label: `Days in ${m.name} ${baseYear}`,
+    })),
+    ...yearRange.filter(y => y !== baseYear).map(y => ({
+      href: `/days-in/${monthData.slug}/${y}/`,
+      label: `Days in ${monthData.name} ${y}`,
     })),
     { href: `/days-in/${baseYear}/`, label: `Days in ${baseYear} (full year)` },
     { href: '/days-in/', label: 'All months →' },

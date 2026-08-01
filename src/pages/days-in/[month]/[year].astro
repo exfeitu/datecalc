@@ -1,0 +1,138 @@
+---
+// src/pages/days-in/[month]/[year].astro — Programmatic "days in [month] [year]" pages
+// Covers the month×year grid (e.g. /days-in/february/2028/) that the single-level
+// [slug].astro route can't (it anchors months to 2026).
+import BaseLayout from '../../../components/BaseLayout.astro';
+import AnswerHero from '../../../components/AnswerHero.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import RelatedQueries from '../../../components/RelatedQueries.astro';
+import KeyFacts from '../../../components/KeyFacts.astro';
+import ShareLink from '../../../components/ShareLink.astro';
+import { isLeapYear, daysInMonth } from '../../../lib/dates';
+import { daysInMonthMeta } from '../../../lib/meta';
+import { resultPageSchema } from '../../../lib/schema';
+import { months, yearRange } from '../../../lib/data/months';
+
+import type { GetStaticPaths } from 'astro';
+
+const SITE_URL = 'https://datecalc.vercel.app';
+const CATEGORY_URL = `${SITE_URL}/days-in/`;
+
+export const getStaticPaths: GetStaticPaths = () => {
+  const paths: { params: { month: string; year: string } }[] = [];
+  for (const m of months) {
+    for (const y of yearRange) {
+      paths.push({ params: { month: m.slug, year: String(y) } });
+    }
+  }
+  return paths;
+};
+
+const { month, year } = Astro.params as { month: string; year: string };
+const monthData = months.find(m => m.slug === month);
+const yearNum = parseInt(year);
+const validYear = yearRange.includes(yearNum);
+
+if (!monthData || !validYear) {
+  Astro.response.status = 404;
+}
+
+const days = monthData && validYear ? daysInMonth(yearNum, monthData.index) : 0;
+const isLeap = isLeapYear(yearNum);
+const isFeb = monthData?.index === 2;
+
+const meta = monthData && validYear
+  ? daysInMonthMeta(monthData.name, days, yearNum)
+  : { title: 'Not Found', description: '' };
+
+const pageUrl = `${SITE_URL}/days-in/${month}/${year}/`;
+const totalWeeks = Math.floor(days / 7);
+const remDays = days % 7;
+
+const subtitle = isFeb
+  ? `${yearNum} is ${isLeap ? 'a leap year, so February has 29 days' : 'not a leap year, so February has 28 days'}`
+  : `${monthData?.name} ${yearNum} has ${days} days`;
+
+const faqs = monthData && validYear
+  ? [
+      {
+        question: `How many days in ${monthData.name} ${yearNum}?`,
+        answer: `${monthData.name} ${yearNum} has ${days} day${days === 1 ? '' : 's'}.${isFeb ? ` ${yearNum} is ${isLeap ? 'a leap year' : 'not a leap year'}, so February has ${days} days.` : ` ${monthData.name} always has ${days} days every year.`}`,
+      },
+      {
+        question: `Is ${yearNum} a leap year?`,
+        answer: isLeap
+          ? `Yes, ${yearNum} is a leap year (366 days), so February has 29 days.`
+          : `No, ${yearNum} is not a leap year (365 days), so February has 28 days.`,
+      },
+    ]
+  : [];
+
+const relatedLinks = monthData && validYear
+  ? [
+      ...yearRange.filter(y => y !== yearNum).map(y => ({
+        href: `/days-in/${month}/${y}/`,
+        label: `Days in ${monthData.name} ${y}`,
+      })),
+      { href: `/days-in/${month}/`, label: `Days in ${monthData.name} (2026)` },
+      { href: `/days-in/${yearNum}/`, label: `Days in ${yearNum} (full year)` },
+      { href: '/days-in/', label: 'All months →' },
+    ]
+  : [];
+
+const schemas = monthData && validYear
+  ? [resultPageSchema({ title: meta.title, description: meta.description, url: pageUrl, faqs })]
+  : [];
+---
+
+{monthData && validYear ? (
+  <BaseLayout title={meta.title} description={meta.description} canonical={pageUrl} schema={schemas}>
+    <Breadcrumb items={[
+      { name: 'Home', url: SITE_URL },
+      { name: 'Days In', url: CATEGORY_URL },
+      { name: `${monthData.name} ${yearNum}`, url: pageUrl },
+    ]} />
+
+    <AnswerHero
+      value={days}
+      unit={`days in ${monthData.name} ${yearNum}`}
+      heading={`How many days in ${monthData.name} ${yearNum}?`}
+      subtitle={subtitle}
+    />
+
+    <p class="exp">
+      <strong>{monthData.name} {yearNum}</strong> has <strong>{days} day{days === 1 ? '' : 's'}</strong>.
+      {isFeb
+        ? ` ${yearNum} is ${isLeap ? 'a leap year (February has 29 days)' : 'not a leap year (February has 28 days)'}.`
+        : ` ${monthData.name} has ${days} days every year.`}
+      {' '}{yearNum} has {isLeap ? '366 days in total' : '365 days in total'}.
+    </p>
+
+    <KeyFacts days={days} weeks={totalWeeks} remDays={remDays} />
+
+    <ShareLink url={pageUrl} />
+
+    <RelatedQueries links={relatedLinks} />
+  </BaseLayout>
+) : (
+  <BaseLayout title="Not Found" description="" canonical={pageUrl} schema={[]}>
+    <h1>Page Not Found</h1>
+    <p>This page does not exist. <a href="/days-in/">Browse all days in months</a>.</p>
+  </BaseLayout>
+)}
+
+<style>
+  .exp {
+    max-width: 600px;
+    margin: 0 auto var(--sp-4);
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    text-align: center;
+    line-height: 1.75;
+  }
+
+  .exp strong {
+    color: var(--color-text);
+    font-weight: 650;
+  }
+</style>
