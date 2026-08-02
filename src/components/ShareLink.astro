@@ -1,5 +1,7 @@
 ---
-// ShareLink.astro — Share/copy link section, zero JS
+// ShareLink.astro — Share/copy link section.
+// Copy button uses an inline onclick handler (like the input's select) —
+// no <script> bundles, so programmatic pages stay 0KB JS.
 export interface Props {
   url: string;
 }
@@ -8,15 +10,24 @@ const { url } = Astro.props;
 ---
 <div class="share">
   <h2 class="share-title kicker">Share This Result</h2>
-  <input
-    class="share-input num"
-    type="text"
-    value={url}
-    readonly
-    aria-label="Page URL"
-    onclick="this.select()"
-  />
-  <p class="share-hint">Click to select, then copy (Ctrl+C or ⌘C)</p>
+  <div class="share-row">
+    <input
+      class="share-input num"
+      type="text"
+      value={url}
+      readonly
+      aria-label="Page URL"
+      onclick="this.select()"
+    />
+    <button
+      class="share-copy"
+      type="button"
+      aria-label="Copy URL"
+      title="Copy URL"
+      onclick="var b=this,i=this.previousElementSibling;var done=function(){b.textContent='Copied!';b.classList.add('is-copied');setTimeout(function(){b.textContent='Copy';b.classList.remove('is-copied');},2000);};i.focus();i.select();i.setSelectionRange(0,i.value.length);if(navigator.clipboard){navigator.clipboard.writeText(i.value).then(done).catch(function(){document.execCommand('copy');done();});}else{document.execCommand('copy');done();}"
+    >Copy</button>
+  </div>
+  <p class="share-hint">Tap Copy to grab the link, or click the box to select.</p>
 </div>
 
 <style>
@@ -35,11 +46,16 @@ const { url } = Astro.props;
     color: var(--color-text-tertiary);
   }
 
-  .share-input {
-    display: block;
-    width: 100%;
+  .share-row {
+    display: flex;
+    gap: var(--sp-2);
     max-width: 440px;
     margin: 0 auto;
+  }
+
+  .share-input {
+    flex: 1;
+    min-width: 0;
     padding: var(--sp-3) var(--sp-4);
     font-size: var(--text-sm);
     color: var(--color-text);
@@ -61,10 +77,48 @@ const { url } = Astro.props;
     box-shadow: 0 0 0 3px var(--color-accent-glow);
   }
 
+  .share-copy {
+    flex-shrink: 0;
+    padding: 0 var(--sp-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-accent);
+    background: var(--color-accent-subtle);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--transition-fast),
+                color var(--transition-fast),
+                border-color var(--transition-fast);
+  }
+
+  .share-copy:hover {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  .share-copy:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .share-copy.is-copied {
+    background: #16a34a;
+    border-color: #16a34a;
+    color: #fff;
+  }
+
   .share-hint {
     margin-top: var(--sp-2);
     margin-bottom: 0;
     font-size: var(--text-xs);
     color: var(--color-text-tertiary);
+  }
+
+  @media (max-width: 640px) {
+    .share {
+      padding: var(--sp-4);
+    }
   }
 </style>

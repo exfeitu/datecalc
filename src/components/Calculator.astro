@@ -1,15 +1,23 @@
 ---
 // Calculator.astro — interactive date calculator (only component with JS)
+// Smart defaults: prefilled today→+30, quick-range presets, swap, live update.
 ---
 <div class="calc">
   <h2 class="calc-title">Calculate Days Between Dates</h2>
   <div class="calc-body">
+    <div class="calc-presets" role="group" aria-label="Quick date ranges">
+      <button type="button" class="calc-chip" data-preset="7">7 days</button>
+      <button type="button" class="calc-chip" data-preset="30">30 days</button>
+      <button type="button" class="calc-chip" data-preset="90">90 days</button>
+      <button type="button" class="calc-chip" data-preset="365">1 year</button>
+      <button type="button" class="calc-chip" data-preset="ytd">This year</button>
+    </div>
     <div class="calc-inputs">
       <div class="calc-field">
         <label for="calc-date1">Start date</label>
         <input type="date" id="calc-date1" />
       </div>
-      <span class="calc-sep" aria-hidden="true">→</span>
+      <button type="button" class="calc-swap" id="calc-swap" aria-label="Swap start and end dates" title="Swap dates">⇄</button>
       <div class="calc-field">
         <label for="calc-date2">End date</label>
         <input type="date" id="calc-date2" />
@@ -23,11 +31,46 @@
   const d1 = document.getElementById('calc-date1') as HTMLInputElement;
   const d2 = document.getElementById('calc-date2') as HTMLInputElement;
   const result = document.getElementById('calc-result')!;
+  const swapBtn = document.getElementById('calc-swap') as HTMLButtonElement;
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.calc-chip'));
 
   const MS_PER_DAY = 86_400_000;
 
   function urlParams() {
     return new URLSearchParams(window.location.search);
+  }
+
+  // YYYY-MM-DD in local time
+  function toDateStr(d: Date): string {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  function addDays(base: Date, n: number): Date {
+    const d = new Date(base);
+    d.setDate(d.getDate() + n);
+    return d;
+  }
+
+  // Quick-range presets. N-days = today → today+N. ytd = Jan 1 → today.
+  function presetRange(key: string): [string, string] {
+    const todayD = new Date();
+    const todayStr = toDateStr(todayD);
+    if (key === 'ytd') {
+      return [`${todayD.getFullYear()}-01-01`, todayStr];
+    }
+    const n = Number(key);
+    return [todayStr, toDateStr(addDays(todayD, n))];
+  }
+
+  function setActiveChip(key: string | null) {
+    chips.forEach(c => {
+      const active = c.dataset.preset === key;
+      c.classList.toggle('is-active', active);
+      c.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
   }
 
   // Keep the URL shareable: ?start=YYYY-MM-DD&end=YYYY-MM-DD
@@ -63,14 +106,41 @@
     syncUrl();
   }
 
-  // Prefill from ?start=&end= so a shared URL reproduces the result
-  const initial = urlParams();
-  if (initial.get('start')) d1.value = initial.get('start')!;
-  if (initial.get('end')) d2.value = initial.get('end')!;
-  if (initial.get('start') || initial.get('end')) update();
+  function applyPreset(key: string) {
+    const [s, e] = presetRange(key);
+    d1.value = s;
+    d2.value = e;
+    setActiveChip(key);
+    update();
+  }
 
-  d1.addEventListener('change', update);
-  d2.addEventListener('change', update);
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => applyPreset(chip.dataset.preset!));
+  });
+
+  swapBtn.addEventListener('click', () => {
+    const tmp = d1.value;
+    d1.value = d2.value;
+    d2.value = tmp;
+    setActiveChip(null);
+    update();
+  });
+
+  // Manual edits clear the active preset highlight
+  const clearOnEdit = () => setActiveChip(null);
+  d1.addEventListener('input', () => { clearOnEdit(); update(); });
+  d2.addEventListener('input', () => { clearOnEdit(); update(); });
+
+  // Prefill from ?start=&end= so a shared URL reproduces the result.
+  // Otherwise default to a live example: today → +30 days.
+  const initial = urlParams();
+  if (initial.get('start') || initial.get('end')) {
+    if (initial.get('start')) d1.value = initial.get('start')!;
+    if (initial.get('end')) d2.value = initial.get('end')!;
+    update();
+  } else {
+    applyPreset('30');
+  }
 </script>
 
 <style>
@@ -91,13 +161,54 @@
     border-radius: var(--radius-lg);
     padding: var(--sp-6);
     text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Quick-range presets */
+  .calc-presets {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-5);
+  }
+
+  .calc-chip {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    background: var(--color-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-1) var(--sp-3);
+    cursor: pointer;
+    transition: border-color var(--transition-fast),
+                color var(--transition-fast),
+                background var(--transition-fast);
+  }
+
+  .calc-chip:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .calc-chip:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .calc-chip.is-active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
   }
 
   .calc-inputs {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    gap: var(--sp-4);
+    gap: var(--sp-3);
     flex-wrap: wrap;
   }
 
@@ -138,10 +249,34 @@
     outline: none;
   }
 
-  .calc-sep {
-    font-size: var(--text-xl);
+  /* Swap button */
+  .calc-swap {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    font-size: var(--text-lg);
+    line-height: 1;
     color: var(--color-text-tertiary);
-    padding-bottom: var(--sp-2);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    margin-bottom: 2px;
+    transition: border-color var(--transition-fast),
+                color var(--transition-fast),
+                background var(--transition-fast);
+  }
+
+  .calc-swap:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-accent-subtle);
+  }
+
+  .calc-swap:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
   }
 
   .calc-output {
@@ -189,9 +324,9 @@
       min-width: 0;
     }
 
-    .calc-sep {
-      text-align: center;
-      padding: 0;
+    .calc-swap {
+      align-self: center;
+      margin-bottom: 0;
     }
 
     .calc-num {
