@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://datecalc.vercel.app/sitemap-index.xml
+Sitemap: https://datecalc-calculator.vercel.app/sitemap-index.xml
