@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-03 05:03 UTC
+> Last updated: 2026-08-03 07:03 UTC
 
 > ⏰ Cron schedule: 00:30, 02:30, 04:30, 06:30, 08:30, 13:30, 19:30, 21:30, 23:30 (avoids 9–12 and 14–18)
 
@@ -16,6 +16,7 @@
 - [ ] FUTURE: Monitor GSC for thin-content pages after UI redesign
 
 ## ✅ Done
+- [x] 2026-08-03: Silo days-until event pages with related-event links — event pages only cross-linked tools (days-between/in/left-in); now each links to its 4 nearest same-category events, labels auto-until/since per date, leap-day excluded, isBuilt-filtered. 189 event pages benefit; single-event categories (environment/special) add none. Audit green, 0 broken links
 - [x] 2026-08-03: Expand days-between date-pairs with 2027/2028 planning coverage — was 2026-anchored. +18 pairs: 2027 quarters/H1-H2/tax/fall-semester/holiday-season/christmas→NY, 2028 quarters/tax/summer/holiday-season. Build 592→610. All new pages verify correct day counts (2027-Q1=89, Xmas→NY=7, 2028-tax=105, 2028-summer=91). Audit green, 0 thin
 - [x] 2026-08-03: Add FAQPage schema to all 8 hub/index pages — homepage + days-in/until/from-today/left-in/from/age-in-days/between rendered FAQ blocks but lacked FAQPage JSON-LD (programmatic pages already had it). New shared faqPageSchema() helper in schema.ts; each hub now emits [...schemas, faqPageSchema(faqItems)]. Coverage: 8/8 FAQ blocks → schema, 0 unparseable JSON-LD. Build 592, audit green
 - [x] 2026-08-03: Add 6 high-search-volume events to /days-until/ — dst-start (2nd Sun Mar) + dst-end (1st Sun Nov, floating rule), christmas-eve (Dec 24), groundhog-day (Feb 2), april-fools (Apr 1), flag-day (Jun 14). +18 pages (6 events × 3 years). Build 574→592. Dates verified (DST 2026: 3/8 & 11/1), hub auto-groups them, FAQ count updated to "over 60". Audit green

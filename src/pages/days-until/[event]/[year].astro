@@ -62,7 +62,23 @@ const subtitle = isFuture
   ? `That's ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''} from now`
   : `That was ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''} ago`;
 
+// Related events from the same category — nearest countdowns silo the event cluster
+const relatedEvents = events
+  .filter(e => e.category === eventData!.category && e.slug !== event && e.slug !== 'leap-day')
+  .map(e => {
+    const ed = getEventDate(e, eventYear);
+    const d = signedDaysBetween(todayStr, ed);
+    return { e, d };
+  })
+  .sort((a, b) => Math.abs(a.d) - Math.abs(b.d))
+  .slice(0, 4)
+  .map(({ e, d }) => ({
+    href: `/days-until/${e.slug}/${eventYear}/`,
+    label: `Days ${d >= 0 ? 'until' : 'since'} ${e.name} ${eventYear}`,
+  }));
+
 const relatedLinks = [
+  ...relatedEvents,
   { href: `/days-between/${todayStr}/${eventDate}/`, label: `Days between today and ${eventData!.name} ${eventYear}` },
   ...(hasNextYear ? [{ href: `/days-until/${event}/${nextYear}/`, label: `Days until ${eventData!.name} ${nextYear} →` }] : []),
   { href: `/days-in/${eventYear}/`, label: `Total days in ${eventYear}` },
