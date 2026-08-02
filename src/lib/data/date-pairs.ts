@@ -118,6 +118,28 @@ export const datePairs: DatePair[] = [
   { date1: '2026-11-01', date2: '2026-12-24', category: 'holiday', priority: 2 },
   { date1: '2026-03-01', date2: '2026-05-31', category: 'spring', priority: 3 },
   { date1: '2026-09-01', date2: '2026-11-30', category: 'fall', priority: 3 },
+
+  // === 2027 Planning (upcoming full year) ===
+  { date1: '2027-01-01', date2: '2027-03-31', category: 'quarter', priority: 2 },
+  { date1: '2027-04-01', date2: '2027-06-30', category: 'quarter', priority: 2 },
+  { date1: '2027-07-01', date2: '2027-09-30', category: 'quarter', priority: 2 },
+  { date1: '2027-10-01', date2: '2027-12-31', category: 'quarter', priority: 2 },
+  { date1: '2027-01-01', date2: '2027-06-30', category: 'half-year', priority: 2 },
+  { date1: '2027-07-01', date2: '2027-12-31', category: 'half-year', priority: 2 },
+  { date1: '2027-01-01', date2: '2027-04-15', category: 'tax', priority: 2 },
+  { date1: '2027-09-01', date2: '2027-12-20', category: 'semester', priority: 2 },
+  { date1: '2027-12-01', date2: '2027-12-25', category: 'holiday', priority: 1 },
+  { date1: '2027-11-01', date2: '2027-12-24', category: 'holiday', priority: 2 },
+  { date1: '2027-12-25', date2: '2028-01-01', category: 'cross-year', priority: 1 },
+
+  // === 2028 Planning (leap year) ===
+  { date1: '2028-01-01', date2: '2028-03-31', category: 'quarter', priority: 2 },
+  { date1: '2028-04-01', date2: '2028-06-30', category: 'quarter', priority: 2 },
+  { date1: '2028-07-01', date2: '2028-09-30', category: 'quarter', priority: 2 },
+  { date1: '2028-10-01', date2: '2028-12-31', category: 'quarter', priority: 2 },
+  { date1: '2028-01-01', date2: '2028-04-15', category: 'tax', priority: 2 },
+  { date1: '2028-06-01', date2: '2028-08-31', category: 'summer', priority: 1 },
+  { date1: '2028-12-01', date2: '2028-12-25', category: 'holiday', priority: 2 },
 ];
 
 // Keep only ~100 for MVP
