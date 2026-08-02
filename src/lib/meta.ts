@@ -105,10 +105,12 @@ export function daysUntilMeta(
 }
 
 /** Days In Month Programmatic Page */
-export function daysInMonthMeta(month: string, days: number, year: number): Meta {
+export function daysInMonthMeta(month: string, days: number, year: number, firstWeekday?: string): Meta {
   return {
     title: `How Many Days in ${month} ${year}? | ${SITE_NAME}`,
-    description: `${month} ${year} has ${days} days. Check how many days every month has, plus leap-year February. Free from DateCalc.`,
+    description: firstWeekday
+      ? `${month} ${year} has ${days} days and starts on a ${firstWeekday}. See the weekday breakdown and weekend count. Free from DateCalc.`
+      : `${month} ${year} has ${days} days. Check how many days every month has, plus leap-year February. Free from DateCalc.`,
   };
 }
 

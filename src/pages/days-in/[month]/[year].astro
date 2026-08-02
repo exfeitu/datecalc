@@ -8,7 +8,7 @@ import Breadcrumb from '../../../components/Breadcrumb.astro';
 import RelatedQueries from '../../../components/RelatedQueries.astro';
 import KeyFacts from '../../../components/KeyFacts.astro';
 import ShareLink from '../../../components/ShareLink.astro';
-import { isLeapYear, daysInMonth } from '../../../lib/dates';
+import { isLeapYear, daysInMonth, getWeekday } from '../../../lib/dates';
 import { daysInMonthMeta } from '../../../lib/meta';
 import { resultPageSchema } from '../../../lib/schema';
 import { months, yearRange } from '../../../lib/data/months';
@@ -41,8 +41,27 @@ const days = monthData && validYear ? daysInMonth(yearNum, monthData.index) : 0;
 const isLeap = isLeapYear(yearNum);
 const isFeb = monthData?.index === 2;
 
+// Real calendar data (computed at build time): weekday distribution for this month.
+const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const monthStr = monthData && validYear ? String(monthData.index).padStart(2, '0') : '';
+const firstDate = monthData && validYear ? `${yearNum}-${monthStr}-01` : '';
+const weekdayCounts = monthData && validYear
+  ? WEEKDAYS.map(name => ({
+      name,
+      count: Array.from({ length: days }, (_, i) => i + 1)
+        .filter(d => getWeekday(`${yearNum}-${monthStr}-${String(d).padStart(2, '0')}`) === name).length,
+    }))
+  : [];
+const firstWeekday = firstDate ? getWeekday(firstDate) : '';
+const lastWeekday = monthData && validYear ? getWeekday(`${yearNum}-${monthStr}-${String(days).padStart(2, '0')}`) : '';
+const satCount = weekdayCounts.find(w => w.name === 'Saturday')?.count ?? 0;
+const sunCount = weekdayCounts.find(w => w.name === 'Sunday')?.count ?? 0;
+const weekendCount = satCount + sunCount;
+const workdayCount = days - weekendCount;
+const topWeekday = weekdayCounts.length ? [...weekdayCounts].sort((a, b) => b.count - a.count)[0] : null;
+
 const meta = monthData && validYear
-  ? daysInMonthMeta(monthData.name, days, yearNum)
+  ? daysInMonthMeta(monthData.name, days, yearNum, firstWeekday)
   : { title: 'Not Found', description: '' };
 
 const pageUrl = `${SITE_URL}/days-in/${month}/${year}/`;
@@ -65,7 +84,21 @@ const faqs = monthData && validYear
           ? `Yes, ${yearNum} is a leap year (366 days), so February has 29 days.`
           : `No, ${yearNum} is not a leap year (365 days), so February has 28 days.`,
       },
-    ]
+      {
+        question: `How many weekends are in ${monthData.name} ${yearNum}?`,
+        answer: `${monthData.name} ${yearNum} has ${weekendCount} weekend days (${satCount} Saturdays and ${sunCount} Sundays) and ${workdayCount} weekdays.`,
+      },
+      {
+        question: `What day of the week does ${monthData.name} ${yearNum} start on?`,
+        answer: `${monthData.name} 1, ${yearNum} is a ${firstWeekday}. The month ends on a ${lastWeekday}.`,
+      },
+      topWeekday
+        ? {
+            question: `How many ${topWeekday.name}s are in ${monthData.name} ${yearNum}?`,
+            answer: `${monthData.name} ${yearNum} has ${topWeekday.count} ${topWeekday.name}s.`,
+          }
+        : null,
+    ].filter(Boolean) as { question: string; answer: string }[]
   : [];
 
 const relatedLinks = monthData && validYear
@@ -108,6 +141,22 @@ const schemas = monthData && validYear
       {' '}{yearNum} has {isLeap ? '366 days in total' : '365 days in total'}.
     </p>
 
+    <section class="mg" aria-label={`${monthData.name} ${yearNum} at a glance`}>
+      <h2 class="mg-title kicker">Month at a Glance</h2>
+      <p class="mg-bounds">
+        {monthData.name} {yearNum} starts on a <strong>{firstWeekday}</strong> and ends on a <strong>{lastWeekday}</strong>.
+        It has <strong>{weekendCount} weekend days</strong> and <strong>{workdayCount} weekdays</strong>.
+      </p>
+      <ul class="mg-grid">
+        {weekdayCounts.map(w => (
+          <li class="mg-item">
+            <span class="mg-day">{w.name.slice(0, 3)}</span>
+            <span class="mg-count num">{w.count}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
     <KeyFacts days={days} weeks={totalWeeks} remDays={remDays} />
 
     <ShareLink url={pageUrl} />
@@ -134,5 +183,80 @@ const schemas = monthData && validYear
   .exp strong {
     color: var(--color-text);
     font-weight: 650;
+  }
+
+  /* Month at a Glance — weekday distribution, computed at build time */
+  .mg {
+    margin: var(--sp-8) 0;
+    padding: var(--sp-6);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .mg-title {
+    margin-bottom: var(--sp-4);
+    text-align: center;
+    color: var(--color-text-tertiary);
+  }
+
+  .mg-bounds {
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--sp-4);
+  }
+
+  .mg-bounds strong {
+    color: var(--color-text);
+    font-weight: 650;
+  }
+
+  .mg-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--sp-2);
+  }
+
+  .mg-item {
+    text-align: center;
+    padding: var(--sp-3) var(--sp-1);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-sm);
+    border-top: 2px solid var(--color-accent);
+  }
+
+  .mg-day {
+    display: block;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    font-family: var(--font-mono);
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: var(--sp-1);
+  }
+
+  .mg-count {
+    font-size: var(--text-xl);
+    font-weight: 750;
+    color: var(--color-text);
+  }
+
+  @media (max-width: 640px) {
+    .mg {
+      padding: var(--sp-4);
+    }
+
+    .mg-grid {
+      gap: var(--sp-1);
+    }
+
+    .mg-count {
+      font-size: var(--text-base);
+    }
   }
 </style>
