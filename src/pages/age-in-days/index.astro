@@ -4,7 +4,7 @@ import BaseLayout from '../../components/BaseLayout.astro';
 import FAQ from '../../components/FAQ.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { ageInDays } from '../../lib/dates';
-import { webAppSchema } from '../../lib/schema';
+import { webAppSchema, faqPageSchema } from '../../lib/schema';
 import { formatNumber } from '../../lib/formatters';
 import { birthYears } from '../../lib/data/birth-years';
 
@@ -37,7 +37,7 @@ const faqItems = [
 ];
 ---
 
-<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={schemas}>
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={[...schemas, faqPageSchema(faqItems)]}>
   <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Age in Days', url: PAGE_URL }]} />
 
   <h1>Age in Days Calculator</h1>

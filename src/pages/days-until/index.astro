@@ -5,7 +5,7 @@ import FAQ from '../../components/FAQ.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { today, getEventDate, signedDaysBetween, getWeekday } from '../../lib/dates';
 import { formatDateLong } from '../../lib/formatters';
-import { webAppSchema } from '../../lib/schema';
+import { webAppSchema, faqPageSchema } from '../../lib/schema';
 import { events, eventYears } from '../../lib/data/events';
 
 const SITE_URL = 'https://datecalc-calculator.vercel.app';
@@ -89,7 +89,7 @@ const faqItems = [
 ];
 ---
 
-<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={schemas}>
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={[...schemas, faqPageSchema(faqItems)]}>
   <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Days Until', url: PAGE_URL }]} />
 
   <h1>Days Until Events — Countdown Calendar</h1>

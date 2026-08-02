@@ -6,7 +6,7 @@ import CategoryCard from '../components/CategoryCard.astro';
 import TodayPlate from '../components/TodayPlate.astro';
 import FAQ from '../components/FAQ.astro';
 import { homeMeta } from '../lib/meta';
-import { webAppSchema, breadcrumbSchema, organizationSchema } from '../lib/schema';
+import { webAppSchema, breadcrumbSchema, organizationSchema, faqPageSchema } from '../lib/schema';
 
 const SITE_URL = 'https://datecalc-calculator.vercel.app';
 const meta = homeMeta();
@@ -50,7 +50,7 @@ const faqItems = [
 ];
 ---
 
-<BaseLayout title={meta.title} description={meta.description} canonical={SITE_URL} schema={schemas}>
+<BaseLayout title={meta.title} description={meta.description} canonical={SITE_URL} schema={[...schemas, faqPageSchema(faqItems)]}>
   <section class="home-hero">
     <p class="kicker home-kicker">Date &amp; time arithmetic</p>
     <h1>Date Calculator</h1>

@@ -4,7 +4,7 @@ import BaseLayout from '../../components/BaseLayout.astro';
 import FAQ from '../../components/FAQ.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { daysFromHubMeta } from '../../lib/meta';
-import { webAppSchema } from '../../lib/schema';
+import { webAppSchema, faqPageSchema } from '../../lib/schema';
 import { dateFromDays, getWeekday } from '../../lib/dates';
 import { formatDateLong } from '../../lib/formatters';
 
@@ -47,7 +47,7 @@ const faqItems = [
 ];
 ---
 
-<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={schemas}>
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={[...schemas, faqPageSchema(faqItems)]}>
   <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Days From a Date', url: PAGE_URL }]} />
 
   <h1>Days From a Date Calculator</h1>

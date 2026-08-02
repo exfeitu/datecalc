@@ -74,6 +74,22 @@ export function resultPageSchema(args: {
   };
 }
 
+/** Standalone FAQPage — used on hub/index pages that render an FAQ block */
+export function faqPageSchema(faqs: FaqItem[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: f.answer,
+      },
+    })),
+  };
+}
+
 /** Organization — used on homepage and about page */
 export function organizationSchema(args: { name: string; url: string }) {
   return {

@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-03 01:03 UTC
+> Last updated: 2026-08-03 03:03 UTC
 
 > ⏰ Cron schedule: 00:30, 02:30, 04:30, 06:30, 08:30, 13:30, 19:30, 21:30, 23:30 (avoids 9–12 and 14–18)
 
@@ -16,6 +16,7 @@
 - [ ] FUTURE: Monitor GSC for thin-content pages after UI redesign
 
 ## ✅ Done
+- [x] 2026-08-03: Add FAQPage schema to all 8 hub/index pages — homepage + days-in/until/from-today/left-in/from/age-in-days/between rendered FAQ blocks but lacked FAQPage JSON-LD (programmatic pages already had it). New shared faqPageSchema() helper in schema.ts; each hub now emits [...schemas, faqPageSchema(faqItems)]. Coverage: 8/8 FAQ blocks → schema, 0 unparseable JSON-LD. Build 592, audit green
 - [x] 2026-08-03: Add 6 high-search-volume events to /days-until/ — dst-start (2nd Sun Mar) + dst-end (1st Sun Nov, floating rule), christmas-eve (Dec 24), groundhog-day (Feb 2), april-fools (Apr 1), flag-day (Jun 14). +18 pages (6 events × 3 years). Build 574→592. Dates verified (DST 2026: 3/8 & 11/1), hub auto-groups them, FAQ count updated to "over 60". Audit green
 - [x] 2026-08-03: Add KeyFacts card to days-left-in/[year] — remaining-days stats (weeks/hours/min/sec). Last 3 borderline pages (120 words) now >150. Thin content 0, lowest page 129 words
 - [x] 2026-08-02: Enrich /days-in/{month}/{year}/ grid pages — thin-content scan flagged all 77 month×year pages at 114 words. Added build-time computed "Month at a Glance" block (7-day weekday distribution grid, starts-on/ends-on weekday, weekend/weekday counts) + 3 new FAQs (weekends, starting weekday, most-common weekday) + stronger meta description with starting weekday. Thin pages 77→0. Build 574, audit green. Template: days-in/[month]/[year].astro, meta: daysInMonthMeta optional firstWeekday param

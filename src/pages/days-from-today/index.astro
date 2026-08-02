@@ -6,7 +6,7 @@ import FAQ from '../../components/FAQ.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { today, dateFromDays, getWeekday } from '../../lib/dates';
 import { daysFromTodayHubMeta } from '../../lib/meta';
-import { webAppSchema } from '../../lib/schema';
+import { webAppSchema, faqPageSchema } from '../../lib/schema';
 import { formatDateLong } from '../../lib/formatters';
 
 const SITE_URL = 'https://datecalc-calculator.vercel.app';
@@ -59,7 +59,7 @@ const faqItems = [
 ];
 ---
 
-<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={schemas}>
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={[...schemas, faqPageSchema(faqItems)]}>
   <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Days From Today', url: PAGE_URL }]} />
 
   <h1>Days From Today Calculator</h1>

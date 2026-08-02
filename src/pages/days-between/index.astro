@@ -5,7 +5,7 @@ import Calculator from '../../components/Calculator.astro';
 import FAQ from '../../components/FAQ.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { daysBetweenHubMeta } from '../../lib/meta';
-import { webAppSchema, breadcrumbSchema } from '../../lib/schema';
+import { webAppSchema, breadcrumbSchema, faqPageSchema } from '../../lib/schema';
 
 const SITE_URL = 'https://datecalc-calculator.vercel.app';
 const PAGE_URL = `${SITE_URL}/days-between/`;
@@ -45,7 +45,7 @@ const faqItems = [
 ];
 ---
 
-<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={schemas}>
+<BaseLayout title={meta.title} description={meta.description} canonical={PAGE_URL} schema={[...schemas, faqPageSchema(faqItems)]}>
   <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Days Between', url: PAGE_URL }]} />
 
   <h1>Days Between Dates Calculator</h1>
