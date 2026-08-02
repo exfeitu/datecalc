@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-02 20:02 UTC
+> Last updated: 2026-08-02 22:03 UTC
 
 > ⏰ Cron schedule: 00:30, 02:30, 04:30, 06:30, 08:30, 13:30, 19:30, 21:30, 23:30 (avoids 9–12 and 14–18)
 
@@ -16,6 +16,7 @@
 - [ ] FUTURE: Monitor GSC for thin-content pages after UI redesign
 
 ## ✅ Done
+- [x] 2026-08-02: Fix wrong lunar/religious holiday dates + add Ramadan — diwali/hanukkah/eid-al-fitr were hardcoded to 2026 dates for all years (2/3 of pages wrong). Moved to per-year lookup table in dates.ts; added ramadan. Build 571→574, audit green
 - [x] 2026-08-02: Add Chinese New Year events — chinese-new-year + chinese-new-years-eve (per-year Gregorian lookup table in dates.ts, same computedRule path as Easter). Covers huge "how many days until Chinese New Year" queries. +6 pages (2 events × 3 years). Build 565→571, audit green
 - [x] 2026-08-02: Add Easter family events — easter, good-friday, easter-monday, ash-wednesday, pentecost (computed via Meeus/Jones/Butcher computus in dates.ts). Covers high-volume "days until Easter 2027" queries. +15 pages (5 events × 3 years). Build 550→565, audit green
 - [x] 2026-08-02: Expand data coverage: +5 days-from-today N values (75,100,200,250,300 → covers "100 days from today" queries) and +7 birth years (1940-2025 every 5 years → 18 total). Hub popular lists + Quick Jump updated. Build 538→550, sitemap 537→549

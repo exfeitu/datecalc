@@ -65,23 +65,38 @@ export function signedDaysBetween(date1: string, date2: string): number {
   return Math.round((d2.getTime() - d1.getTime()) / MS_PER_DAY);
 }
 
-/** Computed (algorithm-based) event rules — Easter and its liturgical dependents */
-export type ComputedEvent = 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost' | 'chinese-new-year' | 'chinese-new-years-eve';
+/** Computed (algorithm-based) event rules — Easter family, Chinese New Year, and lunar/religious holidays */
+export type ComputedEvent =
+  | 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost'
+  | 'chinese-new-year' | 'chinese-new-years-eve'
+  | 'ramadan' | 'eid-al-fitr' | 'diwali' | 'hanukkah';
 
 /**
- * Chinese New Year dates (Gregorian) — follows the Chinese lunar calendar, so
- * they must be looked up per year. Values confirmed for 2026-2029; earlier/
- * later years use widely published dates. Fallback: Feb 10 (CNY always falls
- * Jan 21 – Feb 20).
+ * Lunar/religious holiday dates (Gregorian) — these follow lunar calendars, so
+ * the Gregorian date varies every year and must be looked up. Values confirmed
+ * from published holiday calendars. Fallback: same date as the prior listed year.
  */
-const CHINESE_NEW_YEAR: Record<number, string> = {
-  2024: '2024-02-10',
-  2025: '2025-01-29',
-  2026: '2026-02-17',
-  2027: '2027-02-06',
-  2028: '2028-01-26',
-  2029: '2029-02-13',
-  2030: '2030-02-03',
+const VARIABLE_HOLIDAYS: Record<Exclude<ComputedEvent, 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost'>, Record<number, string>> = {
+  'chinese-new-year': {
+    2024: '2024-02-10', 2025: '2025-01-29', 2026: '2026-02-17',
+    2027: '2027-02-06', 2028: '2028-01-26', 2029: '2029-02-13', 2030: '2030-02-03',
+  },
+  'chinese-new-years-eve': {
+    2024: '2024-02-09', 2025: '2025-01-28', 2026: '2026-02-16',
+    2027: '2027-02-05', 2028: '2028-01-25', 2029: '2029-02-12', 2030: '2030-02-02',
+  },
+  ramadan: {
+    2026: '2026-02-19', 2027: '2027-02-08', 2028: '2028-01-28',
+  },
+  'eid-al-fitr': {
+    2026: '2026-03-20', 2027: '2027-03-09', 2028: '2028-02-26',
+  },
+  diwali: {
+    2026: '2026-11-08', 2027: '2027-10-29', 2028: '2028-10-17',
+  },
+  hanukkah: {
+    2026: '2026-12-05', 2027: '2027-12-25', 2028: '2028-12-13',
+  },
 };
 
 /** Gregorian Easter Sunday via the Meeus/Jones/Butcher computus (valid 1583+) */
@@ -106,15 +121,18 @@ export function easterDate(year: number): string {
 /** Resolve a computed event to its actual YYYY-MM-DD */
 function computedEventDate(computed: ComputedEvent, year: number): string {
   const easter = easterDate(year);
-  const cny = CHINESE_NEW_YEAR[year] ?? `${year}-02-10`;
   switch (computed) {
     case 'easter': return easter;
     case 'good-friday': return dateFromDays(easter, -2);
     case 'easter-monday': return dateFromDays(easter, 1);
     case 'ash-wednesday': return dateFromDays(easter, -46);
     case 'pentecost': return dateFromDays(easter, 49);
-    case 'chinese-new-year': return cny;
-    case 'chinese-new-years-eve': return dateFromDays(cny, -1);
+    default: {
+      const table = VARIABLE_HOLIDAYS[computed];
+      // Fallback to the last listed year if the requested year isn't in the table
+      const years = Object.keys(table).map(Number).sort((a, b) => a - b);
+      return table[year] ?? table[years[years.length - 1]];
+    }
   }
 }
 

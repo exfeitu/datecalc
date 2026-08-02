@@ -20,8 +20,8 @@ export interface CalendarEvent {
     weekday: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
     occurrence: 1 | 2 | 3 | 4 | -1; // 1=first, 4=fourth, -1=last
   };
-  /** For computed events: which algorithm (Easter family / Chinese New Year) */
-  computedRule?: 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost' | 'chinese-new-year' | 'chinese-new-years-eve';
+  /** For computed events: which algorithm / lookup table (Easter family, Chinese New Year, lunar holidays) */
+  computedRule?: 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost' | 'chinese-new-year' | 'chinese-new-years-eve' | 'ramadan' | 'eid-al-fitr' | 'diwali' | 'hanukkah';
 }
 
 export const events: CalendarEvent[] = [
@@ -60,9 +60,10 @@ export const events: CalendarEvent[] = [
   { slug: 'australia-day',  name: 'Australia Day',         month: 1,  day: 26, type: 'fixed', category: 'international' },
   { slug: 'bastille-day',   name: 'Bastille Day',          month: 7,  day: 14, type: 'fixed', category: 'international' },
   { slug: 'cinco-de-mayo',  name: 'Cinco de Mayo',         month: 5,  day: 5,  type: 'fixed', category: 'international' },
-  { slug: 'diwali',         name: 'Diwali',                month: 10, day: 20, type: 'fixed', category: 'international' }, // approx 2026
-  { slug: 'hanukkah',       name: 'Hanukkah',              month: 12, day: 5,  type: 'fixed', category: 'international' }, // approx 2026
-  { slug: 'eid-al-fitr',    name: 'Eid al-Fitr',           month: 3,  day: 20, type: 'fixed', category: 'international' }, // approx 2026
+  { slug: 'diwali',         name: 'Diwali',                month: 11, day: 8,  type: 'computed', category: 'international', computedRule: 'diwali' },
+  { slug: 'hanukkah',       name: 'Hanukkah',              month: 12, day: 5,  type: 'computed', category: 'international', computedRule: 'hanukkah' },
+  { slug: 'eid-al-fitr',    name: 'Eid al-Fitr',           month: 3,  day: 20, type: 'computed', category: 'international', computedRule: 'eid-al-fitr' },
+  { slug: 'ramadan',        name: 'Ramadan',               month: 2,  day: 19, type: 'computed', category: 'international', computedRule: 'ramadan' },
 
   // === Shopping / Commercial ===
   { slug: 'black-friday',   name: 'Black Friday',          month: 11, day: 0, type: 'floating', category: 'shopping',
