@@ -65,11 +65,54 @@ export function signedDaysBetween(date1: string, date2: string): number {
   return Math.round((d2.getTime() - d1.getTime()) / MS_PER_DAY);
 }
 
+/** Computed (algorithm-based) event rules — Easter and its liturgical dependents */
+export type ComputedEvent = 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost';
+
+/** Gregorian Easter Sunday via the Meeus/Jones/Butcher computus (valid 1583+) */
+export function easterDate(year: number): string {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+/** Resolve a computed event to its actual YYYY-MM-DD */
+function computedEventDate(computed: ComputedEvent, year: number): string {
+  const easter = easterDate(year);
+  switch (computed) {
+    case 'easter': return easter;
+    case 'good-friday': return dateFromDays(easter, -2);
+    case 'easter-monday': return dateFromDays(easter, 1);
+    case 'ash-wednesday': return dateFromDays(easter, -46);
+    case 'pentecost': return dateFromDays(easter, 49);
+  }
+}
+
 /** Calculate the actual YYYY-MM-DD for a floating holiday */
 export function getEventDate(
-  event: { month: number; day: number; type: string; floatingRule?: { weekday: string; occurrence: number } },
+  event: {
+    month: number;
+    day: number;
+    type: string;
+    floatingRule?: { weekday: string; occurrence: number };
+    computedRule?: ComputedEvent;
+  },
   year: number,
 ): string {
+  if (event.computedRule) {
+    return computedEventDate(event.computedRule, year);
+  }
   if (event.type === 'fixed') {
     return `${year}-${String(event.month).padStart(2, '0')}-${String(event.day).padStart(2, '0')}`;
   }

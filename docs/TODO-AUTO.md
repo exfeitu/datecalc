@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-01 21:40 UTC
+> Last updated: 2026-08-02 12:47 UTC
 
 > ⏰ Cron schedule: 00:30, 02:30, 04:30, 06:30, 08:30, 13:30, 19:30, 21:30, 23:30 (avoids 9–12 and 14–18)
 
@@ -16,6 +16,7 @@
 - [ ] FUTURE: Monitor GSC for thin-content pages after UI redesign
 
 ## ✅ Done
+- [x] 2026-08-02: Add Easter family events — easter, good-friday, easter-monday, ash-wednesday, pentecost (computed via Meeus/Jones/Butcher computus in dates.ts). Covers high-volume "days until Easter 2027" queries. +15 pages (5 events × 3 years). Build 550→565, audit green
 - [x] 2026-08-02: Expand data coverage: +5 days-from-today N values (75,100,200,250,300 → covers "100 days from today" queries) and +7 birth years (1940-2025 every 5 years → 18 total). Hub popular lists + Quick Jump updated. Build 538→550, sitemap 537→549
 - [x] 2026-08-02: New /days-in/{month}/{year}/ route — 84 pages covering "how many days in [month] [year]" (12 months × 7 years, 2024-2030). Closes the gap where month pages were 2026-anchored (Feb 2028 = 29 days now a real page). isBuilt handles month/year combos; month pages link to all year variants, year pages link to all 12 months. Build 454→538, sitemap 453→537
 - [x] 2026-08-02: Create /days-from/ + /days-left-in/ hub pages (were 404 URLs that isBuilt() wrongly claimed as built). Now all 7 templates have parent hubs. days-from hub: 12 popular combos; days-left-in hub: 2026/27/28 progress cards. Cross-linked from templates + homepage. Build 452→454, sitemap 451→453

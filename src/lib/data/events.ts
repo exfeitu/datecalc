@@ -4,7 +4,7 @@
  * MVP: ~50 events × 3 years (2026, 2027, 2028) = ~150 pages.
  */
 
-export type EventType = 'fixed' | 'floating' | 'astronomical';
+export type EventType = 'fixed' | 'floating' | 'astronomical' | 'computed';
 
 export interface CalendarEvent {
   slug: string;
@@ -20,6 +20,8 @@ export interface CalendarEvent {
     weekday: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
     occurrence: 1 | 2 | 3 | 4 | -1; // 1=first, 4=fourth, -1=last
   };
+  /** For computed events: which algorithm (Easter family) */
+  computedRule?: 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost';
 }
 
 export const events: CalendarEvent[] = [
@@ -103,6 +105,13 @@ export const events: CalendarEvent[] = [
 
   // === Leap-Related ===
   { slug: 'leap-day',       name: 'Leap Day',              month: 2,  day: 29, type: 'fixed', category: 'special' },
+
+  // === Easter Family (computed via computus) ===
+  { slug: 'easter',         name: 'Easter',                month: 3,  day: 0,  type: 'computed', category: 'holiday', computedRule: 'easter' },
+  { slug: 'good-friday',    name: 'Good Friday',           month: 3,  day: 0,  type: 'computed', category: 'holiday', computedRule: 'good-friday' },
+  { slug: 'easter-monday',  name: 'Easter Monday',         month: 3,  day: 0,  type: 'computed', category: 'holiday', computedRule: 'easter-monday' },
+  { slug: 'ash-wednesday',  name: 'Ash Wednesday',         month: 2,  day: 0,  type: 'computed', category: 'holiday', computedRule: 'ash-wednesday' },
+  { slug: 'pentecost',      name: 'Pentecost',             month: 5,  day: 0,  type: 'computed', category: 'holiday', computedRule: 'pentecost' },
 ];
 
 /** Years to generate pages for */
