@@ -17,7 +17,7 @@ import { daysFromDates } from '../../../lib/data/days-from-dates';
 
 import type { GetStaticPaths } from 'astro';
 
-const SITE_URL = 'https://datecalc.vercel.app';
+const SITE_URL = 'https://datecalc-calculator.vercel.app';
 
 export const getStaticPaths: GetStaticPaths = () => {
   const uniqueDates = [...new Set(daysFromDates)];

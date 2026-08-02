@@ -3,6 +3,6 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   output: 'static',
-  site: 'https://datecalc.vercel.app',
+  site: 'https://datecalc-calculator.vercel.app',
   integrations: [sitemap()],
 });
