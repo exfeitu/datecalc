@@ -20,8 +20,8 @@ export interface CalendarEvent {
     weekday: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
     occurrence: 1 | 2 | 3 | 4 | -1; // 1=first, 4=fourth, -1=last
   };
-  /** For computed events: which algorithm (Easter family) */
-  computedRule?: 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost';
+  /** For computed events: which algorithm (Easter family / Chinese New Year) */
+  computedRule?: 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost' | 'chinese-new-year' | 'chinese-new-years-eve';
 }
 
 export const events: CalendarEvent[] = [
@@ -112,6 +112,10 @@ export const events: CalendarEvent[] = [
   { slug: 'easter-monday',  name: 'Easter Monday',         month: 3,  day: 0,  type: 'computed', category: 'holiday', computedRule: 'easter-monday' },
   { slug: 'ash-wednesday',  name: 'Ash Wednesday',         month: 2,  day: 0,  type: 'computed', category: 'holiday', computedRule: 'ash-wednesday' },
   { slug: 'pentecost',      name: 'Pentecost',             month: 5,  day: 0,  type: 'computed', category: 'holiday', computedRule: 'pentecost' },
+
+  // === Lunar New Year (computed via lookup table) ===
+  { slug: 'chinese-new-year',        name: 'Chinese New Year',       month: 2,  day: 0,  type: 'computed', category: 'international', computedRule: 'chinese-new-year' },
+  { slug: 'chinese-new-years-eve',   name: "Chinese New Year's Eve", month: 2,  day: 0,  type: 'computed', category: 'international', computedRule: 'chinese-new-years-eve' },
 ];
 
 /** Years to generate pages for */

@@ -66,7 +66,23 @@ export function signedDaysBetween(date1: string, date2: string): number {
 }
 
 /** Computed (algorithm-based) event rules — Easter and its liturgical dependents */
-export type ComputedEvent = 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost';
+export type ComputedEvent = 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost' | 'chinese-new-year' | 'chinese-new-years-eve';
+
+/**
+ * Chinese New Year dates (Gregorian) — follows the Chinese lunar calendar, so
+ * they must be looked up per year. Values confirmed for 2026-2029; earlier/
+ * later years use widely published dates. Fallback: Feb 10 (CNY always falls
+ * Jan 21 – Feb 20).
+ */
+const CHINESE_NEW_YEAR: Record<number, string> = {
+  2024: '2024-02-10',
+  2025: '2025-01-29',
+  2026: '2026-02-17',
+  2027: '2027-02-06',
+  2028: '2028-01-26',
+  2029: '2029-02-13',
+  2030: '2030-02-03',
+};
 
 /** Gregorian Easter Sunday via the Meeus/Jones/Butcher computus (valid 1583+) */
 export function easterDate(year: number): string {
@@ -90,12 +106,15 @@ export function easterDate(year: number): string {
 /** Resolve a computed event to its actual YYYY-MM-DD */
 function computedEventDate(computed: ComputedEvent, year: number): string {
   const easter = easterDate(year);
+  const cny = CHINESE_NEW_YEAR[year] ?? `${year}-02-10`;
   switch (computed) {
     case 'easter': return easter;
     case 'good-friday': return dateFromDays(easter, -2);
     case 'easter-monday': return dateFromDays(easter, 1);
     case 'ash-wednesday': return dateFromDays(easter, -46);
     case 'pentecost': return dateFromDays(easter, 49);
+    case 'chinese-new-year': return cny;
+    case 'chinese-new-years-eve': return dateFromDays(cny, -1);
   }
 }
 
