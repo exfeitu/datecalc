@@ -27,6 +27,7 @@ export interface CalendarEvent {
 export const events: CalendarEvent[] = [
   // === Major Holidays ===
   { slug: 'christmas',      name: 'Christmas',            month: 12, day: 25, type: 'fixed', category: 'holiday' },
+  { slug: 'christmas-eve',  name: 'Christmas Eve',         month: 12, day: 24, type: 'fixed', category: 'holiday' },
   { slug: 'new-year',       name: "New Year's Day",       month: 1,  day: 1,  type: 'fixed', category: 'holiday' },
   { slug: 'new-years-eve',  name: "New Year's Eve",       month: 12, day: 31, type: 'fixed', category: 'holiday' },
   { slug: 'halloween',      name: 'Halloween',             month: 10, day: 31, type: 'fixed', category: 'holiday' },
@@ -55,6 +56,7 @@ export const events: CalendarEvent[] = [
     floatingRule: { weekday: 'Monday', occurrence: 2 } },
   { slug: 'veterans-day',    name: 'Veterans Day',         month: 11, day: 11, type: 'fixed', category: 'holiday' },
   { slug: 'juneteenth',      name: 'Juneteenth',           month: 6,  day: 19, type: 'fixed', category: 'holiday' },
+  { slug: 'flag-day',        name: 'Flag Day (US)',        month: 6,  day: 14, type: 'fixed', category: 'holiday' },
 
   // === Other Country Holidays ===
   { slug: 'australia-day',  name: 'Australia Day',         month: 1,  day: 26, type: 'fixed', category: 'international' },
@@ -81,6 +83,11 @@ export const events: CalendarEvent[] = [
   { slug: 'winter',          name: 'Winter',               month: 12, day: 1,  type: 'fixed', category: 'season' },
   { slug: 'spring',          name: 'Spring',               month: 3,  day: 1,  type: 'fixed', category: 'season' },
   { slug: 'fall',            name: 'Fall',                 month: 9,  day: 1,  type: 'fixed', category: 'season' },
+  { slug: 'groundhog-day',   name: 'Groundhog Day',        month: 2,  day: 2,  type: 'fixed', category: 'season' },
+  { slug: 'dst-start',       name: 'Daylight Saving Time Starts', month: 3, day: 0, type: 'floating', category: 'season',
+    floatingRule: { weekday: 'Sunday', occurrence: 2 } }, // US: 2nd Sunday of March
+  { slug: 'dst-end',         name: 'Daylight Saving Time Ends',   month: 11, day: 0, type: 'floating', category: 'season',
+    floatingRule: { weekday: 'Sunday', occurrence: 1 } }, // US: 1st Sunday of November
 
   // === Sports ===
   { slug: 'super-bowl',     name: 'Super Bowl',            month: 2,  day: 7,  type: 'fixed', category: 'sports' }, // 2027
@@ -96,6 +103,7 @@ export const events: CalendarEvent[] = [
   // === Pop Culture ===
   { slug: 'oscars',         name: 'Academy Awards',        month: 3,  day: 2,  type: 'fixed', category: 'entertainment' }, // 2026
   { slug: 'grammys',        name: 'Grammy Awards',         month: 2,  day: 2,  type: 'fixed', category: 'entertainment' }, // 2026
+  { slug: 'april-fools',    name: "April Fools' Day",      month: 4,  day: 1,  type: 'fixed', category: 'entertainment' },
 
   // === Environment ===
   { slug: 'earth-day',      name: 'Earth Day',             month: 4,  day: 22, type: 'fixed', category: 'environment' },
