@@ -39,7 +39,19 @@ const year2 = parseInt(date2.slice(0, 4));
 
 const meta = daysBetweenMeta(date1, date2, totalDays);
 
+// Related date pairs sharing the start year — nearest by start date, silos the pair cluster
+const relatedPairs = datePairs
+  .filter(p => p.date1.slice(0, 4) === date1.slice(0, 4) && p.date1 !== date1)
+  .map(p => ({ p, d: daysBetween(date1, p.date1) }))
+  .sort((a, b) => a.d - b.d)
+  .slice(0, 4)
+  .map(({ p }) => ({
+    href: `/days-between/${p.date1}/${p.date2}/`,
+    label: `Days between ${formatDateLong(p.date1)} and ${formatDateLong(p.date2)}`,
+  }));
+
 const relatedLinks = [
+  ...relatedPairs,
   { href: `/days-from-today/${totalDays}/`, label: `${totalDays} days from today` },
   { href: `/days-from/${totalDays}/${date1}/`, label: `${totalDays} days from ${formatDateLong(date1)}` },
   { href: `/days-in/${year1}/`, label: `Days in ${year1}` },
