@@ -131,6 +131,24 @@
   d1.addEventListener('input', () => { clearOnEdit(); update(); });
   d2.addEventListener('input', () => { clearOnEdit(); update(); });
 
+  // Clicking the field itself opens the date picker. In some browsers (e.g.
+  // Firefox) only the small calendar icon opens it; showPicker() makes the
+  // whole field clickable-to-open so the blue focus state means "editable".
+  function openPickerOnClick(input: HTMLInputElement) {
+    const show = (input as HTMLInputElement & { showPicker?: () => void }).showPicker;
+    if (typeof show !== 'function') return;
+    input.addEventListener('click', () => {
+      try {
+        show.call(input);
+      } catch {
+        // Pickers already open (Chrome/Edge open on click) or not user-initiated —
+        // native behavior is fine, ignore.
+      }
+    });
+  }
+  openPickerOnClick(d1);
+  openPickerOnClick(d2);
+
   // Prefill from ?start=&end= so a shared URL reproduces the result.
   // Otherwise default to a live example: today → +30 days.
   const initial = urlParams();
@@ -235,17 +253,20 @@
     font-family: var(--font-sans);
     background: var(--color-bg);
     min-width: 170px;
+    cursor: pointer;
     transition: border-color var(--transition-fast),
-                box-shadow var(--transition-fast);
+                box-shadow var(--transition-fast),
+                background var(--transition-fast);
   }
 
   .calc-field input:hover {
-    border-color: var(--color-text-tertiary);
+    border-color: var(--color-accent);
   }
 
   .calc-field input:focus {
     border-color: var(--color-accent);
     box-shadow: 0 0 0 3px var(--color-accent-glow);
+    background: var(--color-accent-subtle);
     outline: none;
   }
 
