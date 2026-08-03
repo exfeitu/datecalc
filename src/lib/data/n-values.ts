@@ -7,7 +7,7 @@ export const nValues: number[] = [
 ];
 
 export const nValuesForDate: number[] = [
-  30, 45, 60, 90, 120, 180,
+  30, 45, 60, 90, 100, 120, 180, 365,
 ];
 
 export const nValuesForToday: number[] = [

@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-03 20:10 UTC
+> Last updated: 2026-08-03 22:10 UTC
 
 > ⏰ Cron schedule: 00:30, 02:30, 04:30, 06:30, 08:30, 13:30, 19:30, 21:30, 23:30 (avoids 9–12 and 14–18)
 
@@ -16,6 +16,7 @@
 - [ ] FUTURE: Monitor GSC for thin-content pages after UI redesign
 
 ## ✅ Done
+- [x] 2026-08-03: Add 100 & 365 to nValuesForDate — /days-from/N/date supported only [30,45,60,90,120,180], missing two of the most common "N days from [date]" queries ("100 days from Christmas", "1 year from [date]"). +64 pages (32 dates × 2 values; 614→678). Hub popularFrom + intro updated. Verified: 100d from 2026-12-25 = 2027-04-04; 365d from 2026-01-01 = 2027-01-01; leap edge 365d from 2028-02-29 = 2029-02-28. Audit: 10556 links 0 broken, 0 h1 issues, 0 thin
 - [x] 2026-08-03: Add 10 & 28 days-from-today pages — nValuesForToday had 7/14/21/30 but skipped 10 and 28 (nValues for /days-from/N/date had them). +2 pages (612→614). Hub popularNValues + Quick Jump updated to match. Verified: 10d from 2026-08-03 = 2026-08-13 (1w3d), 28d = 2026-08-31 (4w0d). Audit: 0 broken links (9720 checked), 0 missing/multi h1
 - [x] 2026-08-03: Add 500 & 1000 days-from-today pages — "500/1000 days from today" are common milestone-planning queries, max N was 365. Added both to nValuesForToday (16→18 pages) + hub popularNValues + Quick Jump (1000). Verified: 500d from 2026-08-03 = 2027-12-16 (71w3d), 1000d = 2029-04-29 (142w6d). Build 610→612, sitemap 611, audit green (0 broken, 0 thin, 0 our-JS on programmatic)
 - [x] 2026-08-03: Calculator — click Start/End field opens date picker directly — in some browsers (Firefox) only the calendar icon opens the picker, so focus turned blue but the field wasn't editable. Added showPicker() on click of both date inputs (try/catch for browsers that open natively on click, e.g. Chrome). Inputs now cursor:pointer, hover = accent border, focus = accent border + glow + light blue fill so the blue state clearly means "editable". Calculator script 2.0KB inline, programmatic pages still 0KB JS. Build 610, green

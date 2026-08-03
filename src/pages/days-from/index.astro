@@ -25,8 +25,10 @@ const popularFrom = [
   { n: 90, date: '2026-01-01', label: 'New Year\'s Day 2026' },
   { n: 90, date: '2026-09-01', label: 'Fall semester start 2026' },
   { n: 90, date: '2026-12-25', label: 'Christmas Day 2026' },
+  { n: 100, date: '2026-01-01', label: 'New Year\'s Day 2026' },
   { n: 120, date: '2026-07-04', label: 'Independence Day 2026' },
   { n: 180, date: '2026-01-01', label: 'New Year\'s Day 2026' },
+  { n: 365, date: '2026-01-01', label: 'New Year\'s Day 2026' },
   { n: 180, date: '2026-12-31', label: 'New Year\'s Eve 2026' },
   { n: 180, date: '2027-01-01', label: 'New Year\'s Day 2027' },
 ];
@@ -51,7 +53,7 @@ const faqItems = [
   <Breadcrumb items={[{ name: 'Home', url: SITE_URL }, { name: 'Days From a Date', url: PAGE_URL }]} />
 
   <h1>Days From a Date Calculator</h1>
-  <p class="hub-intro">Find what date falls N days after any start date — 30, 45, 60, 90, 120, or 180 days out. Free, fast, and accurate.</p>
+  <p class="hub-intro">Find what date falls N days after any start date — 30, 60, 90, 100, 180, or 365 days out. Free, fast, and accurate.</p>
 
   <!-- Popular examples -->
   <section class="popular">
