@@ -6,7 +6,7 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import RelatedQueries from '../../components/RelatedQueries.astro';
 import KeyFacts from '../../components/KeyFacts.astro';
 import ShareLink from '../../components/ShareLink.astro';
-import { isLeapYear, daysInMonth } from '../../lib/dates';
+import { isLeapYear, daysInMonth, getWeekday } from '../../lib/dates';
 import { daysInMonthMeta, daysInYearMeta } from '../../lib/meta';
 import { resultPageSchema } from '../../lib/schema';
 import { months } from '../../lib/data/months';
@@ -17,6 +17,7 @@ import type { GetStaticPaths } from 'astro';
 const SITE_URL = 'https://datecalc-calculator.vercel.app';
 const CATEGORY_URL = `${SITE_URL}/days-in/`;
 const baseYear = 2026;
+const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 export const getStaticPaths: GetStaticPaths = () => {
   const paths: { params: { slug: string } }[] = [];
@@ -47,6 +48,17 @@ let explanation: string;
 let faqs: { question: string; answer: string }[];
 let relatedLinks: { href: string; label: string }[];
 let contextLabel: string; // for breadcrumb
+
+// Month at a Glance — real calendar data for the 2026-anchored month pages,
+// mirroring the [month]/[year] template. Null for year pages (no glance block).
+let glance: {
+  firstWeekday: string;
+  lastWeekday: string;
+  weekendCount: number;
+  workdayCount: number;
+  topWeekday: { name: string; count: number };
+  weekdayCounts: { name: string; count: number }[];
+} | null = null;
 
 if (isYear) {
   const isLeap = isLeapYear(yearNum);
@@ -83,7 +95,25 @@ if (isYear) {
   days = daysInMonth(baseYear, monthData.index);
   const isFeb = monthData.index === 2;
   const isCurrentLeap = isLeapYear(baseYear);
-  const meta = daysInMonthMeta(monthData.name, days, baseYear);
+
+  // Real calendar data for the Month at a Glance block (2026-anchored)
+  const monthStr = String(monthData.index).padStart(2, '0');
+  const firstDate = `${baseYear}-${monthStr}-01`;
+  const firstWeekday = getWeekday(firstDate);
+  const lastWeekday = getWeekday(`${baseYear}-${monthStr}-${String(days).padStart(2, '0')}`);
+  const weekdayCounts = WEEKDAYS.map(name => ({
+    name,
+    count: Array.from({ length: days }, (_, i) => i + 1)
+      .filter(d => getWeekday(`${baseYear}-${monthStr}-${String(d).padStart(2, '0')}`) === name).length,
+  }));
+  const satCount = weekdayCounts.find(w => w.name === 'Saturday')?.count ?? 0;
+  const sunCount = weekdayCounts.find(w => w.name === 'Sunday')?.count ?? 0;
+  const weekendCount = satCount + sunCount;
+  const workdayCount = days - weekendCount;
+  const topWeekday = [...weekdayCounts].sort((a, b) => b.count - a.count)[0];
+  glance = { firstWeekday, lastWeekday, weekendCount, workdayCount, topWeekday, weekdayCounts };
+
+  const meta = daysInMonthMeta(monthData.name, days, baseYear, firstWeekday);
   title = meta.title;
   description = meta.description;
   unit = `days in ${monthData.name}`;
@@ -101,7 +131,21 @@ if (isYear) {
       question: `Is ${monthData.name} a 30 or 31 day month?`,
       answer: days === 31 ? `${monthData.name} has 31 days.` : days === 30 ? `${monthData.name} has 30 days.` : `February has ${days} days in ${baseYear} (${isCurrentLeap ? 'leap year' : 'non-leap year'}).`,
     },
-  ];
+    {
+      question: `How many weekends are in ${monthData.name} ${baseYear}?`,
+      answer: `${monthData.name} ${baseYear} has ${weekendCount} weekend days (${satCount} Saturdays and ${sunCount} Sundays) and ${workdayCount} weekdays.`,
+    },
+    {
+      question: `What day of the week does ${monthData.name} ${baseYear} start on?`,
+      answer: `${monthData.name} 1, ${baseYear} is a ${firstWeekday}. The month ends on a ${lastWeekday}.`,
+    },
+    topWeekday
+      ? {
+          question: `How many ${topWeekday.name}s are in ${monthData.name} ${baseYear}?`,
+          answer: `${monthData.name} ${baseYear} has ${topWeekday.count} ${topWeekday.name}s.`,
+        }
+      : null,
+  ].filter(Boolean) as { question: string; answer: string }[];
   relatedLinks = [
     ...months.filter(m => m.index !== monthData.index).slice(0, 5).map(m => ({
       href: `/days-in/${m.slug}/`,
@@ -154,6 +198,24 @@ const schemas = [
 
     <p class="exp" set:html={explanation} />
 
+    {glance ? (
+      <section class="mg" aria-label={`${monthData!.name} ${baseYear} at a glance`}>
+        <h2 class="mg-title kicker">Month at a Glance</h2>
+        <p class="mg-bounds">
+          {monthData!.name} {baseYear} starts on a <strong>{glance.firstWeekday}</strong> and ends on a <strong>{glance.lastWeekday}</strong>.
+          It has <strong>{glance.weekendCount} weekend days</strong> and <strong>{glance.workdayCount} weekdays</strong>.
+        </p>
+        <ul class="mg-grid">
+          {glance.weekdayCounts.map(w => (
+            <li class="mg-item">
+              <span class="mg-day">{w.name.slice(0, 3)}</span>
+              <span class="mg-count num">{w.count}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ) : null}
+
     <KeyFacts days={days} weeks={totalWeeks} remDays={remDays} />
 
     <ShareLink url={pageUrl} />
@@ -180,5 +242,80 @@ const schemas = [
   .exp :global(strong) {
     color: var(--color-text);
     font-weight: 650;
+  }
+
+  /* Month at a Glance — weekday distribution, computed at build time */
+  .mg {
+    margin: var(--sp-8) 0;
+    padding: var(--sp-6);
+    background: var(--color-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .mg-title {
+    margin-bottom: var(--sp-4);
+    text-align: center;
+    color: var(--color-text-tertiary);
+  }
+
+  .mg-bounds {
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--sp-4);
+  }
+
+  .mg-bounds strong {
+    color: var(--color-text);
+    font-weight: 650;
+  }
+
+  .mg-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--sp-2);
+  }
+
+  .mg-item {
+    text-align: center;
+    padding: var(--sp-3) var(--sp-1);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-sm);
+    border-top: 2px solid var(--color-accent);
+  }
+
+  .mg-day {
+    display: block;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    font-family: var(--font-mono);
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: var(--sp-1);
+  }
+
+  .mg-count {
+    font-size: var(--text-xl);
+    font-weight: 750;
+    color: var(--color-text);
+  }
+
+  @media (max-width: 640px) {
+    .mg {
+      padding: var(--sp-4);
+    }
+
+    .mg-grid {
+      gap: var(--sp-1);
+    }
+
+    .mg-count {
+      font-size: var(--text-base);
+    }
   }
 </style>

@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-03 22:10 UTC
+> Last updated: 2026-08-04 20:10 UTC
 
 > ⏰ Cron schedule: 00:30, 02:30, 04:30, 06:30, 08:30, 13:30, 19:30, 21:30, 23:30 (avoids 9–12 and 14–18)
 
@@ -14,8 +14,10 @@
 ## 🟢 Low
 - [ ] DECIDE: `today()` uses UTC date — users in UTC+ timezones see "yesterday" for the morning hours until the next build. Choosing a fixed tz would shift all day counts by 1 for some users. Current 2-hourly rebuilds keep it <2h stale
 - [ ] FUTURE: Monitor GSC for thin-content pages after UI redesign
+- [ ] USER: User reported tool-site-liart.vercel.app looks plain — that URL never appears in code/git (all SITE_URL/robots/sitemap = datecalc-calculator.vercel.app). Two Vercel projects likely; user must confirm which domain is connected to the repo. If datecalc-calculator is correct, nothing to change. If tool-site-liart is the real one, bulk-find-replace SITE_URL (19 refs + astro.config + robots.txt)
 
 ## ✅ Done
+- [x] 2026-08-04: Add "Month at a Glance" block + 3 FAQs to 2026-anchored /days-in/{month}/ pages — the [month]/[year] variant pages had the weekday-distribution glance block + 5 FAQs, but the anchor month pages had only 2 FAQs and no glance block (real content inconsistency). Added build-time weekday counts, starts/ends weekday, weekend/workday breakdown + weekends/start-day/top-weekday FAQs + firstWeekday meta desc (e.g. "November 2026 ... starts on a Sunday"). Verified: Nov 2026 starts Sun ends Mon, 5/5/4/4/4/4/4 = 30d, 9 weekend/21 weekday; Feb 2026 28d non-leap, 8 weekend/20 weekday. All 5 FAQs present in FAQPage schema. Build 678 clean, audit 0 broken links
 - [x] 2026-08-03: Add 100 & 365 to nValuesForDate — /days-from/N/date supported only [30,45,60,90,120,180], missing two of the most common "N days from [date]" queries ("100 days from Christmas", "1 year from [date]"). +64 pages (32 dates × 2 values; 614→678). Hub popularFrom + intro updated. Verified: 100d from 2026-12-25 = 2027-04-04; 365d from 2026-01-01 = 2027-01-01; leap edge 365d from 2028-02-29 = 2029-02-28. Audit: 10556 links 0 broken, 0 h1 issues, 0 thin
 - [x] 2026-08-03: Add 10 & 28 days-from-today pages — nValuesForToday had 7/14/21/30 but skipped 10 and 28 (nValues for /days-from/N/date had them). +2 pages (612→614). Hub popularNValues + Quick Jump updated to match. Verified: 10d from 2026-08-03 = 2026-08-13 (1w3d), 28d = 2026-08-31 (4w0d). Audit: 0 broken links (9720 checked), 0 missing/multi h1
 - [x] 2026-08-03: Add 500 & 1000 days-from-today pages — "500/1000 days from today" are common milestone-planning queries, max N was 365. Added both to nValuesForToday (16→18 pages) + hub popularNValues + Quick Jump (1000). Verified: 500d from 2026-08-03 = 2027-12-16 (71w3d), 1000d = 2029-04-29 (142w6d). Build 610→612, sitemap 611, audit green (0 broken, 0 thin, 0 our-JS on programmatic)
