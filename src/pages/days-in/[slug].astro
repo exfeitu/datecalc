@@ -116,7 +116,9 @@ if (isYear) {
   // Anchor month page is year-agnostic (URL has no year) — title/desc must
   // not duplicate the /days-in/{month}/{year}/ pages.
   title = `How Many Days in ${monthData.name}? | DateCalc`;
-  description = `${monthData.name} always has ${days} days${isFeb ? ` (${baseYear} is ${isCurrentLeap ? 'a leap year' : 'not a leap year'}, so February has 28 or 29)` : ''}. See the weekday breakdown and weekend count. Free from DateCalc.`;
+  description = isFeb
+    ? `February has ${days} days in ${baseYear} (${isCurrentLeap ? 'a leap year' : 'not a leap year'}). It starts on a ${firstWeekday}, ends on a ${lastWeekday}, and has ${weekendCount} weekend days that year. Free from DateCalc.`
+    : `${monthData.name} always has ${days} days, no matter the year. In ${baseYear} it starts on a ${firstWeekday}, ends on a ${lastWeekday}, and has ${weekendCount} weekend days. Free from DateCalc.`;
   unit = `days in ${monthData.name}`;
   subtitle = isFeb
     ? `${baseYear} is ${isCurrentLeap ? 'a leap year' : 'not a leap year'}, so February has ${days} days`

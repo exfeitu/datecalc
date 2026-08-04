@@ -99,8 +99,8 @@ export function daysUntilMeta(
     title: `How Many Days ${verb === 'until' ? 'Until' : 'Since'} ${eventName} ${year}? | ${SITE_NAME}`,
     description:
       verb === 'until'
-        ? `There are ${days} days until ${eventName} ${year} (${weekday}, ${formatDateLong(eventDate)}). That's ${weeks} ${weekLabel}${remStr}. Free countdown with DateCalc.`
-        : `${eventName} ${year} was ${days} days ago (${weekday}, ${formatDateLong(eventDate)}). That's ${weeks} ${weekLabel}${remStr}. Free date countdown with DateCalc.`,
+        ? `There are ${days} days until ${eventName} ${year} (${weekday}, ${formatDateLong(eventDate)}). That's ${weeks} ${weekLabel}${remStr} from today. Free countdown with DateCalc.`
+        : `${eventName} ${year} was ${days} days ago (${weekday}, ${formatDateLong(eventDate)}). That's ${weeks} ${weekLabel}${remStr} from today. Free date countdown with DateCalc.`,
   };
 }
 

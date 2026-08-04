@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-04 22:05 UTC
+> Last updated: 2026-08-04 23:55 UTC
 
 > ⏰ Cron schedule: 00:30, 02:30, 04:30, 06:30, 08:30, 13:30, 19:30, 21:30, 23:30 (avoids 9–12 and 14–18)
 
@@ -17,6 +17,7 @@
 - [ ] USER-ACTION: Submit sitemap in GSC — user confirmed real domain = datecalc-calculator.vercel.app (tool-site-liart was a mistaken URL). Steps: add URL-prefix property https://datecalc-calculator.vercel.app/ → verify (HTML file public/googlefa5e87d49d1fb5ce.html) → submit sitemap-index.xml → confirm "discovered URLs" ≈ 677
 
 ## ✅ Done
+- [x] 2026-08-04: Fix short meta descriptions (11 pages <100 → 0; 671/677 now in 120-155 target). The year-agnostic /days-in/{month}/ anchor descriptions I'd written last session were 89-93 chars — enriched with glance data (starts/ends weekday, weekend count) → 137-144. Also enriched /days-in/{month}/{year}/ (110-115 → 125+) and days-until descriptions (+"from today" → 120+). Remaining 6 under 120 are hub/index brand pages (homepage 111, hubs 113-115) — intentional short blurbs, fine. Audit: 0 broken (13783 links), 0 h1 issues, 0 schema errors, 0 titles >70, 0 duplicate titles
 - [x] 2026-08-04: Fix 256 over-long + 12 duplicate page titles — days-from pages were "90 Days From June 1, 2026 — What Date Is 90 Days After June 1, 2026?" (79-89 chars, date repeated twice). Now "What Date Is 90 Days From June 1, 2026?" (matches h1, ~44 chars). Same fix on days-from-today (62→40). Anchor /days-in/{month}/ pages duplicated the {month}/{year} titles ("How Many Days in November 2026?" ×2) — anchor is year-agnostic, now "How Many Days in November?" with yearless desc. Result: 0 titles >70 (was 256), 0 duplicate titles (was 12), remaining 14 at 63-64 chars are legit long event names (DST/MLK/CNY eve). Build 678 clean, audit 0 broken
 - [x] 2026-08-04: Add "Month at a Glance" block + 3 FAQs to 2026-anchored /days-in/{month}/ pages — the [month]/[year] variant pages had the weekday-distribution glance block + 5 FAQs, but the anchor month pages had only 2 FAQs and no glance block (real content inconsistency). Added build-time weekday counts, starts/ends weekday, weekend/workday breakdown + weekends/start-day/top-weekday FAQs + firstWeekday meta desc (e.g. "November 2026 ... starts on a Sunday"). Verified: Nov 2026 starts Sun ends Mon, 5/5/4/4/4/4/4 = 30d, 9 weekend/21 weekday; Feb 2026 28d non-leap, 8 weekend/20 weekday. All 5 FAQs present in FAQPage schema. Build 678 clean, audit 0 broken links
 - [x] 2026-08-03: Add 100 & 365 to nValuesForDate — /days-from/N/date supported only [30,45,60,90,120,180], missing two of the most common "N days from [date]" queries ("100 days from Christmas", "1 year from [date]"). +64 pages (32 dates × 2 values; 614→678). Hub popularFrom + intro updated. Verified: 100d from 2026-12-25 = 2027-04-04; 365d from 2026-01-01 = 2027-01-01; leap edge 365d from 2028-02-29 = 2029-02-28. Audit: 10556 links 0 broken, 0 h1 issues, 0 thin

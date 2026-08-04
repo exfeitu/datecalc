@@ -61,7 +61,10 @@ const workdayCount = days - weekendCount;
 const topWeekday = weekdayCounts.length ? [...weekdayCounts].sort((a, b) => b.count - a.count)[0] : null;
 
 const meta = monthData && validYear
-  ? daysInMonthMeta(monthData.name, days, yearNum, firstWeekday)
+  ? {
+      title: daysInMonthMeta(monthData.name, days, yearNum, firstWeekday).title,
+      description: `${monthData.name} ${yearNum} has ${days} days and starts on a ${firstWeekday}, ending on a ${lastWeekday}. That's ${weekendCount} weekend days and ${workdayCount} weekdays. Free from DateCalc.`,
+    }
   : { title: 'Not Found', description: '' };
 
 const pageUrl = `${SITE_URL}/days-in/${month}/${year}/`;
