@@ -69,7 +69,8 @@ export function signedDaysBetween(date1: string, date2: string): number {
 export type ComputedEvent =
   | 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost'
   | 'chinese-new-year' | 'chinese-new-years-eve'
-  | 'ramadan' | 'eid-al-fitr' | 'diwali' | 'hanukkah';
+  | 'ramadan' | 'eid-al-fitr' | 'diwali' | 'hanukkah'
+  | 'election-day';
 
 /**
  * Lunar/religious holiday dates (Gregorian) — these follow lunar calendars, so
@@ -127,6 +128,14 @@ function computedEventDate(computed: ComputedEvent, year: number): string {
     case 'easter-monday': return dateFromDays(easter, 1);
     case 'ash-wednesday': return dateFromDays(easter, -46);
     case 'pentecost': return dateFromDays(easter, 49);
+    case 'election-day': {
+      // US Election Day: the Tuesday next after the first Monday of November.
+      // Equivalent to first Monday of November + 1 day.
+      const d = new Date(Date.UTC(year, 10, 1, 12)); // Nov 1
+      while (d.getUTCDay() !== 1) d.setUTCDate(d.getUTCDate() + 1); // first Monday
+      d.setUTCDate(d.getUTCDate() + 1); // the following Tuesday
+      return formatDate(d);
+    }
     default: {
       const table = VARIABLE_HOLIDAYS[computed];
       // Fallback to the last listed year if the requested year isn't in the table

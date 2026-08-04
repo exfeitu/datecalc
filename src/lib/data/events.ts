@@ -21,7 +21,7 @@ export interface CalendarEvent {
     occurrence: 1 | 2 | 3 | 4 | -1; // 1=first, 4=fourth, -1=last
   };
   /** For computed events: which algorithm / lookup table (Easter family, Chinese New Year, lunar holidays) */
-  computedRule?: 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost' | 'chinese-new-year' | 'chinese-new-years-eve' | 'ramadan' | 'eid-al-fitr' | 'diwali' | 'hanukkah';
+  computedRule?: 'easter' | 'good-friday' | 'easter-monday' | 'ash-wednesday' | 'pentecost' | 'chinese-new-year' | 'chinese-new-years-eve' | 'ramadan' | 'eid-al-fitr' | 'diwali' | 'hanukkah' | 'election-day';
 }
 
 export const events: CalendarEvent[] = [
@@ -55,6 +55,7 @@ export const events: CalendarEvent[] = [
   { slug: 'columbus-day',    name: 'Columbus Day',         month: 10, day: 0, type: 'floating', category: 'holiday',
     floatingRule: { weekday: 'Monday', occurrence: 2 } },
   { slug: 'veterans-day',    name: 'Veterans Day',         month: 11, day: 11, type: 'fixed', category: 'holiday' },
+  { slug: 'election-day',    name: 'Election Day (US)',    month: 11, day: 0,  type: 'computed', category: 'holiday', computedRule: 'election-day' },
   { slug: 'juneteenth',      name: 'Juneteenth',           month: 6,  day: 19, type: 'fixed', category: 'holiday' },
   { slug: 'flag-day',        name: 'Flag Day (US)',        month: 6,  day: 14, type: 'fixed', category: 'holiday' },
 

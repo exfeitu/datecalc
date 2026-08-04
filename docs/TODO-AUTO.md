@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-05 01:05 UTC
+> Last updated: 2026-08-05 03:05 UTC
 
 > ⏰ Cron schedule: 00:30, 02:30, 04:30, 06:30, 08:30, 13:30, 19:30, 21:30, 23:30 (avoids 9–12 and 14–18)
 
@@ -17,6 +17,7 @@
 - [ ] USER-ACTION: Submit sitemap in GSC — user confirmed real domain = datecalc-calculator.vercel.app (tool-site-liart was a mistaken URL). Steps: add URL-prefix property https://datecalc-calculator.vercel.app/ → verify (HTML file public/googlefa5e87d49d1fb5ce.html) → submit sitemap-index.xml → confirm "discovered URLs" ≈ 677
 
 ## ✅ Done
+- [x] 2026-08-05: Add Election Day (US) event — high-volume annual query missing (2026 midterms Nov 3, 2028 presidential Nov 7). Implemented as computedRule 'election-day' (Tuesday after first Monday of November, = first Monday + 1 day) in dates.ts + events.ts. +3 pages (678→681). Dates independently verified: 2026-11-03 / 2027-11-02 / 2028-11-07 all Tuesdays. In sitemap, on hub, related-event links + FAQPage schema present. Audit: 0 broken (13852 links), 0 h1 issues, 0 schema errors, 0 title issues
 - [x] 2026-08-05: Routine audit — all green, no new issues. 678 pages built. 0 broken links (13783 checked), 0 missing/multi h1, 0 schema errors, 0 bad canonical, 0 titles >70, 0 duplicate titles, 0 thin (<150), 671/677 descs in 120-155 (6 hub brand pages short, intentional). Sitemap coverage perfect (677 built = 677 sitemap, 404 correctly excluded). Freshness verified: build at 01:00 CST = 17:00 UTC 08-04, so today()=2026-08-04 UTC (documented UTC design), 7d→08-11 / 30d→09-03 / 365d→2027-08-04 all correct
 - [x] 2026-08-04: Fix short meta descriptions (11 pages <100 → 0; 671/677 now in 120-155 target). The year-agnostic /days-in/{month}/ anchor descriptions I'd written last session were 89-93 chars — enriched with glance data (starts/ends weekday, weekend count) → 137-144. Also enriched /days-in/{month}/{year}/ (110-115 → 125+) and days-until descriptions (+"from today" → 120+). Remaining 6 under 120 are hub/index brand pages (homepage 111, hubs 113-115) — intentional short blurbs, fine. Audit: 0 broken (13783 links), 0 h1 issues, 0 schema errors, 0 titles >70, 0 duplicate titles
 - [x] 2026-08-04: Fix 256 over-long + 12 duplicate page titles — days-from pages were "90 Days From June 1, 2026 — What Date Is 90 Days After June 1, 2026?" (79-89 chars, date repeated twice). Now "What Date Is 90 Days From June 1, 2026?" (matches h1, ~44 chars). Same fix on days-from-today (62→40). Anchor /days-in/{month}/ pages duplicated the {month}/{year} titles ("How Many Days in November 2026?" ×2) — anchor is year-agnostic, now "How Many Days in November?" with yearless desc. Result: 0 titles >70 (was 256), 0 duplicate titles (was 12), remaining 14 at 63-64 chars are legit long event names (DST/MLK/CNY eve). Build 678 clean, audit 0 broken
