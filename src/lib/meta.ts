@@ -59,7 +59,7 @@ export function daysFromTodayMeta(n: number, resultDate: string): Meta {
   const weeks = Math.floor(n / 7);
   const rem = n % 7;
   return {
-    title: `${formatNumber(n)} Days From Today — What Date Is ${n} Days From Now? | ${SITE_NAME}`,
+    title: `What Date Is ${formatNumber(n)} Days From Today? | ${SITE_NAME}`,
     description: `${n} days from today is ${resultDate} (a ${weekday}). That's ${weeks} weeks and ${rem} days from now. Use DateCalc to find any future date — fast, free, and accurate.`,
   };
 }

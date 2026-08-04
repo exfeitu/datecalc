@@ -7,7 +7,7 @@ import RelatedQueries from '../../components/RelatedQueries.astro';
 import KeyFacts from '../../components/KeyFacts.astro';
 import ShareLink from '../../components/ShareLink.astro';
 import { isLeapYear, daysInMonth, getWeekday } from '../../lib/dates';
-import { daysInMonthMeta, daysInYearMeta } from '../../lib/meta';
+import { daysInYearMeta } from '../../lib/meta';
 import { resultPageSchema } from '../../lib/schema';
 import { months } from '../../lib/data/months';
 import { yearRange } from '../../lib/data/months';
@@ -113,9 +113,10 @@ if (isYear) {
   const topWeekday = [...weekdayCounts].sort((a, b) => b.count - a.count)[0];
   glance = { firstWeekday, lastWeekday, weekendCount, workdayCount, topWeekday, weekdayCounts };
 
-  const meta = daysInMonthMeta(monthData.name, days, baseYear, firstWeekday);
-  title = meta.title;
-  description = meta.description;
+  // Anchor month page is year-agnostic (URL has no year) — title/desc must
+  // not duplicate the /days-in/{month}/{year}/ pages.
+  title = `How Many Days in ${monthData.name}? | DateCalc`;
+  description = `${monthData.name} always has ${days} days${isFeb ? ` (${baseYear} is ${isCurrentLeap ? 'a leap year' : 'not a leap year'}, so February has 28 or 29)` : ''}. See the weekday breakdown and weekend count. Free from DateCalc.`;
   unit = `days in ${monthData.name}`;
   subtitle = isFeb
     ? `${baseYear} is ${isCurrentLeap ? 'a leap year' : 'not a leap year'}, so February has ${days} days`

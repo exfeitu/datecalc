@@ -40,7 +40,7 @@ const remDays = nDays % 7;
 
 const pageUrl = `${SITE_URL}/days-from/${n}/${date}/`;
 
-const title = `${nDays} Days From ${formatDateLong(date)} — What Date Is ${nDays} Days After ${formatDateLong(date)}? | DateCalc`;
+const title = `What Date Is ${nDays} Days From ${formatDateLong(date)}? | DateCalc`;
 const description = `${nDays} days from ${formatDateLong(date)} (a ${fromWeekday}) is ${formatDateLong(resultDate)} — a ${weekday}. That's ${weeks} week${weeks === 1 ? '' : 's'}${remDays > 0 ? ` and ${remDays} day${remDays === 1 ? '' : 's'}` : ''} later. Free date calculator from DateCalc.`;
 
 const subtitle = `That date is ${formatDateLong(resultDate)} (${weekday})`;
