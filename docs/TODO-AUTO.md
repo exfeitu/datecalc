@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-05 05:05 UTC
+> Last updated: 2026-08-05 07:05 UTC
 
 > ⏰ Cron schedule: 00:30, 02:30, 04:30, 06:30, 08:30, 13:30, 19:30, 21:30, 23:30 (avoids 9–12 and 14–18)
 
@@ -17,6 +17,7 @@
 - [ ] USER-ACTION: Submit sitemap in GSC — user confirmed real domain = datecalc-calculator.vercel.app (tool-site-liart was a mistaken URL). Steps: add URL-prefix property https://datecalc-calculator.vercel.app/ → verify (HTML file public/googlefa5e87d49d1fb5ce.html) → submit sitemap-index.xml → confirm "discovered URLs" ≈ 677
 
 ## ✅ Done
+- [x] 2026-08-05: Deep numeric audit — all day counts verified against recomputation. days-between 81/81 OK, days-from-today 0 mismatch, days-from 0 wrong (238 false-positives were ISO-vs-formatted-date test bug), days-in/[month]/[year] 84/84, days-in month anchors 12/12, days-in year anchors 0 mismatch, days-left-in 2026/27/28 = 149/514/880 OK, age-in-days/1990 = 13364 OK, 10 computed/astronomical/floating events (easter, good-friday, CNY, equinoxes, solstices, DST, thanksgiving, memorial, mothers) all match known 2026 dates. Full audit still green: 0 broken (13853), 0 h1/schema/canonical/title issues, 0 thin (lowest 157), 674/680 descs in 120-155. No code changes needed
 - [x] 2026-08-05: Surface Election Day 2026 on homepage Popular Now + full audit. Added "Days until Election Day 2026" to homepage popularLinks (high midterm-season volume, ~91 days out, page added last session). Full audit: 681 pages, 0 broken (13852 links), 0 h1 issues, 0 schema errors, 0 bad canonical, 0 title issues, 0 heading-hierarchy violations, 0 images missing alt, 0 our-JS on programmatic pages, freshness OK. Decided against World Cup 2026 / Olympics 2028 (date ranges, don't fit annual event model; lunar 2029 expansion still blocked)
 - [x] 2026-08-05: Add Election Day (US) event — high-volume annual query missing (2026 midterms Nov 3, 2028 presidential Nov 7). Implemented as computedRule 'election-day' (Tuesday after first Monday of November, = first Monday + 1 day) in dates.ts + events.ts. +3 pages (678→681). Dates independently verified: 2026-11-03 / 2027-11-02 / 2028-11-07 all Tuesdays. In sitemap, on hub, related-event links + FAQPage schema present. Audit: 0 broken (13852 links), 0 h1 issues, 0 schema errors, 0 title issues
 - [x] 2026-08-05: Routine audit — all green, no new issues. 678 pages built. 0 broken links (13783 checked), 0 missing/multi h1, 0 schema errors, 0 bad canonical, 0 titles >70, 0 duplicate titles, 0 thin (<150), 671/677 descs in 120-155 (6 hub brand pages short, intentional). Sitemap coverage perfect (677 built = 677 sitemap, 404 correctly excluded). Freshness verified: build at 01:00 CST = 17:00 UTC 08-04, so today()=2026-08-04 UTC (documented UTC design), 7d→08-11 / 30d→09-03 / 365d→2027-08-04 all correct
