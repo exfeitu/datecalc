@@ -14,7 +14,7 @@
 ## 🟢 Low
 - [ ] DECIDE: `today()` uses UTC date — users in UTC+ timezones see "yesterday" for the morning hours until the next build. Choosing a fixed tz would shift all day counts by 1 for some users. Current 2-hourly rebuilds keep it <2h stale
 - [ ] FUTURE: Monitor GSC for thin-content pages after UI redesign
-- [ ] USER: User reported tool-site-liart.vercel.app looks plain — that URL never appears in code/git (all SITE_URL/robots/sitemap = datecalc-calculator.vercel.app). Two Vercel projects likely; user must confirm which domain is connected to the repo. If datecalc-calculator is correct, nothing to change. If tool-site-liart is the real one, bulk-find-replace SITE_URL (19 refs + astro.config + robots.txt)
+- [ ] USER-ACTION: Submit sitemap in GSC — user confirmed real domain = datecalc-calculator.vercel.app (tool-site-liart was a mistaken URL). Steps: add URL-prefix property https://datecalc-calculator.vercel.app/ → verify (HTML file public/googlefa5e87d49d1fb5ce.html) → submit sitemap-index.xml → confirm "discovered URLs" ≈ 677
 
 ## ✅ Done
 - [x] 2026-08-04: Fix 256 over-long + 12 duplicate page titles — days-from pages were "90 Days From June 1, 2026 — What Date Is 90 Days After June 1, 2026?" (79-89 chars, date repeated twice). Now "What Date Is 90 Days From June 1, 2026?" (matches h1, ~44 chars). Same fix on days-from-today (62→40). Anchor /days-in/{month}/ pages duplicated the {month}/{year} titles ("How Many Days in November 2026?" ×2) — anchor is year-agnostic, now "How Many Days in November?" with yearless desc. Result: 0 titles >70 (was 256), 0 duplicate titles (was 12), remaining 14 at 63-64 chars are legit long event names (DST/MLK/CNY eve). Build 678 clean, audit 0 broken
