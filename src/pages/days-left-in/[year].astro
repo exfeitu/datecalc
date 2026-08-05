@@ -7,6 +7,7 @@ import DateContext from '../../components/DateContext.astro';
 import RelatedQueries from '../../components/RelatedQueries.astro';
 import KeyFacts from '../../components/KeyFacts.astro';
 import Timeline from '../../components/Timeline.astro';
+import FAQ from '../../components/FAQ.astro';
 import ShareLink from '../../components/ShareLink.astro';
 import { daysLeftInYear, isLeapYear, today } from '../../lib/dates';
 import { daysLeftInYearMeta } from '../../lib/meta';
@@ -115,6 +116,8 @@ const schemas = [
   <ShareLink url={pageUrl} />
 
   <RelatedQueries links={relatedLinks} />
+
+  <FAQ items={faqs} />
 </BaseLayout>
 
 <style>

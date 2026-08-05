@@ -7,6 +7,7 @@ import Breadcrumb from '../../../components/Breadcrumb.astro';
 import RelatedQueries from '../../../components/RelatedQueries.astro';
 import KeyFacts from '../../../components/KeyFacts.astro';
 import Timeline from '../../../components/Timeline.astro';
+import FAQ from '../../../components/FAQ.astro';
 import ShareLink from '../../../components/ShareLink.astro';
 import { dateFromDays, getWeekday } from '../../../lib/dates';
 import { resultPageSchema } from '../../../lib/schema';
@@ -110,6 +111,8 @@ const schemas = [
   <ShareLink url={pageUrl} />
 
   <RelatedQueries links={relatedLinks} />
+
+  <FAQ items={faqs} />
 </BaseLayout>
 
 <style>

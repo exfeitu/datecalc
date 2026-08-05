@@ -1,7 +1,7 @@
 # TODO (Auto)
 
 > Auto-generated task queue for scheduled Claude Code sessions.
-> Last updated: 2026-08-05 20:05 UTC
+> Last updated: 2026-08-05 22:10 UTC
 
 > ⏰ Cron schedule: 00:30, 02:30, 04:30, 06:30, 08:30, 13:30, 19:30, 21:30, 23:30 (avoids 9–12 and 14–18)
 
@@ -17,6 +17,7 @@
 - [ ] USER-ACTION: Submit sitemap in GSC — user confirmed real domain = datecalc-calculator.vercel.app (tool-site-liart was a mistaken URL). Steps: add URL-prefix property https://datecalc-calculator.vercel.app/ → verify (HTML file public/googlefa5e87d49d1fb5ce.html) → submit sitemap-index.xml → confirm "discovered URLs" ≈ 677
 
 ## ✅ Done
+- [x] 2026-08-05: Add visible FAQ section to all 8 programmatic templates — every programmatic page emitted FAQPage JSON-LD schema (faqs array passed to resultPageSchema) but never rendered the <FAQ> component: schema-without-visible-content, a Google mismatch risk (and why programmatic pages sat near the 150-token thin threshold). Added import + <FAQ items={faqs} /> to days-until/[event]/[year], days-between/[date1]/[date2], days-from/[n]/[date], days-from-today/[n], age-in-days/[year], days-left-in/[year], days-in/[month]/[year], days-in/[slug]. Now ALL pages (programmatic + hubs) have schema-visible FAQ question counts matching (4/4, 5/5, 2/2 etc). Bonus: lowest programmatic page word count rose 161→239+. Full audit green: 0 broken, 0 h1/schema/canonical/title issues, 0 assets missing, zero-JS holds
 - [x] 2026-08-05: Fix hub cross-link gap — 4 hubs (days-until, days-in, age-in-days, days-left-in) had no link to /days-from/ hub (the other 3 hubs did). Added "Days From a Date" to all 4 More Date Tools sections. Now all 7 hubs cross-link 6/6 to every other tool. Verified: page-links 11276→11280 (+4), 0 broken (all 4 new links resolve), full audit green. (Note: days-left-in links use /days-left-in/2026/ not hub root — that's intentional, both resolve)
 - [x] 2026-08-05: Add DateContext + Timeline to last 3 templates — days-in/[month]/[year], days-in/[slug], age-in-days, days-left-in lacked the visual time-axis + date-context cards that days-from-today/from/between/until have (real component inconsistency). Now all 7 templates render AnswerHero + DateContext + KeyFacts + Timeline + ShareLink + RelatedQueries. Spans verified: age 1990→today 13,365d (Aug 5), days-left 08-05→12-31 = 148d, month = 1st→last, year = Jan 1→Dec 31. Caught a counting red herring: raw href count dropped 13853→13307 but that's only _astro CSS chunk hrefs (adding components shifted which chunks pages reference); true page-to-page links identical 11276 pre/post, 0 assets missing. Full audit: 0 broken, 0 h1/schema/canonical/title issues, 0 thin (lowest 161)
 - [x] 2026-08-05: Verified UTC date-rollover pipeline + full audit. First build after today() rolled to 2026-08-05 (09:00 CST = 01:00 UTC): all today-anchored pages updated correctly (7d→08-12, 30d→09-04, 90d→11-03, 365d→2027-08-05, 1000d→2029-05-01; homepage TodayPlate = "Wednesday, August 5, 2026"). Confirms 2-hourly rebuild keeps content fresh. Audit green: 0 broken (13853), 0 h1/schema/canonical/title issues, 0 '0 days' boundary cases, hub next-occurrence logic correct (Easter passed → 2027, Thanksgiving future → 2026), sitemap 680/680, 0 thin (lowest 157), 675/680 descs in 120-155. No code changes needed
