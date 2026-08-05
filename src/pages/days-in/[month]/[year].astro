@@ -5,8 +5,10 @@
 import BaseLayout from '../../../components/BaseLayout.astro';
 import AnswerHero from '../../../components/AnswerHero.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
+import DateContext from '../../../components/DateContext.astro';
 import RelatedQueries from '../../../components/RelatedQueries.astro';
 import KeyFacts from '../../../components/KeyFacts.astro';
+import Timeline from '../../../components/Timeline.astro';
 import ShareLink from '../../../components/ShareLink.astro';
 import { isLeapYear, daysInMonth, getWeekday } from '../../../lib/dates';
 import { daysInMonthMeta } from '../../../lib/meta';
@@ -53,7 +55,8 @@ const weekdayCounts = monthData && validYear
     }))
   : [];
 const firstWeekday = firstDate ? getWeekday(firstDate) : '';
-const lastWeekday = monthData && validYear ? getWeekday(`${yearNum}-${monthStr}-${String(days).padStart(2, '0')}`) : '';
+const lastDate = monthData && validYear ? `${yearNum}-${monthStr}-${String(days).padStart(2, '0')}` : '';
+const lastWeekday = lastDate ? getWeekday(lastDate) : '';
 const satCount = weekdayCounts.find(w => w.name === 'Saturday')?.count ?? 0;
 const sunCount = weekdayCounts.find(w => w.name === 'Sunday')?.count ?? 0;
 const weekendCount = satCount + sunCount;
@@ -161,6 +164,13 @@ const schemas = monthData && validYear
     </section>
 
     <KeyFacts days={days} weeks={totalWeeks} remDays={remDays} />
+
+    {monthData && validYear && (
+      <>
+        <DateContext date1={firstDate} date2={lastDate} days={days} />
+        <Timeline date1={firstDate} date2={lastDate} days={days} />
+      </>
+    )}
 
     <ShareLink url={pageUrl} />
 

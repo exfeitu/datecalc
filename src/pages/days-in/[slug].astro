@@ -3,8 +3,10 @@
 import BaseLayout from '../../components/BaseLayout.astro';
 import AnswerHero from '../../components/AnswerHero.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import DateContext from '../../components/DateContext.astro';
 import RelatedQueries from '../../components/RelatedQueries.astro';
 import KeyFacts from '../../components/KeyFacts.astro';
+import Timeline from '../../components/Timeline.astro';
 import ShareLink from '../../components/ShareLink.astro';
 import { isLeapYear, daysInMonth, getWeekday } from '../../lib/dates';
 import { daysInYearMeta } from '../../lib/meta';
@@ -179,6 +181,11 @@ const pageUrl = `${SITE_URL}/days-in/${slug}/`;
 const totalWeeks = Math.floor(days / 7);
 const remDays = days % 7;
 
+// Date span for the timeline/context: year pages span Jan 1–Dec 31,
+// month pages span the 1st to the last day of that month.
+const spanDate1 = isYear ? `${yearNum}-01-01` : (monthData ? `${baseYear}-${String(monthData.index).padStart(2, '0')}-01` : '');
+const spanDate2 = isYear ? `${yearNum}-12-31` : (monthData ? `${baseYear}-${String(monthData.index).padStart(2, '0')}-${String(days).padStart(2, '0')}` : '');
+
 const schemas = [
   resultPageSchema({ title, description, url: pageUrl, faqs }),
 ];
@@ -220,6 +227,13 @@ const schemas = [
     ) : null}
 
     <KeyFacts days={days} weeks={totalWeeks} remDays={remDays} />
+
+    {spanDate1 && spanDate2 && (
+      <>
+        <DateContext date1={spanDate1} date2={spanDate2} days={days} />
+        <Timeline date1={spanDate1} date2={spanDate2} days={days} />
+      </>
+    )}
 
     <ShareLink url={pageUrl} />
 

@@ -3,8 +3,10 @@
 import BaseLayout from '../../components/BaseLayout.astro';
 import AnswerHero from '../../components/AnswerHero.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import DateContext from '../../components/DateContext.astro';
 import RelatedQueries from '../../components/RelatedQueries.astro';
 import KeyFacts from '../../components/KeyFacts.astro';
+import Timeline from '../../components/Timeline.astro';
 import ShareLink from '../../components/ShareLink.astro';
 import { daysLeftInYear, isLeapYear, today } from '../../lib/dates';
 import { daysLeftInYearMeta } from '../../lib/meta';
@@ -102,6 +104,13 @@ const schemas = [
     weeks={Math.floor(Math.max(0, remaining) / 7)}
     remDays={Math.max(0, remaining) % 7}
   />
+
+  {remaining > 0 && (
+    <>
+      <DateContext date1={todayStr} date2={`${yearNum}-12-31`} days={remaining} />
+      <Timeline date1={todayStr} date2={`${yearNum}-12-31`} days={remaining} />
+    </>
+  )}
 
   <ShareLink url={pageUrl} />
 

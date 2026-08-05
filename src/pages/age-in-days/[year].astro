@@ -3,10 +3,12 @@
 import BaseLayout from '../../components/BaseLayout.astro';
 import AnswerHero from '../../components/AnswerHero.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import DateContext from '../../components/DateContext.astro';
 import RelatedQueries from '../../components/RelatedQueries.astro';
 import KeyFacts from '../../components/KeyFacts.astro';
+import Timeline from '../../components/Timeline.astro';
 import ShareLink from '../../components/ShareLink.astro';
-import { ageInDays } from '../../lib/dates';
+import { ageInDays, today } from '../../lib/dates';
 import { ageInDaysMeta } from '../../lib/meta';
 import { resultPageSchema } from '../../lib/schema';
 import { isBuilt } from '../../lib/data/routes';
@@ -26,7 +28,9 @@ export const getStaticPaths: GetStaticPaths = () => {
 
 const { year } = Astro.params as { year: string };
 const birthYear = parseInt(year);
+const todayStr = today();
 const totalDays = ageInDays(birthYear);
+const birthDate = `${birthYear}-01-01`;
 const years = Math.floor(totalDays / 365);
 const weeks = Math.floor(totalDays / 7);
 const remDays = totalDays % 7;
@@ -89,6 +93,10 @@ const schemas = [
   </p>
 
   <KeyFacts days={totalDays} weeks={weeks} remDays={remDays} />
+
+  <DateContext date1={birthDate} date2={todayStr} days={totalDays} />
+
+  <Timeline date1={birthDate} date2={todayStr} days={totalDays} />
 
   <ShareLink url={pageUrl} />
 
